@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#1A1A1D"
+    android:layout_marginBottom="10dp"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/profile_pic_post"
+            android:layout_width="30dp"
+            android:layout_height="35dp"
+            android:background="@drawable/circle_shape"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile1" />
+
+        <TextView
+            android:id="@+id/itemusername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2dp"
+            android:text="\@UsernameNotTaken"
+            android:textColor="@color/white"
+            android:textSize="10dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="4dp"
+        android:padding="10dp"
+        android:text="@string/just_rewatched_attack_on_titan_and_i_m_still_not_over_that_ending_eren_was_really_out_here_playing_4d_chess_while_everyone_else_was_in_a_sh_nen_aot_anime"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <!-- Reaction Icons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="16dp"
+            android:layout_height="14dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/chat__1_"
+            android:backgroundTint="@color/white"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:contentDescription="like" />
+
+        <ImageButton
+            android:layout_width="18dp"
+            android:layout_height="16dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/retweet"
+            android:backgroundTint="@color/white"
+            android:clipToOutline="true"
+            android:contentDescription="like"
+            android:scaleType="centerCrop" />
+
+        <ImageButton
+            android:layout_width="17dp"
+            android:layout_height="16dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/like"
+            android:backgroundTint="@color/white"
+            android:clipToOutline="true"
+            android:contentDescription="like"
+            android:scaleType="centerCrop" />
+
+        <ImageButton
+            android:layout_width="16dp"
+            android:layout_height="13dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/save_instagram"
+            android:backgroundTint="@color/white"
+            android:clipToOutline="true"
+            android:contentDescription="like"
+            android:scaleType="centerCrop" />
+
+        <ImageButton
+            android:layout_width="15dp"
+            android:layout_height="12dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/paper_plane"
+            android:backgroundTint="@color/white"
+            android:clipToOutline="true"
+            android:contentDescription="like"
+            android:scaleType="centerCrop" />
+    </LinearLayout>
+
+
+</LinearLayout>

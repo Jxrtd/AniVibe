@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#1D1616 "
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <!-- Logo -->
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="fitXY"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/image1"/>
+
+    <!-- Login Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log In"
+        android:textSize="36sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-black"
+        android:textColor="#EEEEEE"/>
+
+    <!-- Username Input -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username:"
+            android:textColor="#EEEEEE"
+            android:textSize="18sp"
+            android:layout_marginBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter username..."
+            android:padding="12dp"
+            android:textColor="#E8E8E8"
+            android:textColorHint="@color/white"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#E5D0AC"
+            android:layout_marginTop="-4dp"/>
+    </LinearLayout>
+
+    <!-- Password Input -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Password:"
+            android:textColor="#EEEEEE"
+            android:textSize="18sp"
+            android:layout_marginBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:textColorHint="@color/white"
+            android:inputType="textPassword"
+            android:hint="Enter password..."
+            android:textSize="16sp"
+            android:textColor="#FFFFFF" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#E5D0AC"
+            android:layout_marginTop="-4dp"/>
+
+    </LinearLayout>
+
+    <!-- Login Button -->
+    <Button
+        android:id="@+id/loginButton"
+        android:onClick="goToLandingPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textSize="20sp"
+        android:backgroundTint="#FEF9E1"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Signup Text -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Don't have an account yet?"
+        android:textColor="#FEF9E1"
+        android:textSize="16sp"
+        android:layout_marginTop="12dp"/>
+
+    <!-- Signup Button -->
+    <Button
+        android:id="@+id/anivibe_signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FEF9E1"
+        android:text="Sign Up"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:layout_marginTop="4dp"/>
+
+    <!-- OR Text -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Or log in with"
+        android:textSize="20sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-black"
+        android:textColor="#E5D0AC"/>
+
+    <!-- Social Media Login Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#FEF9E1"
+            android:textColor="@android:color/black"
+            android:text="Gmail"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#FEF9E1"
+            android:textColor="@android:color/black"
+            android:text="Facebook"/>
+    </LinearLayout>
+
+</LinearLayout>

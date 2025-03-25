@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsActivity"
+    android:orientation="vertical"
+    android:background="#1D1616">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+
+        <ImageButton
+            android:id="@+id/backbutton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/arrow_left_icon"
+            android:scaleType="fitCenter"
+            android:background="#1D1616"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/search_icon"
+            android:padding="10dp"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:background="@color/black">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Account Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="#413b3b"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:gravity="center_vertical">
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/profile_circle"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="\@username"
+                        android:textColor="#D3D3D3"
+                        android:textSize="25sp"
+                        android:layout_margin="10dp"/>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+                    <ImageButton
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/down_arrow_sign_icon"
+                        android:scaleType="fitCenter"
+                        android:background="#413b3b"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@color/black">
+                    <ImageButton
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/plus_sign_icon"
+                        android:scaleType="fitCenter"
+                        android:background="@color/black"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add Another Account"
+                        android:textColor="#d3d3d3"
+                        android:layout_margin="10dp"
+                        android:textSize="22sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:layout_marginVertical="5dp"
+                android:layout_marginHorizontal="15dp"/>
+
+            <!-- Preferences Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Preferences"
+                android:textColor="#d3d3d3"
+                android:textSize="25sp"
+                android:layout_marginStart="18dp"
+                android:layout_marginBottom="5dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:orientation="horizontal"
+                    android:layout_margin="10dp"
+                    android:background="#413b3b"
+                    android:gravity="center_vertical">
+                    <ImageButton
+                        android:layout_margin="15dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/moon_icon"
+                        android:scaleType="fitCenter"
+                        android:background="#413b3b"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dark Mode"
+                        android:textSize="24sp"
+                        android:textColor="#d3d3d3"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:orientation="horizontal"
+                    android:layout_margin="10dp"
+                    android:background="#413b3b"
+                    android:gravity="center_vertical">
+                    <ImageButton
+                        android:layout_margin="15dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/profile_icon"
+                        android:scaleType="fitCenter"
+                        android:background="#413b3b"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Profile details"
+                        android:textSize="25sp"
+                        android:textColor="#d3d3d3"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:layout_marginVertical="20dp"
+                android:layout_marginHorizontal="15dp"/>
+
+            <!-- Support Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Support And Information"
+                android:textColor="#d3d3d3"
+                android:textSize="25sp"
+                android:layout_marginStart="18dp"
+                android:layout_marginBottom="5dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:orientation="horizontal"
+                    android:layout_margin="10dp"
+                    android:background="#413b3b"
+                    android:gravity="center_vertical">
+                    <ImageButton
+                        android:layout_margin="15dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/support_icon"
+                        android:scaleType="fitCenter"
+                        android:background="#413b3b"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Help and Support"
+                        android:textSize="25sp"
+                        android:textColor="#d3d3d3"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/developerPageButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:orientation="horizontal"
+                    android:layout_margin="10dp"
+                    android:background="#413b3b"
+                    android:gravity="center_vertical">
+                    <ImageButton
+                        android:layout_margin="15dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/developer_icon"
+                        android:scaleType="fitCenter"
+                        android:background="@android:color/transparent"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Developer's Page"
+                        android:textSize="25sp"
+                        android:textColor="#d3d3d3"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Logout Button -->
+            <Button
+                android:id="@+id/logoutButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Logout"
+                android:textSize="22sp"
+                android:textColor="@android:color/white"
+                android:layout_margin="20dp"
+                android:backgroundTint="@android:color/holo_red_dark"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

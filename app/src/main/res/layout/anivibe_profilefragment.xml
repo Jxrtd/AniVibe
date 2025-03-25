@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/black">
+
+    <!-- Top Section -->
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:background="#1D1616">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Profile Wallpaper -->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="147.5dp"
+                android:src="@drawable/default_wallpaper_pfp"/>
+
+            <!-- Profile Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#1D1616"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/profile_circle"
+                    android:padding="10dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="\@username"
+                        android:layout_gravity="center"
+                        android:fontFamily="sans-serif-black"
+                        android:textColor="#D3D3D3"
+                        android:textSize="25sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="134 friends"
+                        android:fontFamily="sans-serif-black"
+                        android:textColor="#A9A9A9"
+                        android:textSize="18sp"
+                        android:textAlignment="textStart"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Bio Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#1D1616"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Yuji 'ready-to-throw-hands' Itadori.      (ง ᓀ‸ᓂ)ง "
+                    android:textAlignment="center"
+                    android:textColor="#D3D3D3"
+                    android:textSize="18sp"
+                    android:textStyle="italic"
+                    android:paddingBottom="10dp"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Edit Profile"/>
+            </LinearLayout>
+
+            <!-- Profile Details -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="#413b3b"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <!-- Tabs -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#8E1616"
+                        android:text="My Details"
+                        android:textColor="#D3D3D3"/>
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#550303"
+                        android:text="Anime Stats"
+                        android:textColor="#8e8e8e"/>
+                </LinearLayout>
+
+                <!-- Information -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp">
+
+                    <!-- Education -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/education_icon"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:paddingStart="10dp"
+                            android:text="Studied at Cebu Institute of Technology - University"
+                            android:textColor="#D3D3D3"
+                            android:textSize="18sp"/>
+                    </LinearLayout>
+
+                    <!-- Hometown -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/home_icon"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:paddingStart="10dp"
+                            android:text="From Sendai, Miyagi, Japan"
+                            android:textColor="#D3D3D3"
+                            android:textSize="18sp"/>
+                    </LinearLayout>
+
+                    <!-- Current Location -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/home_icon"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:paddingStart="10dp"
+                            android:text="Lives in Cebu City, Cebu, Philippines"
+                            android:textColor="#D3D3D3"
+                            android:textSize="18sp"/>
+                    </LinearLayout>
+
+                    <!-- Birthdate -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/calendar_icon"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:paddingStart="10dp"
+                            android:text="Born on March 20, 2003"
+                            android:textColor="#D3D3D3"
+                            android:textSize="18sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Fixed Bottom Navigation -->
+
+</LinearLayout>
