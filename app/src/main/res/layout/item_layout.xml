@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/content_post"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,12 +11,9 @@
     android:layout_marginBottom="10dp"
     android:padding="8dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/profile_pic_post"
@@ -24,17 +22,37 @@
             android:background="@drawable/circle_shape"
             android:clipToOutline="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/profile1" />
+            android:src="@drawable/profile1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/itemusername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="2dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="\@UsernameNotTaken"
             android:textColor="@color/white"
-            android:textSize="10dp" />
-    </LinearLayout>
+            android:textSize="10dp"
+            app:layout_constraintStart_toEndOf="@id/profile_pic_post"
+            app:layout_constraintTop_toTopOf="@id/profile_pic_post" />
+
+        <ImageView
+            android:id="@+id/btndelete"
+            android:layout_width="16dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/delete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/content"
@@ -46,7 +64,6 @@
         android:textColor="@color/white"
         android:textSize="14sp" />
 
-    <!-- Reaction Icons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -103,6 +120,5 @@
             android:contentDescription="like"
             android:scaleType="centerCrop" />
     </LinearLayout>
-
 
 </LinearLayout>

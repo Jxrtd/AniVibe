@@ -196,6 +196,7 @@
                 android:layout_marginHorizontal="10dp">
 
                 <LinearLayout
+                    android:id="@+id/HelpAndSupportButton"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal"

@@ -33,6 +33,16 @@ class SettingsActivity : Activity() {
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
+        val support: LinearLayout = findViewById(R.id.HelpAndSupportButton)
+        support.setOnClickListener {
+            Log.d("CSIT 284", "Developer's Page button clicked")
+
+            val intent = Intent(this, Settings_HelpAndSupportAcitivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
+
 
         val logout = findViewById<Button>(R.id.logoutButton)
         logout.setOnClickListener {
