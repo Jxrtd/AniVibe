@@ -1,11 +1,13 @@
 package org.opensource.anivibe.fragments
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import org.opensource.anivibe.AnimeList
 import org.opensource.anivibe.R
 import org.opensource.anivibe.databinding.SaveanimeListBinding
 
@@ -41,9 +43,11 @@ class SaveAnimeListFragment : Fragment(R.layout.saveanime_list) {
         }
 
         binding.animebtn.setOnClickListener {
-            resetButtonStyles() // Reset styles for all buttons
-            binding.animebtn.setTypeface(null, Typeface.BOLD) // Apply bold to Anime button
-            replaceFragment(AnimeListFragment())
+            resetButtonStyles()
+            binding.animebtn.setTypeface(null, Typeface.BOLD)
+
+            val intent = Intent(requireContext(), AnimeList::class.java)
+            startActivity(intent)
         }
     }
 

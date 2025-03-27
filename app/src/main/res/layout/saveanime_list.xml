@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#1A1A1D"
-    android:padding="8dp"
     tools:context=".SettingsActivity">
 
     <LinearLayout

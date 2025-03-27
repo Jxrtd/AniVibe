@@ -42,7 +42,10 @@
             android:layout_marginBottom="4dp"
             android:text="Email:"
             android:textColor="#EEEEEE"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
         <!-- Username Input -->
         <EditText
@@ -53,7 +56,10 @@
             android:padding="12dp"
             android:textColor="#FFFFFF"
             android:textColorHint="#AAAAAA"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
         <View
             android:layout_width="match_parent"
@@ -78,7 +84,10 @@
             android:padding="12dp"
             android:textColor="#FFFFFF"
             android:textColorHint="#AAAAAA"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
         <View
             android:layout_width="match_parent"
@@ -104,7 +113,10 @@
             android:padding="12dp"
             android:textColor="#FFFFFF"
             android:textColorHint="#AAAAAA"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
         <View
             android:layout_width="match_parent"
@@ -130,7 +142,10 @@
             android:padding="12dp"
             android:textColor="#FFFFFF"
             android:textColorHint="#AAAAAA"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
         <View
             android:layout_width="match_parent"

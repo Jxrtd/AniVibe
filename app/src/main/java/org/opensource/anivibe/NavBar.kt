@@ -43,7 +43,7 @@ class NavBar : AppCompatActivity() {
         }
         binding!!.btnchat.setOnClickListener { v ->
             replaceFragment(ChatFragment())
-            updateButtonState(binding!!.homebtn)
+            updateButtonState(binding!!.btnchat)
         }
 
 

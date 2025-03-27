@@ -1,8 +1,11 @@
 package org.opensource.anivibe
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
+import android.widget.ImageButton
 import android.widget.ListView
 
 class Settings_HelpAndSupportAcitivity : Activity() {
@@ -29,5 +32,14 @@ class Settings_HelpAndSupportAcitivity : Activity() {
             helpAndSupportList
         )
         lvHelpAndSupport.adapter = arrayAdapter
+
+        val back: ImageButton = findViewById(R.id.devbackbutton)
+        back.setOnClickListener {
+            Log.d("CSIT 284", "Back button clicked")
+
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        }
     }
 }

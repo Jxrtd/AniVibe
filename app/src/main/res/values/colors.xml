@@ -11,4 +11,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="fragment1">#A36161</color>
     <color name="fragment2">#605E5E</color>
+    <color name="light_red">#FF4444</color>
+    <color name="dark_red">#550303</color>
+    <color name="gray">#8e8e8e</color>
+
 </resources>

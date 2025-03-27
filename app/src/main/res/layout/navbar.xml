@@ -1,42 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#1A1A1D"
-    android:padding="8dp">
+    >
 
-    <!-- Top Bar -->
+    <!-- Top Bar (Always Fixed) -->
     <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true">
 
         <ImageView
             android:layout_width="53dp"
             android:layout_height="42dp"
-            android:layout_gravity="center_horizontal"
             android:scaleType="fitXY"
             android:src="@drawable/image1" />
 
         <EditText
             android:layout_width="261dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginHorizontal="10dp"
             android:background="@color/white"
             android:padding="5dp"
-            android:text="Search..."
-            android:textColor="@color/black" />
+            android:hint="Search..."
+            android:textColor="@color/black"
+            android:inputType="text"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
         <ImageButton
             android:id="@+id/menubutton"
             android:layout_width="38dp"
             android:layout_height="34dp"
-            android:layout_marginTop="10dp"
             android:background="@drawable/menu_button"
             android:backgroundTint="@color/white"
             android:clipToOutline="true"
@@ -44,41 +46,35 @@
             android:scaleType="centerCrop" />
     </LinearLayout>
 
-    <!-- Content Area -->
-
-    <!-- Floating Action Button -->
+    <!-- Scrollable Content (Between Top and Bottom) -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:fillViewport="true"
-        android:padding="10dp">
+        android:layout_height="match_parent"
+        android:layout_below="@id/topBar"
+        android:layout_above="@id/bottomNavBar"
+        android:fillViewport="true">
 
         <FrameLayout
             android:id="@+id/fragmentContainer1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
+            android:layout_height="wrap_content"/>
     </ScrollView>
 
-    <!-- Bottom Navigation -->
-
+    <!-- Bottom Navigation (Always Fixed) -->
     <LinearLayout
+        android:id="@+id/bottomNavBar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_margin="5dp"
+        android:layout_alignParentBottom="true"
         android:background="#1D1616"
         android:orientation="horizontal"
-        android:paddingHorizontal="10dp"
-        android:weightSum="4">
+        android:paddingTop="10dp"
+        android:paddingHorizontal="10dp">
 
-        <!-- First Button -->
         <ImageButton
             android:id="@+id/homebtn"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@null"
             android:contentDescription="Home"
@@ -86,12 +82,10 @@
             android:src="@drawable/home_page_icon"
             app:tint="@color/nav_icon_selector" />
 
-        <!-- Second Button -->
         <ImageButton
             android:id="@+id/watchlist"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@null"
             android:contentDescription="Second Button"
@@ -99,12 +93,10 @@
             android:src="@drawable/community_page_icon"
             app:tint="@color/nav_icon_selector" />
 
-        <!-- Third Button -->
         <ImageButton
             android:id="@+id/btnchat"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@null"
             android:contentDescription="Third Button"
@@ -112,12 +104,10 @@
             android:src="@drawable/chat_page_icon"
             app:tint="@color/nav_icon_selector"/>
 
-        <!-- Fourth Button (Slightly Taller) -->
         <ImageButton
             android:id="@+id/profilebutton"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@null"
             android:contentDescription="Fourth Button"
@@ -126,4 +116,4 @@
             app:tint="@color/nav_icon_selector"/>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

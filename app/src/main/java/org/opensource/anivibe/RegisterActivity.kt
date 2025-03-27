@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import android.util.Patterns
 
 class RegisterActivity : Activity() {
     private lateinit var sharedPreferences: SharedPreferences
@@ -30,15 +31,7 @@ class RegisterActivity : Activity() {
             val emailText = email.text.toString().trim()
             val confirmPass = confirmPassword.text.toString().trim()
 
-            if (user.isEmpty() || pass.isEmpty() || emailText.isEmpty() || confirmPass.isEmpty()) {
-                Toast.makeText(this, "Fill out the form completely.", Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            }
-
-            if (pass != confirmPass) {
-                Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            }
+            if (!validateInput(user, emailText, pass, confirmPass)) return@setOnClickListener
 
             sharedPreferences.edit().apply {
                 putString("username", user)
@@ -46,16 +39,41 @@ class RegisterActivity : Activity() {
                 apply()
             }
 
-            startActivity(
-                Intent(this, LoginActivity::class.java).apply {
-                    putExtra("username", username.text.toString())
-                    putExtra("password", password.text.toString())
-                }
-            )
+            startActivity(Intent(this, LoginActivity::class.java).apply {
+                putExtra("username", user)
+                putExtra("password", pass)
+            })
         }
 
         loginButton.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
+    }
+
+    private fun validateInput(user: String, email: String, pass: String, confirmPass: String): Boolean {
+        if (user.isEmpty() || pass.isEmpty() || email.isEmpty() || confirmPass.isEmpty()) {
+            showToast("Fill out the form completely.")
+            return false
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            showToast("Enter a valid email address.")
+            return false
+        }
+
+        if (pass.length < 6) {
+            showToast("Password must be at least 6 characters.")
+            return false
+        }
+
+        if (pass != confirmPass) {
+            showToast("Passwords do not match!")
+            return false
+        }
+        return true
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }

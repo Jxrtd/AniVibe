@@ -100,7 +100,7 @@
             <!-- Profile Details -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="341dp"
                 android:layout_margin="5dp"
                 android:background="#413b3b"
                 android:orientation="vertical"
@@ -113,121 +113,33 @@
                     android:orientation="horizontal">
 
                     <Button
+                        android:id="@+id/mydetails"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:backgroundTint="#8E1616"
+                        android:backgroundTint="#ED2F2F"
                         android:text="My Details"
-                        android:textColor="#D3D3D3"/>
+                        android:textColor="#D3D3D3" />
 
                     <Button
+                        android:id="@+id/myanimestat"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:backgroundTint="#550303"
+                        android:backgroundTint="#ED2F2F"
                         android:text="Anime Stats"
-                        android:textColor="#8e8e8e"/>
+                        android:textColor="#D3D3D3" />
                 </LinearLayout>
 
-                <!-- Information -->
-                <LinearLayout
+                <FrameLayout
+                    android:id="@+id/fragmentContainer2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingTop="10dp">
+                    android:layout_height="275dp" />
 
-                    <!-- Education -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="10dp">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/education_icon"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-medium"
-                            android:paddingStart="10dp"
-                            android:text="Studied at Cebu Institute of Technology - University"
-                            android:textColor="#D3D3D3"
-                            android:textSize="18sp"/>
-                    </LinearLayout>
-
-                    <!-- Hometown -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="10dp">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/home_icon"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-medium"
-                            android:paddingStart="10dp"
-                            android:text="From Sendai, Miyagi, Japan"
-                            android:textColor="#D3D3D3"
-                            android:textSize="18sp"/>
-                    </LinearLayout>
-
-                    <!-- Current Location -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="10dp">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/home_icon"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-medium"
-                            android:paddingStart="10dp"
-                            android:text="Lives in Cebu City, Cebu, Philippines"
-                            android:textColor="#D3D3D3"
-                            android:textSize="18sp"/>
-                    </LinearLayout>
-
-                    <!-- Birthdate -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="10dp">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="22dp"
-                            android:src="@drawable/calendar_icon"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-medium"
-                            android:paddingStart="10dp"
-                            android:text="Born on March 20, 2003"
-                            android:textColor="#D3D3D3"
-                            android:textSize="18sp"/>
-                    </LinearLayout>
-                </LinearLayout>
             </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
         </LinearLayout>
-    </ScrollView>
 
-    <!-- Fixed Bottom Navigation -->
 
-</LinearLayout>
+

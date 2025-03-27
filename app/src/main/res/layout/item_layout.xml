@@ -8,8 +8,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="#1A1A1D"
-    android:layout_marginBottom="10dp"
-    android:padding="8dp">
+    android:layout_marginBottom="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
