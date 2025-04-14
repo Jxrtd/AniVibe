@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Add your theme customizations here -->
+    <!-- Base application theme. -->
+    <style name="Theme.Anivibe" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- primary brand colors -->
+        <!--        <item name="colorPrimary">@color/ed2f2f</item>-->
+        <!--        <item name="colorPrimaryVariant">@color/ed2f2f</item>-->
+        <!--        <item name="colorOnPrimary">@color/white</item>-->
+        <!-- your other theming items -->
     </style>
-    <style name="Theme.YourAppName" parent="Theme.AppCompat.Light"/>
 
+    <!-- Add this to your styles.xml -->
+    <style name="FullScreenDialogStyle" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">#1A1A1D</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
 </resources>

@@ -38,6 +38,7 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
             val intent = Intent(requireContext(), ToPostActivity::class.java)
             postActivityLauncher.launch(intent)
         }
+
     }
 
     private val postActivityLauncher =

@@ -1,6 +1,7 @@
 package org.opensource.anivibe.helper
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.opensource.anivibe.R
 import org.opensource.anivibe.data.Item
+import java.io.File
 
 class ItemAdapter(
     private val context: Context,
@@ -31,7 +33,19 @@ class ItemAdapter(
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = itemList[position]
-        holder.profile.setImageResource(item.profileImageResId)
+
+        // Load profile image from path or use default
+        item.profileImagePath?.let { path ->
+            val file = File(path)
+            if (file.exists()) {
+                BitmapFactory.decodeFile(path)?.also {
+                    holder.profile.setImageBitmap(it)
+                }
+            } else {
+                holder.profile.setImageResource(R.drawable.profile_circle)
+            }
+        } ?: holder.profile.setImageResource(R.drawable.profile_circle)
+
         holder.description.text = item.description
         holder.username.text = item.username
 

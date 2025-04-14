@@ -1,24 +1,15 @@
 package org.opensource.anivibe
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
-import org.opensource.anivibe.R
-import org.opensource.anivibe.anime.AnimeDetailsBottomSheet
-import org.opensource.anivibe.anime.Result
 import org.opensource.anivibe.anime.SearchedAnime.SearchedAnime
 import org.opensource.anivibe.anime.TopAnime.TopAnime
-import org.opensource.anivibe.anime.services.AnimeSevice
+import org.opensource.anivibe.anime.services.AnimeService
 import org.opensource.anivibe.databinding.FragmentAnimeListBinding
+import org.opensource.anivibe.helper.AnimeAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,7 +22,7 @@ class AnimeList : AppCompatActivity() {
 
 
         binding.apply {
-            val animeService = AnimeSevice.create()
+            val animeService = AnimeService.create()
             val call = animeService.getTopAnime()
 
             call.enqueue(object : Callback<TopAnime> {
@@ -40,7 +31,7 @@ class AnimeList : AppCompatActivity() {
                     if (response.body() != null) {
                         val top = response.body()!!.data
                         animeRecyclerView.adapter = AnimeAdapter(this@AnimeList,top)
-                        animeRecyclerView.layoutManager = GridLayoutManager(this@AnimeList,3)
+                        animeRecyclerView.layoutManager = GridLayoutManager(this@AnimeList,2)
                     }
                 }
 
@@ -49,7 +40,10 @@ class AnimeList : AppCompatActivity() {
                 }
 
             })
-
+            btnback.setOnClickListener {
+                finish()
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            }
             btnSearch.setOnClickListener {
                 val searchedAnime = searchInputEditText.text.toString().trim()
 
@@ -64,7 +58,7 @@ class AnimeList : AppCompatActivity() {
                             if (response.isSuccessful && response.body() != null) {
                                 val searchedAnimes = response.body()!!.data
                                 animeRecyclerView.adapter = AnimeAdapter(this@AnimeList, searchedAnimes)
-                                animeRecyclerView.layoutManager = GridLayoutManager(this@AnimeList, 3)
+                                animeRecyclerView.layoutManager = GridLayoutManager(this@AnimeList, 2)
                             } else {
                                 Toast.makeText(this@AnimeList, "No anime found!", Toast.LENGTH_SHORT).show()
                             }
@@ -81,56 +75,5 @@ class AnimeList : AppCompatActivity() {
         }
     }
 
-    class AnimeAdapter(
-        private val parentActivity: AppCompatActivity,
-        private val anime: List<Result>
-    ) : RecyclerView.Adapter<AnimeAdapter.CustomViewHolder>() {
-
-        inner class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.anime_item_layout, parent, false)
-            return CustomViewHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-            val anime = anime[position]
-            val view = holder.itemView
-
-            // Safely find and bind views
-            val name = view.findViewById<TextView>(R.id.name)
-            val image = view.findViewById<ImageView>(R.id.image)
-
-            // Set anime title
-            name.text = anime.title ?: "Unknown"
-
-            // Load anime image with fallback
-            val imageUrl = anime.imageUrl.jpg.imagesUrl
-            Log.d("AnimeDetails", "Image URL: $anime")
-            if (imageUrl.isNullOrEmpty()) {
-                image.setImageResource(R.drawable.moon_icon) // Default placeholder
-            } else {
-                Picasso.get()
-                    .load(imageUrl)
-                    .placeholder(R.drawable.placeholder_image)
-                    .error(R.drawable.moon_icon)
-                    .into(image)
-            }
-
-            // Handle click event to show AnimeDetailsBottomSheet
-            view.setOnClickListener {
-                AnimeDetailsBottomSheet(anime).apply {
-                    show((view.context as AppCompatActivity).supportFragmentManager, "AnimeDetailsBottomSheet")
-                }
-            }
-        }
-
-
-        override fun getItemCount(): Int {
-            return anime.size
-          }
-
-    }
 
 }

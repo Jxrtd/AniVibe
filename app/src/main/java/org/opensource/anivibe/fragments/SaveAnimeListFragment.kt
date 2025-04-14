@@ -15,6 +15,7 @@ class SaveAnimeListFragment : Fragment(R.layout.saveanime_list) {
     private var _binding: SaveanimeListBinding? = null
     private val binding get() = _binding!!
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,6 +27,11 @@ class SaveAnimeListFragment : Fragment(R.layout.saveanime_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (savedInstanceState == null) {
+            replaceFragment(SaveListFragment())
+            binding.savebtn.setTypeface(null, Typeface.BOLD)
+        }
+
         // Function to reset all button styles to NORMAL
         fun resetButtonStyles() {
             binding.savebtn.setTypeface(null, Typeface.NORMAL) // Reset Save button to normal
@@ -34,12 +40,12 @@ class SaveAnimeListFragment : Fragment(R.layout.saveanime_list) {
 
         // Set default style for Save button
         binding.savebtn.setTypeface(null, Typeface.BOLD) // Default bold style for Save button
-        replaceFragment(SaveListFragrment())
+        replaceFragment(SaveListFragment())
         // Click listeners
         binding.savebtn.setOnClickListener {
             resetButtonStyles() // Reset styles for all buttons
             binding.savebtn.setTypeface(null, Typeface.BOLD) // Apply bold to Save button
-            replaceFragment(SaveListFragrment())
+            replaceFragment(SaveListFragment())
         }
 
         binding.animebtn.setOnClickListener {

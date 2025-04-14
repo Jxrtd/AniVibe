@@ -32,3 +32,7 @@ data class Result(
     @SerializedName("url")
     val url: String,
 )
+data class SavedAnime(
+    @SerializedName("data")
+    val data: List<Result>
+)

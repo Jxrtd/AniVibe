@@ -64,55 +64,61 @@
     <LinearLayout
         android:id="@+id/bottomNavBar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="68dp"
         android:layout_alignParentBottom="true"
-        android:background="#1D1616"
+        android:background="#2A2A2A"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingHorizontal="10dp">
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:elevation="12dp"
+        android:outlineProvider="background">
 
         <ImageButton
             android:id="@+id/homebtn"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@null"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Home"
             android:scaleType="centerInside"
             android:src="@drawable/home_page_icon"
+            android:padding="8dp"
             app:tint="@color/nav_icon_selector" />
 
         <ImageButton
             android:id="@+id/watchlist"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@null"
-            android:contentDescription="Second Button"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Watchlist"
             android:scaleType="centerInside"
             android:src="@drawable/community_page_icon"
+            android:padding="8dp"
             app:tint="@color/nav_icon_selector" />
 
         <ImageButton
             android:id="@+id/btnchat"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@null"
-            android:contentDescription="Third Button"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Chat"
             android:scaleType="centerInside"
             android:src="@drawable/chat_page_icon"
+            android:padding="8dp"
             app:tint="@color/nav_icon_selector"/>
 
         <ImageButton
             android:id="@+id/profilebutton"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@null"
-            android:contentDescription="Fourth Button"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Profile"
             android:scaleType="centerInside"
             android:src="@drawable/profile_page_icon"
+            android:padding="8dp"
             app:tint="@color/nav_icon_selector"/>
     </LinearLayout>
 

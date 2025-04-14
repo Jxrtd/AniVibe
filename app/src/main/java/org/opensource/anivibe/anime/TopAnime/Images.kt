@@ -13,4 +13,6 @@ data class Images(
 data class ImagesURL(
     @SerializedName("image_url")
     val imagesUrl: String,
-)
+) {
+
+}
