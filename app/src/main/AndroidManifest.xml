@@ -56,7 +56,7 @@
         <activity
             android:name=".NavBar"
             android:theme="@style/Theme.Anivibe"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustResize" />
 
         <provider
         android:name="androidx.core.content.FileProvider"

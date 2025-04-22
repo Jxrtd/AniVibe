@@ -9,6 +9,7 @@ import android.widget.Toast
 import org.opensource.anivibe.data.Item
 import org.opensource.anivibe.repository.PostRepository
 import java.io.File
+import java.util.UUID
 
 class ToPostActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +43,7 @@ class ToPostActivity : Activity() {
 
             // Create new post
             val newItem = Item(
+                id = UUID.randomUUID().toString(),
                 profileImagePath = imagePath,
                 username = username,
                 description = content

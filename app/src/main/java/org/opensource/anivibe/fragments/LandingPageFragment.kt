@@ -26,37 +26,63 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        itemAdapter = ItemAdapter(requireContext(), itemList) { position ->
-            deletePost(position)
-        }
+        itemAdapter = ItemAdapter(
+            requireContext(),
+            itemList,
+            { position -> deletePost(position) },
+            { position ->
+                itemList[position].isLiked = !itemList[position].isLiked
+                PostRepository.toggleLike(itemList[position].id)
+                itemAdapter.notifyItemChanged(position)
+            },
+            { position ->
+                val postId = itemList[position].id ?: ""
+                val commentsFragment = CommentFragment.newInstance(postId)
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer1, commentsFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+        )
 
         recyclerView.adapter = itemAdapter
-
         refreshPosts()
 
         view.findViewById<View>(R.id.post).setOnClickListener {
             val intent = Intent(requireContext(), ToPostActivity::class.java)
             postActivityLauncher.launch(intent)
         }
-
     }
 
-    private val postActivityLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                refreshPosts()
-            }
+    private val postActivityLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            refreshPosts()
         }
+    }
 
     private fun refreshPosts() {
-        itemList.clear()
-        itemList.addAll(PostRepository.getPosts(requireContext()))
-        itemAdapter.notifyDataSetChanged()
+        try {
+            itemList.clear()
+            itemList.addAll(PostRepository.getPosts(requireContext()))
+            itemAdapter.notifyDataSetChanged()
+        } catch (e: Exception) {
+            // Handle potential errors while loading posts
+            e.printStackTrace()
+        }
     }
 
     private fun deletePost(position: Int) {
-        PostRepository.deletePost(requireContext(), position)
-        itemList.removeAt(position)
-        itemAdapter.notifyItemRemoved(position)
+        if (position in itemList.indices) {
+            val postId = itemList[position].id ?: return
+            try {
+                PostRepository.deletePost(requireContext(), postId)
+                refreshPosts()
+            } catch (e: Exception) {
+                // Handle potential errors while deleting a post
+                e.printStackTrace()
+            }
+        }
     }
 }

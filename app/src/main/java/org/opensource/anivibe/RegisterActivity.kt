@@ -4,10 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
 import android.util.Patterns
+import android.widget.*
 
 class RegisterActivity : Activity() {
     private lateinit var sharedPreferences: SharedPreferences
@@ -18,58 +16,60 @@ class RegisterActivity : Activity() {
 
         sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
 
-        val username = findViewById<EditText>(R.id.edittext_username)
-        val password = findViewById<EditText>(R.id.edittext_password)
-        val email = findViewById<EditText>(R.id.edittext_email)
-        val confirmPassword = findViewById<EditText>(R.id.edittext_comfirmpass)
-        val buttonSubmit = findViewById<Button>(R.id.createAcc)
-        val loginButton = findViewById<Button>(R.id.anivibe_login)
+        val usernameInput = findViewById<EditText>(R.id.edittext_username)
+        val passwordInput = findViewById<EditText>(R.id.edittext_password)
+        val emailInput = findViewById<EditText>(R.id.edittext_email)
+        val confirmPasswordInput = findViewById<EditText>(R.id.edittext_comfirmpass)
+        val createAccountButton = findViewById<Button>(R.id.createAcc)
+        val loginText = findViewById<TextView>(R.id.anivibe_login)
 
-        buttonSubmit.setOnClickListener {
-            val user = username.text.toString().trim()
-            val pass = password.text.toString().trim()
-            val emailText = email.text.toString().trim()
-            val confirmPass = confirmPassword.text.toString().trim()
+        createAccountButton.setOnClickListener {
+            val username = usernameInput.text.toString().trim()
+            val password = passwordInput.text.toString().trim()
+            val email = emailInput.text.toString().trim()
+            val confirmPassword = confirmPasswordInput.text.toString().trim()
 
-            if (!validateInput(user, emailText, pass, confirmPass)) return@setOnClickListener
+            if (!validateInput(username, email, password, confirmPassword)) return@setOnClickListener
 
             sharedPreferences.edit().apply {
-                putString("username", user)
-                putString("password", pass)
+                putString("username", username)
+                putString("password", password)
                 apply()
             }
 
-            startActivity(Intent(this, LoginActivity::class.java).apply {
-                putExtra("username", user)
-                putExtra("password", pass)
-            })
+            Intent(this, LoginActivity::class.java).also {
+                it.putExtra("username", username)
+                it.putExtra("password", password)
+                startActivity(it)
+            }
         }
 
-        loginButton.setOnClickListener {
+        loginText.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 
-    private fun validateInput(user: String, email: String, pass: String, confirmPass: String): Boolean {
-        if (user.isEmpty() || pass.isEmpty() || email.isEmpty() || confirmPass.isEmpty()) {
-            showToast("Fill out the form completely.")
+    private fun validateInput(username: String, email: String, password: String, confirmPassword: String): Boolean {
+        if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            showToast("Please fill out the entire form.")
             return false
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            showToast("Enter a valid email address.")
+            showToast("Please enter a valid email address.")
             return false
         }
 
-        if (pass.length < 6) {
-            showToast("Password must be at least 6 characters.")
+        if (password.length < 6) {
+            showToast("Password must be at least 6 characters long.")
             return false
         }
 
-        if (pass != confirmPass) {
-            showToast("Passwords do not match!")
+        if (password != confirmPassword) {
+            showToast("Passwords do not match.")
             return false
         }
+
         return true
     }
 
