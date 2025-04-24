@@ -46,6 +46,7 @@ class RegisterActivity : Activity() {
 
         loginText.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
     }
 

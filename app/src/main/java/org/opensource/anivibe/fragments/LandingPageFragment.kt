@@ -20,6 +20,14 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
     private lateinit var itemAdapter: ItemAdapter
     private val itemList = mutableListOf<Item>()
 
+    private val postActivityLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            refreshPosts()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -29,19 +37,24 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
         itemAdapter = ItemAdapter(
             requireContext(),
             itemList,
-            { position -> deletePost(position) },
-            { position ->
+            onDeleteClickListener = { position -> deletePost(position) },
+            onLikeClickListener = { position ->
                 itemList[position].isLiked = !itemList[position].isLiked
                 PostRepository.toggleLike(itemList[position].id)
                 itemAdapter.notifyItemChanged(position)
             },
-            { position ->
-                val postId = itemList[position].id ?: ""
-                val commentsFragment = CommentFragment.newInstance(postId)
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainer1, commentsFragment)
-                    .addToBackStack(null)
-                    .commit()
+            onCommentClickListener = { position ->
+                if (position in itemList.indices) {
+                    val post = itemList[position]
+                    val commentsFragment = CommentFragment.newInstance(
+                        postId = post.id ?: "",
+                        profileImagePath = post.profileImagePath
+                    )
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer1, commentsFragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
             }
         )
 
@@ -54,21 +67,18 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
         }
     }
 
-    private val postActivityLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            refreshPosts()
-        }
+    override fun onResume() {
+        super.onResume()
+        refreshPosts()
     }
 
     private fun refreshPosts() {
         try {
+            val posts = PostRepository.getPosts(requireContext())
             itemList.clear()
-            itemList.addAll(PostRepository.getPosts(requireContext()))
+            itemList.addAll(posts)
             itemAdapter.notifyDataSetChanged()
         } catch (e: Exception) {
-            // Handle potential errors while loading posts
             e.printStackTrace()
         }
     }
@@ -78,9 +88,9 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
             val postId = itemList[position].id ?: return
             try {
                 PostRepository.deletePost(requireContext(), postId)
-                refreshPosts()
+                itemList.removeAt(position)
+                itemAdapter.notifyItemRemoved(position)
             } catch (e: Exception) {
-                // Handle potential errors while deleting a post
                 e.printStackTrace()
             }
         }
