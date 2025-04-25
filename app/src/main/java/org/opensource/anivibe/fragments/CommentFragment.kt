@@ -68,8 +68,8 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
 
         Picasso.get()
             .load(effectiveProfileImagePath)
-            .placeholder(R.drawable.default_profile_pic)
-            .error(R.drawable.default_profile_pic)
+            .placeholder(R.drawable.profile_circle)
+            .error(R.drawable.profile_circle)
             .into(postUserImage)
 
         recyclerView = view.findViewById(R.id.comments_recycler)
