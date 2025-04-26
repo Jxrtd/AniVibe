@@ -63,8 +63,8 @@ class PostFragment : Fragment(R.layout.anivibe_landingpagefragment) {
             },
             onCommentClickListener = { position ->
                 if (position in 0 until posts.size) {
-                    val postId = posts[position].id
-                    val commentsFragment = postId?.let { CommentFragment.newInstance(it) }
+                    val post = posts[position]
+                    val commentsFragment = post.id?.let { CommentFragment.newInstance(it, post.profileImagePath) }
                     if (commentsFragment != null) {
                         parentFragmentManager.beginTransaction()
                             .replace(R.id.fragmentContainer1, commentsFragment)

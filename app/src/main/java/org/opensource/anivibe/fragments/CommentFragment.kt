@@ -29,11 +29,13 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
 
     companion object {
         private const val ARG_POST_ID = "post_id"
+        private const val ARG_PROFILE_IMAGE = "profile_image"
 
-        fun newInstance(postId: String): CommentFragment {
+        fun newInstance(postId: String, profileImagePath: String?): CommentFragment {
             val fragment = CommentFragment()
             val args = Bundle()
             args.putString(ARG_POST_ID, postId)
+            args.putString(ARG_PROFILE_IMAGE, profileImagePath)
             fragment.arguments = args
             return fragment
         }
@@ -41,10 +43,18 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         postId = arguments?.getString(ARG_POST_ID) ?: ""
-        currentPost = PostRepository.getPost(postId)
-        val post = currentPost ?: return
+        val fallbackProfileImagePath = arguments?.getString(ARG_PROFILE_IMAGE)
+        val post = PostRepository.getPost(postId) ?: return
+        currentPost = post
+        comments = post.comments.toMutableList()
+
+        val effectiveProfileImagePath = if (!post.profileImagePath.isNullOrBlank()) {
+            post.profileImagePath
+        } else {
+            fallbackProfileImagePath
+        }
+
         comments = post.comments.toMutableList()
 
         val postUserImage: ImageView = view.findViewById(R.id.profile_pic_post)
@@ -57,8 +67,9 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
         postContent.text = post.description
 
         Picasso.get()
-            .load(post.profileImagePath)
-            .placeholder(R.drawable.default_profile_pic)
+            .load(effectiveProfileImagePath)
+            .placeholder(R.drawable.profile_circle)
+            .error(R.drawable.profile_circle)
             .into(postUserImage)
 
         recyclerView = view.findViewById(R.id.comments_recycler)
@@ -86,11 +97,11 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
 
         sendButton.setOnClickListener {
             val commentText = commentInput.text.toString()
-            val commentUsername = post.username
             if (commentText.isNotBlank()) {
                 val comment = Comment(
-                    username = commentUsername,
-                    content = commentText
+                    username = post.username,
+                    content = commentText,
+                    profileImagePath = effectiveProfileImagePath
                 )
                 comments.add(comment)
                 PostRepository.addComment(postId, comment)

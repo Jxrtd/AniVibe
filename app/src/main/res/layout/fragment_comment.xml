@@ -8,6 +8,7 @@
     <!-- Post View at the top (using your existing post layout) -->
 
     <!-- Divider between post and comments -->
+
     <include
         layout="@layout/item_layout"
         android:layout_width="match_parent"

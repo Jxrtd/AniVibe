@@ -2,7 +2,7 @@ package org.opensource.anivibe.data
 
 data class Item(
     val id: String?,
-    val profileImagePath: String?,
+    var profileImagePath: String?,
     var username: String,
     val description: String,
     var isLiked: Boolean = false,
