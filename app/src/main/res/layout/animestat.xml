@@ -1,6 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="#1A1A1D">
+
+        <!-- Section Header -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Anime Preferences"
+            android:textSize="22sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:paddingBottom="10dp"
+            android:paddingLeft="8dp" />
+
+        <!-- Favorite Anime -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/anime_icon" />
+
+            <TextView
+                android:id="@+id/favoriteAnimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:text="No favorite anime set"
+                android:textColor="#D3D3D3"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <!-- Favorite Genre -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/genre_icon" />
+
+            <TextView
+                android:id="@+id/favoriteGenreTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:text="No favorite genre set"
+                android:textColor="#D3D3D3"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <!-- Favorite Character -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/character_icon" />
+
+            <TextView
+                android:id="@+id/favoriteCharacterTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:text="No favorite character set"
+                android:textColor="#D3D3D3"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <!-- Top Recommendations -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Top Anime Recommendations"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/recommend_icon" />
+
+            <TextView
+                android:id="@+id/topRecommendationsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:text="No recommendations yet"
+                android:textColor="#D3D3D3"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

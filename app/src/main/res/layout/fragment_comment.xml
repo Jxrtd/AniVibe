@@ -12,7 +12,8 @@
     <include
         layout="@layout/item_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"/>
 
     <View
         android:layout_width="match_parent"

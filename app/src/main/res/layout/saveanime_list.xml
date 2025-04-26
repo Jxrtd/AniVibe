@@ -21,16 +21,19 @@
                 android:id="@+id/savebtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15dp"
                 android:layout_alignParentLeft="true"
-                android:text="Plan to Watch" />
+                android:layout_marginLeft="24dp"
+                android:text="Plan to Watch"
+                android:backgroundTint="@color/accentRed"
+                android:textSize="15dp" />
 
             <Button
                 android:id="@+id/animebtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="Search for Anime" />
+                android:text="Search for Anime"
+                android:backgroundTint="@color/accentRed" />
         </RelativeLayout>
 
         <RelativeLayout

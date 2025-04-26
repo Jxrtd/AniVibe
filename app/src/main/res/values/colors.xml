@@ -17,7 +17,7 @@
     <color name="unliked">#FFFFFF</color> <!-- White color for unliked -->
     <color name="gray">#8e8e8e</color>
     <color name="accentRed">#9A0707</color>
-    <color name="tabInactive">#26262c</color>
+    <color name="tabInactive">#330202</color>
     <color name="background_color">#FFF5F5F5</color>
     <color name="primary_color">#FF6200EE</color>
 

@@ -1,109 +1,139 @@
 package org.opensource.anivibe.anime
 
-import android.net.Uri
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.browser.customtabs.CustomTabsIntent
-import androidx.fragment.app.activityViewModels
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.squareup.picasso.Picasso
 import org.opensource.anivibe.R
 import org.opensource.anivibe.data.SharedAnimeViewModel
-import org.opensource.anivibe.databinding.AnimeDetailsBoomSheetBinding
-import org.opensource.anivibe.fragments.SaveListFragment
-import java.io.Serializable
-import java.text.SimpleDateFormat
+import org.opensource.anivibe.databinding.BottomSheetAnimeDetailsBinding
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
+import androidx.core.content.ContextCompat
 
-class AnimeDetailsBottomSheet(private val anime: Result) : BottomSheetDialogFragment() {
-
-    private var _binding: AnimeDetailsBoomSheetBinding? = null
+class AnimeDetailsBottomSheet : BottomSheetDialogFragment {
+    private var _binding: BottomSheetAnimeDetailsBinding? = null
     private val binding get() = _binding!!
+    private lateinit var viewModel: SharedAnimeViewModel
+    private lateinit var anime: Result
 
-    private val viewModel: SharedAnimeViewModel by activityViewModels()
+    companion object {
+        private const val ARG_ANIME = "anime"
+
+        fun newInstance(anime: Result): AnimeDetailsBottomSheet {
+            return AnimeDetailsBottomSheet().apply {
+                arguments = Bundle().apply {
+                    putParcelable(ARG_ANIME, anime)
+                }
+            }
+        }
+    }
+
+    // Default constructor
+    constructor() : super()
+
+    // Constructor that sets up arguments
+    constructor(anime: Result) : super() {
+        arguments = Bundle().apply {
+            putParcelable(ARG_ANIME, anime)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Handle compatibility with Android 13+ (Tiramisu)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            anime = arguments?.getParcelable(ARG_ANIME, Result::class.java)
+                ?: throw IllegalStateException("AnimeDetailsBottomSheet: Missing anime argument")
+        } else {
+            // For older Android versions
+            @Suppress("DEPRECATION")
+            anime = arguments?.getParcelable(ARG_ANIME)
+                ?: throw IllegalStateException("AnimeDetailsBottomSheet: Missing anime argument")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = AnimeDetailsBoomSheetBinding.inflate(inflater, container, false)
+        _binding = BottomSheetAnimeDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.apply {
-            val imageUrl = anime.imageUrl.jpg?.imagesUrl
-            if (imageUrl.isNullOrEmpty()) {
-                image.setImageResource(R.drawable.moon_icon)
-            } else {
-                Picasso.get()
-                    .load(imageUrl)
-                    .placeholder(R.drawable.placeholder_image)
-                    .error(R.drawable.moon_icon)
-                    .into(image)
+        // Initialize ViewModel
+        viewModel = ViewModelProvider(requireActivity())[SharedAnimeViewModel::class.java]
+
+        // Display anime details
+        displayAnimeDetails()
+
+        // Set up the save/remove button
+        setupActionButton()
+    }
+
+    private fun displayAnimeDetails() {
+        binding.animeTitle.text = anime.title ?: "Unknown"
+        binding.animeDescription.text = anime.synopsis ?: "No description available"
+
+        val imageUrl = anime.imageUrl?.jpg?.imagesUrl
+        if (!imageUrl.isNullOrEmpty()) {
+            Picasso.get()
+                .load(imageUrl)
+                .placeholder(R.drawable.placeholder_image)
+                .error(R.drawable.moon_icon)
+                .into(binding.animeImage)
+        } else {
+            binding.animeImage.setImageResource(R.drawable.moon_icon)
+        }
+
+        binding.animeRating.text = anime.score?.toString() ?: "N/A"
+        binding.animeType.text = anime.type ?: "Unknown"
+    }
+
+    private fun setupActionButton() {
+        // Check if THIS anime is saved
+        val isSaved = viewModel.isAnimeSaved(anime.malId)
+
+        // Log for debugging
+        Log.d("AnimeDetailsBottomSheet", "Checking anime: ${anime.title} with ID: ${anime.malId} - Is saved: $isSaved")
+
+        with(binding.btnSaveAnime) {
+            setTextColor(resources.getColor(android.R.color.white, null))
+            setOnClickListener {
+                viewModel.removeAnime(anime, requireContext())
+                Toast.makeText(requireContext(), "${anime.title} removed from your list", Toast.LENGTH_SHORT).show()
+                // refresh UI
+                setupActionButton()
             }
-
-            Log.d("AnimeDetails", "Anime Object: $anime")
-
-            name.text = anime.title ?: "Unknown"
-            rating.text = anime.score?.toString() ?: "N/A"
-            pgRating.text = anime.rated ?: "Unknown"
-            episodes.text = anime.episodes?.let { "$it episodes" } ?: "N/A"
-            synopsis.text = anime.synopsis ?: "Synopsis unavailable"
-
-            val startDateFormatted = formatDate(anime.startDate)
-            val endDateFormatted = if (anime.endDate.isNullOrEmpty()) {
-                "ongoing"
+            if (isSaved) {
+                // --- REMOVE STATE ---
+                text = "Remove from list"
             } else {
-                formatDate(anime.endDate)
-            }
-            dates.text = "$startDateFormatted - $endDateFormatted"
-
-            knowMoreText.setOnClickListener {
-                anime.url.let { url ->
-                    openCustomTab(Uri.parse(url))
+                text = "Save to list"
+                setOnClickListener {
+                    viewModel.addAnime(anime, requireContext())
+                    Toast.makeText(requireContext(), "${anime.title} saved to your list", Toast.LENGTH_SHORT).show()
+                    // refresh UI
+                    setupActionButton()
                 }
             }
         }
-
-        binding.btnSaveAnime.setOnClickListener {
-            viewModel.addAnime(anime, requireContext())
-            dismiss() // LiveData will automatically update the parent fragment
-        }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun openCustomTab(url: Uri) {
-        val builder = CustomTabsIntent.Builder()
-        builder.setShowTitle(true)
-        builder.build().launchUrl(requireContext(), url)
-    }
-
-    private fun formatDate(date: String?): String {
-        if (date.isNullOrEmpty()) return "Unknown"
-        return try {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
-            val outputFormat = SimpleDateFormat("MMM yyyy", java.util.Locale.getDefault())
-            val parsedDate = inputFormat.parse(date)
-            outputFormat.format(parsedDate!!)
-        } catch (e: Exception) {
-            Log.e("AnimeDetails", "Error formatting date: ${e.message}")
-            "Invalid Date"
-        }
-    }
-
-    companion object {
-        fun newInstance(anime: Result): AnimeDetailsBottomSheet {
-            return AnimeDetailsBottomSheet(anime)
-        }
     }
 }

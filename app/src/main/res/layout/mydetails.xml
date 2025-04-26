@@ -14,10 +14,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Education"
-            android:textStyle="bold"
+            android:textFamily="sans-serif-medium"
             android:textSize="20sp"
             android:textColor="#FFFFFF"
-            android:paddingBottom="5dp" />
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"/>
 
         <!-- Education Detail -->
         <LinearLayout
@@ -35,7 +36,6 @@
                 android:id="@+id/educationTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
                 android:paddingStart="10dp"
                 android:text="No details available"
                 android:textColor="#D3D3D3"
@@ -47,11 +47,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Hometown"
-            android:textStyle="bold"
+            android:textFamily="sans-serif-medium"
             android:textSize="20sp"
             android:textColor="#FFFFFF"
             android:paddingTop="10dp"
-            android:paddingBottom="5dp" />
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp" />
 
         <!-- Hometown Detail -->
         <LinearLayout
@@ -69,7 +70,6 @@
                 android:id="@+id/hometownTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
                 android:paddingStart="10dp"
                 android:text="No details available"
                 android:textColor="#D3D3D3"
@@ -81,11 +81,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Current Location"
-            android:textStyle="bold"
+            android:textFamily="sans-serif-medium"
             android:textSize="20sp"
             android:textColor="#FFFFFF"
             android:paddingTop="10dp"
-            android:paddingBottom="5dp" />
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp" />
 
         <!-- Current Location Detail -->
         <LinearLayout
@@ -103,7 +104,6 @@
                 android:id="@+id/locationTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
                 android:paddingStart="10dp"
                 android:text="No details available"
                 android:textColor="#D3D3D3"

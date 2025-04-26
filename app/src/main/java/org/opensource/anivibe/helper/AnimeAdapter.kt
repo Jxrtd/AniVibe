@@ -5,21 +5,43 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import org.opensource.anivibe.R
 import org.opensource.anivibe.anime.AnimeDetailsBottomSheet
 import org.opensource.anivibe.anime.Result
+import org.opensource.anivibe.data.SharedAnimeViewModel
 
 class AnimeAdapter(
     private val parentActivity: Context,
-    private var anime: List<Result>
+    private var animeList: List<Result>
 ) : RecyclerView.Adapter<AnimeAdapter.CustomViewHolder>() {
 
-    inner class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    // Live ViewModel to manage saved anime
+    private val viewModel by lazy {
+        ViewModelProvider(parentActivity as AppCompatActivity)[SharedAnimeViewModel::class.java]
+    }
+
+    // Current list of saved anime
+    private var savedList: List<Result> = emptyList()
+
+    // Update saved list and refresh UI
+    fun setSavedList(list: List<Result>) {
+        savedList = list
+        notifyDataSetChanged()
+    }
+
+    inner class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val name: TextView = view.findViewById(R.id.name)
+        val image: ImageView = view.findViewById(R.id.image)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -28,45 +50,45 @@ class AnimeAdapter(
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        val anime = anime[position]
-        val view = holder.itemView
+        val anime = animeList[position]
+        holder.name.text = anime.title ?: "Unknown"
 
-        // Safely find and bind views
-        val name = view.findViewById<TextView>(R.id.name)
-        val image = view.findViewById<ImageView>(R.id.image)
-
-        // Set anime title
-        name.text = anime.title ?: "Unknown"
-
-        // Load anime image with fallback
-        val imageUrl = anime.imageUrl.jpg.imagesUrl
-        Log.d("AnimeDetails", "Image URL: $anime")
+        // Load image
+        val imageUrl = anime.imageUrl?.jpg?.imagesUrl
         if (imageUrl.isNullOrEmpty()) {
-            image.setImageResource(R.drawable.moon_icon) // Default placeholder
+            holder.image.setImageResource(R.drawable.moon_icon)
         } else {
             Picasso.get()
                 .load(imageUrl)
                 .placeholder(R.drawable.placeholder_image)
                 .error(R.drawable.moon_icon)
-                .into(image)
+                .into(holder.image)
         }
 
-        // Handle click event to show AnimeDetailsBottomSheet
-        view.setOnClickListener {
-            AnimeDetailsBottomSheet(anime).apply {
-                show((view.context as AppCompatActivity).supportFragmentManager, "AnimeDetailsBottomSheet")
-            }
+        // Show details bottom sheet using factory
+        holder.itemView.setOnClickListener {
+            AnimeDetailsBottomSheet.newInstance(anime)
+                .show((parentActivity as AppCompatActivity).supportFragmentManager, "AnimeDetailsBottomSheet")
         }
+
+        // Determine if this anime is saved
+        val isSaved = savedList.any { it.malId == anime.malId }
+        Log.d("AnimeAdapter", "Anime: ${anime.title}, malId: ${anime.malId}, isSaved: $isSaved")
+
+        // Update save button appearance based on saved status
+        if (isSaved) {
+            // If saved, change to a delete icon with red tint
+        } else {
+            // If not saved, use save icon
+        }
+
     }
 
+    override fun getItemCount(): Int = animeList.size
 
-    override fun getItemCount(): Int {
-        return anime.size
-    }
-
+    // Update full anime list
     fun updateList(newList: List<Result>) {
-        anime = newList // Update list
-        notifyDataSetChanged() // Notify RecyclerView to refresh
+        animeList = newList
+        notifyDataSetChanged()
     }
-
 }

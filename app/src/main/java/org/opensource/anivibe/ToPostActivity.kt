@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import org.opensource.anivibe.data.Item
@@ -16,7 +17,7 @@ class ToPostActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.topost)
 
-        val cancel = findViewById<TextView>(R.id.cancel)
+        val cancel = findViewById<ImageButton>(R.id.cancel)
         val postButton = findViewById<Button>(R.id.topost)
         val postContent = findViewById<EditText>(R.id.post_context)
 

@@ -3,4 +3,5 @@
     <!-- res/values/dimens.xml -->
     <dimen name="button_margin">16dp</dimen>
     <dimen name="section_spacing">24dp</dimen>
+    <dimen name="corner_radius">8dp</dimen>
 </resources>

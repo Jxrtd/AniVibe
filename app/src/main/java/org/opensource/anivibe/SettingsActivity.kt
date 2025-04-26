@@ -41,6 +41,12 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // Set up edit anime preferences button
+        findViewById<LinearLayout>(R.id.editAnimeButton).setOnClickListener {
+            val intent = Intent(this, EditAnimeStatActivity::class.java)
+            startActivity(intent)
+        }
+
         // Set up help and support button
         findViewById<LinearLayout>(R.id.HelpAndSupportButton).setOnClickListener {
             // Handle support navigation

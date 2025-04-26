@@ -1,45 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1A1A1D">
 
-
-    <TextView
-        android:id="@+id/cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="Cancel"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackground"/>
-
-    <Button
-        android:id="@+id/topost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Post"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/blue"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"/>
-
-    <EditText
-        android:id="@+id/post_context"
+    <!-- Top bar: Cancel | spacer | Post -->
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cancel"
-        android:layout_margin="16dp"
-        android:layout_marginTop="145dp"
+        android:padding="16dp">
+
+        <ImageButton
+            android:id="@+id/cancel"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/arrow_left_icon"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:background="#1D1616"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  Create Post"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <!-- weight=1 pushes Post to the right -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/topost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Post"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/blue"/>
+    </LinearLayout>
+
+
+    <!-- EditText container with a slightly lighter shade -->
+    <LinearLayout
+        android:id="@+id/edit_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent"
-        android:hint="What's happening?"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:padding="12dp"
+        android:background="#2A2A2D">
 
+        <EditText
+            android:id="@+id/post_context"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:hint="What's happening?"
+            android:textColorHint="@color/gray"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"/>
+    </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
