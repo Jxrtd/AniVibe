@@ -11,6 +11,7 @@
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_margin="10dp"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -26,9 +27,11 @@
             android:layout_width="261dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:background="@color/white"
-            android:padding="5dp"
+            android:background="@drawable/rounded_edittext_background"
+            android:layout_gravity="center"
             android:hint="Search..."
+            android:textColorHint="#7c7c7c"
+            android:textSize="14sp"
             android:textColor="@color/black"
             android:inputType="text"
             android:singleLine="true"
@@ -82,7 +85,7 @@
             android:contentDescription="Home"
             android:scaleType="centerInside"
             android:src="@drawable/home_page_icon"
-            android:padding="8dp"
+            android:padding="13dp"
             app:tint="@color/nav_icon_selector" />
 
         <ImageButton
@@ -94,7 +97,7 @@
             android:contentDescription="Watchlist"
             android:scaleType="centerInside"
             android:src="@drawable/community_page_icon"
-            android:padding="8dp"
+            android:padding="10dp"
             app:tint="@color/nav_icon_selector" />
 
         <ImageButton
@@ -106,7 +109,7 @@
             android:contentDescription="Chat"
             android:scaleType="centerInside"
             android:src="@drawable/chat_page_icon"
-            android:padding="8dp"
+            android:padding="12dp"
             app:tint="@color/nav_icon_selector"/>
 
         <ImageButton
@@ -118,7 +121,7 @@
             android:contentDescription="Profile"
             android:scaleType="centerInside"
             android:src="@drawable/profile_page_icon"
-            android:padding="8dp"
+            android:padding="13dp"
             app:tint="@color/nav_icon_selector"/>
     </LinearLayout>
 

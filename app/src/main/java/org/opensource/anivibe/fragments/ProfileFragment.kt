@@ -13,25 +13,24 @@ import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import de.hdodenhof.circleimageview.CircleImageView
-import org.opensource.anivibe.EditProfileActivity
 import org.opensource.anivibe.R
 
 class ProfileFragment : Fragment(R.layout.anivibe_profilefragment) {
 
     private lateinit var btnMyDetails: Button
     private lateinit var btnMyAnimeStats: Button
-    private lateinit var btnEditProfile: Button
+    // Removed btnEditProfile declaration
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         btnMyDetails    = view.findViewById(R.id.mydetails)
         btnMyAnimeStats = view.findViewById(R.id.myanimestat)
-        btnEditProfile  = view.findViewById(R.id.btnEditProfile)
-        val container    = view.findViewById<FrameLayout>(R.id.fragmentContainer2)
+        // Removed btnEditProfile binding
+        val container   = view.findViewById<FrameLayout>(R.id.fragmentContainer2)
 
-        checkNotNull(container)     { "fragmentContainer2 missing!" }
-        checkNotNull(btnEditProfile){ "btnEditProfile missing!" }
+        checkNotNull(container) { "fragmentContainer2 missing!" }
+        // Removed btnEditProfile check
 
         // 1) Default state: MyDetails active
         setActiveTab(btnMyDetails)
@@ -44,9 +43,7 @@ class ProfileFragment : Fragment(R.layout.anivibe_profilefragment) {
                 .commit()
         }
 
-        btnEditProfile.setOnClickListener {
-            startActivity(Intent(requireContext(), EditProfileActivity::class.java))
-        }
+        // Removed btnEditProfile click listener
 
         btnMyDetails.setOnClickListener {
             replaceChild(MyDetailsFragment(), btnMyDetails, btnMyAnimeStats)

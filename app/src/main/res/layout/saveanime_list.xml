@@ -12,32 +12,26 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <HorizontalScrollView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="none"
             android:padding="8dp">
 
-            <LinearLayout
+            <Button
+                android:id="@+id/savebtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:textSize="15dp"
+                android:layout_alignParentLeft="true"
+                android:text="Plan to Watch" />
 
-                <Button
-                    android:id="@+id/savebtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="Plan to Watch" />
-
-                <Button
-                    android:id="@+id/animebtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="Anime" />
-            </LinearLayout>
-        </HorizontalScrollView>
+            <Button
+                android:id="@+id/animebtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Search for Anime" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/fragmentContainer"

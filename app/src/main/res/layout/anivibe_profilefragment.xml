@@ -40,8 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="#1A1A1D"
-                android:padding="10dp">
+                android:background="#1A1A1D">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/main_profile_image"
@@ -68,14 +67,6 @@
                         android:textColor="@color/white"
                         android:layout_marginBottom="16dp"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="134 friends"
-                        android:fontFamily="sans-serif-black"
-                        android:textColor="#A9A9A9"
-                        android:textSize="18sp"
-                        android:textAlignment="textStart"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -99,16 +90,7 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="10dp"/>
 
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnEditProfile"
-                    style="@style/Widget.MaterialComponents.Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Edit Profile"
-                    app:backgroundTint="@color/accentRed"
-                    android:textColor="@android:color/white"/>
+                <!-- Edit Profile Button removed from here -->
 
             </LinearLayout>
 
@@ -151,13 +133,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="275dp" />
 
-
-
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-    <!--        </LinearLayout>-->
 
     <FrameLayout
         android:id="@+id/overlay_container"
@@ -165,6 +143,3 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </FrameLayout>
-
-
-

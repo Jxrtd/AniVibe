@@ -3,26 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#1A1A1D">
 
     <!-- Toolbar / Header -->
     <RelativeLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#673AB7"
+        android:layout_height="70dp"
+        android:background="#3f1717"
         android:elevation="4dp">
 
         <ImageButton
             android:id="@+id/buttonBack"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/arrow_left_icon"
             android:contentDescription="Back button"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:tint="#FFFFFF" />
+            app:tint="#FFFFFF" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewProfileHeader"
@@ -50,7 +50,7 @@
             android:layout_marginStart="16dp"
             android:layout_toEndOf="@id/cardViewProfileHeader"
             android:text="Fan Name"
-            android:textColor="#FFFFFF"
+            android:textColor="#d9c2c2"
             android:textSize="18sp"
             android:textStyle="bold" />
     </RelativeLayout>
@@ -71,9 +71,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#FFFFFF"
+        android:background="#3f1717"
         android:elevation="4dp"
-        android:padding="8dp">
+        android:padding="10dp">
 
         <EditText
             android:id="@+id/editTextMessage"
@@ -83,8 +83,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_toStartOf="@+id/buttonSend"
-            android:background="@android:drawable/editbox_background"
+            android:background="@drawable/rounded_edittext_background"
+            android:backgroundTint="#dfdfdf"
             android:hint="Type a message..."
+            android:textColorHint="#848484"
+            android:textColor="#000000"
             android:imeOptions="actionSend"
             android:inputType="textMultiLine"
             android:maxLines="4"
@@ -100,6 +103,6 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Send button"
             android:src="@android:drawable/ic_menu_send"
-            android:tint="#673AB7" />
+            app:tint="@color/accentRed" />
     </RelativeLayout>
 </RelativeLayout>

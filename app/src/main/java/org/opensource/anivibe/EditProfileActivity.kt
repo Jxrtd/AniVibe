@@ -16,6 +16,7 @@ import android.provider.MediaStore
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,7 +25,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.google.android.material.button.MaterialButton
 import de.hdodenhof.circleimageview.CircleImageView
-import org.opensource.anivibe.R
 import org.opensource.anivibe.repository.PostRepository
 import java.io.File
 import java.io.IOException
@@ -45,6 +45,7 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var locationInput: EditText
     private lateinit var birthdateInput: EditText
     private lateinit var saveButton: Button
+    private lateinit var backButton: ImageButton
 
     // SharedPreferences
     private lateinit var userPrefs: SharedPreferences
@@ -79,12 +80,18 @@ class EditProfileActivity : AppCompatActivity() {
         nameInput        = findViewById(R.id.input_name)
         bioInput         = findViewById(R.id.input_bio)
         changePassBtn    = findViewById(R.id.changepassword)
+        backButton       = findViewById(R.id.backButton)
 
         educationInput   = findViewById(R.id.input_education)
         hometownInput    = findViewById(R.id.input_hometown)
         locationInput    = findViewById(R.id.input_location)
         birthdateInput   = findViewById(R.id.input_birthdate)
         saveButton       = findViewById(R.id.button_save)
+
+        // Handle back button click
+        backButton.setOnClickListener {
+            finish()
+        }
 
         // 3) preload existing values into the UI
         // — profile picture
@@ -143,14 +150,8 @@ class EditProfileActivity : AppCompatActivity() {
             setCanceledOnTouchOutside(false)
         }
 
-        // show Up arrow in toolbar
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Edit Profile"
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        finish()
-        return true
+        // Hide default action bar since we're using custom navigation
+        supportActionBar?.hide()
     }
 
     private fun loadImageFromUri(uri: Uri) {

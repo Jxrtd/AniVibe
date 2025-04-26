@@ -36,6 +36,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ConversationActivity"
+            android:exported="false" />
+        <activity
             android:name=".SettingsActivity"
             android:exported="true">
         </activity>
