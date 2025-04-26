@@ -60,10 +60,11 @@
             android:name=".DevelopersPageActivity"
             android:exported="true"/>
         <activity android:name=".EditProfileActivity" />
-        <activity
-            android:name=".NavBar"
-            android:theme="@style/Theme.AniVibe"
-            android:windowSoftInputMode="adjustResize" />
+
+        <activity android:name=".NavBar"
+            android:windowSoftInputMode="adjustResize|adjustPan"
+            android:exported="true">
+        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"

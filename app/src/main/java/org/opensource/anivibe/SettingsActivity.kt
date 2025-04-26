@@ -1,11 +1,15 @@
 package org.opensource.anivibe
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import org.opensource.anivibe.fragments.ProfileFragment
@@ -23,59 +27,53 @@ class SettingsActivity : AppCompatActivity() {
         profileImageView = findViewById(R.id.settings_profile_image)
         usernameTextView = findViewById(R.id.settings_username_text)
 
-        // Set up back button
-        findViewById<android.widget.ImageButton>(R.id.backbutton).setOnClickListener {
+        // Back button
+        findViewById<ImageButton>(R.id.backbutton).setOnClickListener {
             finish()
         }
 
-        // Set up username section to navigate to ProfileFragment
+        // Username section
         findViewById<LinearLayout>(R.id.usernameSection).setOnClickListener {
-            // Navigate to MainActivity and show ProfileFragment
             val intent = Intent(this, ProfileFragment::class.java)
             startActivity(intent)
         }
 
-        // Set up edit profile button
+        // Edit profile
         findViewById<LinearLayout>(R.id.editProfileButton).setOnClickListener {
-            val intent = Intent(this, EditProfileActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, EditProfileActivity::class.java))
         }
 
-        // Set up edit anime preferences button
+        // Edit anime preferences
         findViewById<LinearLayout>(R.id.editAnimeButton).setOnClickListener {
-            val intent = Intent(this, EditAnimeStatActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, EditAnimeStatActivity::class.java))
         }
 
-        // Set up help and support button
+        // Help and support
         findViewById<LinearLayout>(R.id.HelpAndSupportButton).setOnClickListener {
-            // Handle support navigation
+            startActivity(Intent(this, Settings_HelpAndSupportAcitivity::class.java))
         }
 
-        // Set up developer's page button
+        // Developer's page
         findViewById<LinearLayout>(R.id.developerPageButton).setOnClickListener {
-            // Handle developer page navigation
+            startActivity(Intent(this, DevelopersPageActivity::class.java))
         }
 
-        // Set up logout button
-        findViewById<android.widget.Button>(R.id.logoutButton).setOnClickListener {
-            // Handle logout
+        // Logout with confirmation
+        findViewById<Button>(R.id.logoutButton).setOnClickListener {
+            showLogoutConfirmation()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        // Load the latest profile data when returning to this activity
         loadProfileData()
     }
 
     private fun loadProfileData() {
-        // Load username from UserPrefs
         val userPrefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
         val username = userPrefs.getString("username", "username")
         usernameTextView.text = "@$username"
 
-        // Load profile picture from ProfilePrefs
         val profilePrefs = getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
         profilePrefs.getString("profile_image", null)?.let { filename ->
             try {
@@ -84,9 +82,36 @@ class SettingsActivity : AppCompatActivity() {
                     profileImageView.setImageBitmap(bitmap)
                 }
             } catch (e: Exception) {
-                // If there's an error loading the image, keep the default
                 e.printStackTrace()
             }
         }
+    }
+
+    private fun showLogoutConfirmation() {
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setTitle("Logout")
+        dialogBuilder.setMessage("Are you sure you want to logout?")
+        dialogBuilder.setPositiveButton("Logout") { _: DialogInterface, _: Int ->
+            performLogout()
+        }
+        dialogBuilder.setNegativeButton("Cancel") { dialog: DialogInterface, _: Int ->
+            dialog.dismiss()
+        }
+        val alertDialog = dialogBuilder.create()
+        alertDialog.show()
+    }
+
+    private fun performLogout() {
+        // Clear saved user data
+        val userPrefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        val profilePrefs = getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
+        userPrefs.edit().clear().apply()
+        profilePrefs.edit().clear().apply()
+
+        // Navigate to LoginActivity
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 }
