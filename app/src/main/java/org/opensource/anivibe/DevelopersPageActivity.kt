@@ -11,15 +11,20 @@ class DevelopersPageActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.anivibe_developerpage)
 
-        Log.d("CSIT 284", "SettingsActivity Loaded Successfully")
+        Log.d("CSIT 284", "DevelopersPageActivity Loaded Successfully")
 
         val back: ImageButton = findViewById(R.id.devbackbutton)
         back.setOnClickListener {
             Log.d("CSIT 284", "Back button clicked")
-
-            val intent = Intent(this, SettingsActivity::class.java)
-            startActivity(intent)
+            finish()  // Just finish this activity to return to SettingsActivity
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
+    }
+
+    // Also override the system back button
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }
 }

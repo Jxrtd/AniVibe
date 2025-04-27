@@ -33,7 +33,7 @@
                 android:layout_marginEnd="8dp"
                 android:hint="Search anime..."
                 app:boxStrokeColor="@android:color/white"
-                app:hintTextColor="@color/white"
+                app:hintTextColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -43,10 +43,11 @@
                     android:id="@+id/searchInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:background="@color/white"/>
+                    android:background="@color/white"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton

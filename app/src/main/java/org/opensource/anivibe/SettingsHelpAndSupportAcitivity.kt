@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.ListView
 
-class Settings_HelpAndSupportAcitivity : Activity() {
+class SettingsHelpAndSupportAcitivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings_help_and_support_acitivity)
@@ -36,10 +36,15 @@ class Settings_HelpAndSupportAcitivity : Activity() {
         val back: ImageButton = findViewById(R.id.devbackbutton)
         back.setOnClickListener {
             Log.d("CSIT 284", "Back button clicked")
-
-            val intent = Intent(this, SettingsActivity::class.java)
-            startActivity(intent)
+            finish()  // Just finish this activity to return to SettingsActivity
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
+    }
+
+    // Also override the system back button
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }
 }

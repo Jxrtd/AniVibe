@@ -27,41 +27,54 @@ class SettingsActivity : AppCompatActivity() {
         profileImageView = findViewById(R.id.settings_profile_image)
         usernameTextView = findViewById(R.id.settings_username_text)
 
-        // Back button
+        // Back button - always finishes the activity
         findViewById<ImageButton>(R.id.backbutton).setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
         // Username section
         findViewById<LinearLayout>(R.id.usernameSection).setOnClickListener {
             val intent = Intent(this, ProfileFragment::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         // Edit profile
         findViewById<LinearLayout>(R.id.editProfileButton).setOnClickListener {
             startActivity(Intent(this, EditProfileActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         // Edit anime preferences
         findViewById<LinearLayout>(R.id.editAnimeButton).setOnClickListener {
             startActivity(Intent(this, EditAnimeStatActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         // Help and support
         findViewById<LinearLayout>(R.id.HelpAndSupportButton).setOnClickListener {
-            startActivity(Intent(this, Settings_HelpAndSupportAcitivity::class.java))
+            startActivity(Intent(this, SettingsHelpAndSupportAcitivity::class.java))
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         // Developer's page
         findViewById<LinearLayout>(R.id.developerPageButton).setOnClickListener {
             startActivity(Intent(this, DevelopersPageActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         // Logout with confirmation
         findViewById<Button>(R.id.logoutButton).setOnClickListener {
             showLogoutConfirmation()
         }
+    }
+
+    // Override the back button press to always finish the activity
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }
 
     override fun onResume() {
