@@ -29,9 +29,9 @@
             android:padding="10dp">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/anime_icon" />
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@android:drawable/ic_menu_view" />
 
             <TextView
                 android:id="@+id/favoriteAnimeTextView"
@@ -51,9 +51,9 @@
             android:padding="10dp">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/genre_icon" />
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@android:drawable/ic_menu_sort_by_size" />
 
             <TextView
                 android:id="@+id/favoriteGenreTextView"
@@ -73,9 +73,9 @@
             android:padding="10dp">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/character_icon" />
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@android:drawable/ic_menu_myplaces" />
 
             <TextView
                 android:id="@+id/favoriteCharacterTextView"
@@ -87,37 +87,57 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
+
         <!-- Top Recommendations -->
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Top Anime Recommendations"
-            android:textSize="20sp"
-            android:textColor="#FFFFFF"
-            android:paddingTop="16dp"
+            android:orientation="horizontal"
+            android:gravity="center"
             android:paddingBottom="8dp"
-            android:paddingLeft="8dp" />
+            android:paddingLeft="8dp" >
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@android:drawable/ic_menu_recent_history" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Top Anime Recommendations"
+                android:textSize="18sp"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:paddingStart="10dp">
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/recommend_icon" />
 
-            <TextView
-                android:id="@+id/topRecommendationsTextView"
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:text="No recommendations yet"
-                android:textColor="#D3D3D3"
-                android:textSize="18sp" />
-        </LinearLayout>
+                android:layout_marginStart="10dp"
+                android:orientation="vertical">
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recommendationsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false" />
+
+                <TextView
+                    android:id="@+id/emptyRecommendationsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No recommendations yet"
+                    android:textColor="#D3D3D3"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

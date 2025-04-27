@@ -2,6 +2,7 @@ package org.opensource.anivibe.helper
 
 import android.app.AlertDialog
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,14 +48,23 @@ class SaveAdapter(
         holder.name.text = animeItem.title ?: "Unknown Title"
 
         val imageUrl = animeItem.imageUrl?.jpg?.imagesUrl
-        if (imageUrl.isNullOrEmpty()) {
-            holder.image.setImageResource(R.drawable.moon_icon)
-        } else {
+        Log.d("ImageDebug", "Saved Anime: ${animeItem.title}, Image URL: $imageUrl")
+
+        if (!imageUrl.isNullOrEmpty()) {
+            // Load image with Picasso
             Picasso.get()
                 .load(imageUrl)
                 .placeholder(R.drawable.placeholder_image)
                 .error(R.drawable.moon_icon)
+                .fit()  // Add this to fit image to view
+                .centerCrop()  // Add this for better image scaling
                 .into(holder.image)
+
+            // Log success directly
+            Log.d("ImageLoading", "Attempting to load saved: $imageUrl")
+        } else {
+            Log.e("ImageLoading", "Empty URL for saved anime: ${animeItem.title}")
+            holder.image.setImageResource(R.drawable.moon_icon)
         }
 
         // Show anime details on click

@@ -55,14 +55,23 @@ class AnimeAdapter(
 
         // Load image
         val imageUrl = anime.imageUrl?.jpg?.imagesUrl
-        if (imageUrl.isNullOrEmpty()) {
-            holder.image.setImageResource(R.drawable.moon_icon)
-        } else {
+        Log.d("ImageDebug", "Anime: ${anime.title}, Image URL: $imageUrl")
+
+        if (!imageUrl.isNullOrEmpty()) {
+            // Load image with Picasso
             Picasso.get()
                 .load(imageUrl)
                 .placeholder(R.drawable.placeholder_image)
                 .error(R.drawable.moon_icon)
+                .fit()  // Add this to fit image to view
+                .centerCrop()  // Add this for better image scaling
                 .into(holder.image)
+
+            // Log success directly instead of callback
+            Log.d("ImageLoading", "Attempting to load: $imageUrl")
+        } else {
+            Log.e("ImageLoading", "Empty URL for anime: ${anime.title}")
+            holder.image.setImageResource(R.drawable.moon_icon)
         }
 
         // Show details bottom sheet using factory

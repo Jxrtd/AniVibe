@@ -23,7 +23,7 @@
                 android:id="@+id/backButton"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/arrow_left_icon"
+                android:src="@android:drawable/ic_menu_revert"
                 android:scaleType="fitCenter"
                 android:layout_gravity="center"
                 android:background="#1D1616"/>
@@ -127,18 +127,93 @@
                 android:textSize="20sp"
                 android:textColor="#c6c6c6"/>
 
-            <EditText
-                android:id="@+id/input_top_recommendations"
+            <!-- First Recommendation -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter your top anime recommendations"
-                android:inputType="textMultiLine"
-                android:minLines="3"
-                android:gravity="top|start"
-                android:textColor="#c6c6c6"
-                android:textColorHint="#80c6c6c6"
-                android:backgroundTint="#c6c6c6"
-                android:layout_marginBottom="24dp"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1."
+                    android:textColor="#c6c6c6"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="8dp"
+                    android:layout_gravity="center_vertical"/>
+
+                <EditText
+                    android:id="@+id/input_recommendation_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="First recommendation"
+                    android:inputType="text"
+                    android:textColor="#c6c6c6"
+                    android:textColorHint="#80c6c6c6"
+                    android:backgroundTint="#c6c6c6"/>
+            </LinearLayout>
+
+            <!-- Second Recommendation -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2."
+                    android:textColor="#c6c6c6"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="8dp"
+                    android:layout_gravity="center_vertical"/>
+
+                <EditText
+                    android:id="@+id/input_recommendation_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Second recommendation"
+                    android:inputType="text"
+                    android:textColor="#c6c6c6"
+                    android:textColorHint="#80c6c6c6"
+                    android:backgroundTint="#c6c6c6"/>
+            </LinearLayout>
+
+            <!-- Third Recommendation -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3."
+                    android:textColor="#c6c6c6"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="8dp"
+                    android:layout_gravity="center_vertical"/>
+
+                <EditText
+                    android:id="@+id/input_recommendation_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Third recommendation"
+                    android:inputType="text"
+                    android:textColor="#c6c6c6"
+                    android:textColorHint="#80c6c6c6"
+                    android:backgroundTint="#c6c6c6"/>
+            </LinearLayout>
 
             <!-- Save Button -->
             <com.google.android.material.button.MaterialButton
@@ -150,7 +225,7 @@
                 android:textStyle="bold"
                 android:padding="10dp"
                 android:textColor="@android:color/white"
-                android:backgroundTint="@android:color/holo_red_dark"/>
+                app:backgroundTint="@android:color/holo_red_dark"/>
 
         </LinearLayout>
     </LinearLayout>

@@ -123,7 +123,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Anime Stats"
+                        android:text="Anime"
                         android:textColor="#D3D3D3"
                         android:layout_marginLeft="1dp"/>
                 </LinearLayout>

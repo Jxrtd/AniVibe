@@ -20,6 +20,7 @@ class ConversationActivity : AppCompatActivity() {
     private lateinit var fanNameTextView: TextView
     private lateinit var conversationAdapter: ConversationAdapter
     private val messagesList = mutableListOf<ConversationMessage>()
+    private var keikoScriptStep = 0
 
     private var fanName: String = ""
     private var fanPhotoResId: Int = 0
@@ -60,6 +61,18 @@ class ConversationActivity : AppCompatActivity() {
             sendMessage()
         }
 
+        // 1) initial greeting
+        addFanMessage(getInitialGreeting())
+
+        // 2) if Keiko, start the script
+        if (fanName == "Keiko") {
+            keikoScriptStep = 1
+            // ask after a short delay
+            recyclerView.postDelayed({
+                addFanMessage("Have you watched Tokyo Ghoul?")
+            }, 1000)
+        }
+
         // Set up keyboard send action
         messageInput.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEND) {
@@ -85,7 +98,58 @@ class ConversationActivity : AppCompatActivity() {
             messageInput.text.clear()
 
             // Generate character response
-            generateFanResponse(messageText)
+            if (fanName == "Keiko" && keikoScriptStep > 0) {
+                handleKeikoScript(messageText.lowercase())
+            } else {
+                generateFanResponse(messageText)
+            }
+        }
+    }
+
+    private fun handleKeikoScript(msg: String) {
+        when (keikoScriptStep) {
+            1 -> { // Has she watched TG?
+                when {
+                    msg.contains("yes")    -> {
+                        addFanMessage("Awesome! What did you think of Kaneki’s transformation?")
+                        keikoScriptStep = 2
+                    }
+                    msg.contains("no")     -> {
+                        addFanMessage("Oh, you should! Want a quick synopsis?")
+                        keikoScriptStep = 3
+                    }
+                    else                   -> {
+                        addFanMessage("Please just answer meeee — have you watched Tokyo Ghoul??")
+                    }
+                }
+            }
+            2 -> { // User gave opinion
+                addFanMessage("I totally agree! Kaneki’s arc is one of the best. Who’s your favorite character?")
+                keikoScriptStep = 4
+            }
+            3 -> { // Offer synopsis
+                addFanMessage(
+                    "It’s about a college student turned half-ghoul after a tragic attack. " +
+                            "It’s dark but incredible. Will you give it a try?"
+                )
+                keikoScriptStep = 5
+            }
+            4 -> { // Favorite character
+                if (msg.isNotBlank()) {
+                    // echo back
+                    addFanMessage("Nice — $msg is a great pick! We should chat more about them sometime.")
+                    keikoScriptStep = 0
+                } else {
+                    addFanMessage("Who’s your favorite character?")
+                }
+            }
+            5 -> { // Will you try it?
+                when {
+                    msg.contains("yes") -> addFanMessage("Yay! Let me know what you think 😊")
+                    else                -> addFanMessage("No worries — let me know if you change your mind!")
+                }
+                keikoScriptStep = 0
+            }
         }
     }
 

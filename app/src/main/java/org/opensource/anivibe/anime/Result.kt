@@ -12,6 +12,7 @@ data class Result(
     val synopsis: String?,
     val score: Double?,
     val type: String?,
+    @SerializedName("images")
     val imageUrl: ImageUrl?
 ) : Parcelable
 
@@ -22,5 +23,6 @@ data class ImageUrl(
 
 @Parcelize
 data class JpgImage(
+    @SerializedName("image_url")
     val imagesUrl: String?
 ) : Parcelable

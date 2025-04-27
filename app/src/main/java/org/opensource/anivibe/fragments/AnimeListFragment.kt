@@ -1,6 +1,7 @@
 package org.opensource.anivibe.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,6 +73,12 @@ class AnimeListFragment : Fragment() {
             override fun onResponse(call: Call<TopAnime>, response: Response<TopAnime>) {
                 if (response.isSuccessful && response.body() != null) {
                     val topList = response.body()!!.data
+
+                    // Add this debug log
+                    for (anime in topList.take(3)) {
+                        Log.d("APIResponse", "Anime: ${anime.title}, Image URL: ${anime.imageUrl?.jpg?.imagesUrl}")
+                    }
+
                     animeAdapter.updateList(topList)
                 }
             }

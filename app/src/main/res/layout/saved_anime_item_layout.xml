@@ -9,7 +9,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <ImageView
             android:id="@+id/image"
@@ -24,6 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/image"
             android:layout_marginTop="4dp"
+            android:background="#90000000"
+            android:textColor="@color/white"
             android:ellipsize="end"
             android:maxLines="2"
             android:padding="8dp"
