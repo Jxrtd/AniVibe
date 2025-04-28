@@ -1,5 +1,6 @@
 package org.opensource.anivibe.helper
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +14,14 @@ import android.graphics.BitmapShader
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Shader
+import android.graphics.Typeface
+import android.util.Log
 import org.opensource.anivibe.R
+import org.opensource.anivibe.UserRepository
 import org.opensource.anivibe.data.Comment
 import java.io.File
 
-// Circle transformation for Picasso
+// Circle transformation for Picasso (unchanged)
 class CircleTransform : Transformation {
     override fun transform(source: Bitmap): Bitmap {
         val size = Math.min(source.width, source.height)
@@ -52,6 +56,8 @@ class CircleTransform : Transformation {
 class CommentAdapter(private val comments: List<Comment>) :
     RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
 
+    private val TAG = "CommentAdapter"
+
     class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val username: TextView = view.findViewById(R.id.comment_username)
         val content: TextView = view.findViewById(R.id.comment_content)
@@ -66,32 +72,40 @@ class CommentAdapter(private val comments: List<Comment>) :
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         val comment = comments[position]
-        holder.username.text = comment.username
-        holder.content.text = comment.content
+        val context = holder.itemView.context
 
-        // Handle profile image properly with circular transformation
-        if (!comment.profileImagePath.isNullOrBlank()) {
-            val imageFile = File(holder.itemView.context.filesDir, comment.profileImagePath!!)
+        Log.d(TAG, "Binding comment at position $position, userId: ${comment.userId}, username: ${comment.username}")
 
-            if (imageFile.exists()) {
-                // Load from file if it exists
-                Picasso.get()
-                    .load(imageFile)
-                    .placeholder(R.drawable.profile_circle)
-                    .error(R.drawable.profile_circle)
-                    .transform(CircleTransform())
-                    .into(holder.profilePic)
+        // Always try to get the current username from UserRepository if userId is available
+        if (!comment.userId.isNullOrEmpty()) {
+            // Use UserRepository to get the current user's name
+            val userPrefs = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+            val currentUsername = userPrefs.getString("username", null)
+
+            // If the comment's userId matches the current user's saved username,
+            // update the display name to show the current username
+            if (comment.userId == currentUsername || comment.userId == comment.username) {
+                Log.d(TAG, "Updating username display from ${comment.username} to $currentUsername")
+                holder.username.text = currentUsername
             } else {
-                // Try to load from filepath string directly
-                Picasso.get()
-                    .load(comment.profileImagePath)
-                    .placeholder(R.drawable.profile_circle)
-                    .error(R.drawable.profile_circle)
-                    .transform(CircleTransform())
-                    .into(holder.profilePic)
+                // Otherwise use the stored username
+                holder.username.text = comment.username
             }
         } else {
+            // Fall back to the stored username if no userId is available
+            holder.username.text = comment.username
+            Log.d(TAG, "Using stored username: ${comment.username}")
+        }
+
+        holder.username.setTypeface(holder.username.typeface, Typeface.BOLD)
+        holder.content.text = comment.content
+
+        // Use ProfileImageUtils to load the profile image
+        if (!comment.profileImagePath.isNullOrBlank()) {
+            ProfileImageUtils.loadProfileImage(context, holder.profilePic, comment.profileImagePath)
+        } else {
             // Set default profile picture
+            Log.d(TAG, "No profile image path, using default")
             holder.profilePic.setImageResource(R.drawable.profile_circle)
         }
     }

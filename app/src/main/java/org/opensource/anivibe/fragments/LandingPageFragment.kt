@@ -60,6 +60,7 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
                         .commit()
                 }
             }
+
         )
 
         recyclerView.adapter = itemAdapter

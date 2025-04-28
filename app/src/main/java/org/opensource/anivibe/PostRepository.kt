@@ -133,8 +133,17 @@ object PostRepository {
     fun updateUserInfo(context: Context, oldUsername: String, newUsername: String, newProfileImagePath: String?) {
         var updated = false
 
+        android.util.Log.d("PostRepository", "Updating user info: $oldUsername -> $newUsername")
+        android.util.Log.d("PostRepository", "New profile image path: $newProfileImagePath")
+        android.util.Log.d("PostRepository", "Total posts before update: ${posts.size}")
+
         posts.forEach { item ->
+            // Check if this post belongs to the user being updated
             if (item.username == oldUsername) {
+                android.util.Log.d("PostRepository", "Found post by user: ${item.id}")
+                android.util.Log.d("PostRepository", "  Old username: ${item.username}")
+                android.util.Log.d("PostRepository", "  Old profile image: ${item.profileImagePath}")
+
                 // Update username
                 item.username = newUsername
 
@@ -143,22 +152,39 @@ object PostRepository {
                     item.profileImagePath = newProfileImagePath
                 }
 
+                android.util.Log.d("PostRepository", "  Updated username: ${item.username}")
+                android.util.Log.d("PostRepository", "  Updated profile image: ${item.profileImagePath}")
+
                 updated = true
             }
 
-            // Also update usernames in comments
-            item.comments.forEach { comment ->
+            // Also update usernames and profile images in comments
+            item.comments.forEachIndexed { index, comment ->
                 if (comment.username == oldUsername) {
+                    android.util.Log.d("PostRepository", "Found comment by user in post ${item.id}, comment #$index")
+                    android.util.Log.d("PostRepository", "  Old username: ${comment.username}")
+                    android.util.Log.d("PostRepository", "  Old profile image: ${comment.profileImagePath}")
+
+                    // Update username in comment
                     comment.username = newUsername
+
+                    // Update profile image in comment
                     if (newProfileImagePath != null) {
                         comment.profileImagePath = newProfileImagePath
                     }
+
+                    android.util.Log.d("PostRepository", "  Updated username: ${comment.username}")
+                    android.util.Log.d("PostRepository", "  Updated profile image: ${comment.profileImagePath}")
+
                     updated = true
                 }
             }
         }
 
+        android.util.Log.d("PostRepository", "Changes made: $updated")
+
         if (updated) {
+            android.util.Log.d("PostRepository", "Saving updated posts to SharedPreferences")
             savePosts(context)
         }
     }

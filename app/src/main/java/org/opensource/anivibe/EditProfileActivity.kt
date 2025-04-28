@@ -73,27 +73,28 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
 
-
-        profileImagePath = profilePrefs.getString("profile_image", null)
-
-        // 1) initialize your SharedPreferences
-        userPrefs    = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        // 1) Initialize SharedPreferences FIRST
+        userPrefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
         profilePrefs = getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
         detailsPrefs = getSharedPreferences("ProfileDetails", Context.MODE_PRIVATE)
 
+        // THEN retrieve the profile image path
+        profileImagePath = profilePrefs.getString("profile_image", null)
+
         // 2) bind your views
         profileImageView = findViewById(R.id.setting_profile_image)
-        profilePicBtn    = findViewById(R.id.profilepic)
-        nameInput        = findViewById(R.id.input_name)
-        bioInput         = findViewById(R.id.input_bio)
-        changePassBtn    = findViewById(R.id.changepassword)
-        backButton       = findViewById(R.id.backButton)
+        profilePicBtn = findViewById(R.id.profilepic)
+        nameInput = findViewById(R.id.input_name)
+        bioInput = findViewById(R.id.input_bio)
+        changePassBtn = findViewById(R.id.changepassword)
+        backButton = findViewById(R.id.backButton)
 
-        educationInput   = findViewById(R.id.input_education)
-        hometownInput    = findViewById(R.id.input_hometown)
-        locationInput    = findViewById(R.id.input_location)
-        birthdateInput   = findViewById(R.id.input_birthdate)
-        saveButton       = findViewById(R.id.button_save)
+        educationInput = findViewById(R.id.input_education)
+        hometownInput = findViewById(R.id.input_hometown)
+        locationInput = findViewById(R.id.input_location)
+        birthdateInput = findViewById(R.id.input_birthdate)
+        saveButton = findViewById(R.id.button_save)
+
 
         // Handle back button click
         backButton.setOnClickListener {
@@ -101,12 +102,25 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         // 3) preload existing values into the UI
-        // — profile picture
-        profilePrefs.getString("profile_image", null)?.let { fn ->
-            openFileInput(fn).use { fis ->
-                profileImageView.setImageBitmap(BitmapFactory.decodeStream(fis))
+        profilePrefs.getString("profile_image", null)?.let { imagePath ->
+            try {
+                // Extract just the filename part if it contains a path
+                val filename = if (imagePath.contains("/")) {
+                    imagePath.substring(imagePath.lastIndexOf("/") + 1)
+                } else {
+                    imagePath
+                }
+
+                openFileInput(filename).use { fis ->
+                    profileImageView.setImageBitmap(BitmapFactory.decodeStream(fis))
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("EditProfileActivity", "Error loading profile image", e)
+                // Set default image on error
+                profileImageView.setImageResource(R.drawable.profile_circle)
             }
         }
+
 
         // — populate input fields with current values
         nameInput.setText(userPrefs.getString("username", ""))
@@ -132,14 +146,21 @@ class EditProfileActivity : AppCompatActivity() {
             // Get the current profile image path
             val profileImagePath = profilePrefs.getString("profile_image", null)
 
+            android.util.Log.d("EditProfile", "Saving profile with username: $oldUsername -> $newUsername")
+            android.util.Log.d("EditProfile", "Profile image path: $profileImagePath")
+            android.util.Log.d("EditProfile", "Profile image changed: $profileImageChanged")
+
+            // Update all posts with new username and profile image
             PostRepository.updateUserInfo(this, oldUsername, newUsername, profileImagePath)
 
+            // Save the updated username
             userPrefs.edit().apply {
                 putString("username", newUsername)
                 putString("bio", bio)
                 apply()
             }
 
+            // Save the profile details
             detailsPrefs.edit().apply {
                 putString("education", educationInput.text.toString())
                 putString("hometown", hometownInput.text.toString())
@@ -171,8 +192,16 @@ class EditProfileActivity : AppCompatActivity() {
             openFileOutput(filename, Context.MODE_PRIVATE).use { out ->
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, out)
             }
+
+            // Get old profile image path for logging
+            val oldProfileImagePath = profilePrefs.getString("profile_image", null)
+
+            // Store ONLY the filename, not the full path
             profilePrefs.edit().putString("profile_image", filename).apply()
             profileImagePath = filename  // Update our tracking variable
+            profileImageChanged = true   // Flag that image was changed
+
+            android.util.Log.d("EditProfile", "Profile image updated: $oldProfileImagePath -> $filename")
         }
     }
 

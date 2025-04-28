@@ -105,9 +105,10 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
 
             Log.d(TAG, "onViewCreated: Views found")
 
-            // Set text values from arguments, not from post
-            postUsername.text = username
-            postContent.text = description
+            // Use the latest username from the post object, not the arguments
+            // This ensures we're using the most up-to-date username
+            postUsername.text = post.username
+            postContent.text = post.description
 
             Log.d(TAG, "onViewCreated: Username and description set to views")
 
@@ -115,39 +116,24 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
             Log.d(TAG, "onViewCreated: TextView username is now: ${postUsername.text}")
             Log.d(TAG, "onViewCreated: TextView content is now: ${postContent.text}")
 
-            if (!profileImagePath.isNullOrBlank()) {
-                try {
-                    val imageFile = File(requireContext().filesDir, profileImagePath)
-                    Log.d(TAG, "onViewCreated: Attempting to load profile image from: $profileImagePath")
-                    Log.d(TAG, "onViewCreated: File exists: ${imageFile.exists()}")
-
-                    if (imageFile.exists()) {
-                        Picasso.get()
-                            .load(imageFile)
-                            .placeholder(R.drawable.profile_circle)
-                            .error(R.drawable.profile_circle)
-                            .transform(CircleTransform())
-                            .into(postUserImage)
-                    } else {
-                        Picasso.get()
-                            .load(profileImagePath)
-                            .placeholder(R.drawable.profile_circle)
-                            .error(R.drawable.profile_circle)
-                            .transform(CircleTransform())
-                            .into(postUserImage)
-                    }
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error loading profile image", e)
-                    postUserImage.setImageResource(R.drawable.profile_circle)
-                }
+            // Load profile image for the post
+            if (!post.profileImagePath.isNullOrBlank()) {
+                loadProfileImage(postUserImage, post.profileImagePath)
             } else {
-                Log.d(TAG, "onViewCreated: No profile image path, using default")
                 postUserImage.setImageResource(R.drawable.profile_circle)
             }
 
             recyclerView = view.findViewById(R.id.comments_recycler)
             commentInput = view.findViewById(R.id.comment_input)
             sendButton = view.findViewById(R.id.comment_send_button)
+
+
+            sendButton.setBackgroundColor(requireContext().getColor(R.color.accentRed))
+            sendButton.setTextColor(requireContext().getColor(R.color.white))
+
+
+            // Center the send button (add this line to apply center gravity)
+            sendButton.gravity = android.view.Gravity.CENTER
 
             adapter = CommentAdapter(comments)
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -170,6 +156,7 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
                 parentFragmentManager.popBackStack()
             }
 
+            // In CommentFragment.kt, update the sendButton.setOnClickListener block
             sendButton.setOnClickListener {
                 val commentText = commentInput.text.toString()
                 if (commentText.isNotBlank()) {
@@ -177,13 +164,17 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
                     val comment = Comment(
                         username = currentUser.username,
                         content = commentText,
-                        profileImagePath = currentUser.profileImagePath
+                        profileImagePath = currentUser.profileImagePath,
+                        userId = currentUser.username  // Always set userId to the current username
                     )
                     comments.add(comment)
                     PostRepository.addComment(postId, comment)
                     adapter.notifyItemInserted(comments.size - 1)
                     recyclerView.scrollToPosition(comments.size - 1)
                     commentInput.text.clear()
+
+                    // Log successful comment addition
+                    Log.d(TAG, "Added comment from ${currentUser.username} with profile image: ${currentUser.profileImagePath}")
                 }
             }
         } catch (e: Exception) {
@@ -196,27 +187,38 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
         Log.d(TAG, "loadProfileImage: Attempting to load from $profileImagePath")
 
         if (!profileImagePath.isNullOrBlank()) {
-            val imageFile = File(requireContext().filesDir, profileImagePath)
-            if (imageFile.exists()) {
-                // Load from file if it exists in internal storage
-                Picasso.get()
-                    .load(imageFile)
-                    .placeholder(R.drawable.profile_circle)
-                    .error(R.drawable.profile_circle)
-                    .transform(CircleTransform())
-                    .into(imageView)
-            } else {
-                // Try direct loading if file doesn't exist in filesDir
-                // This could be an absolute path or a resource URI
-                Picasso.get()
-                    .load(profileImagePath)
-                    .placeholder(R.drawable.profile_circle)
-                    .error(R.drawable.profile_circle)
-                    .transform(CircleTransform())
-                    .into(imageView)
+            try {
+                // First check if this is a full path or just a filename
+                val imageFile = if (profileImagePath.contains("/")) {
+                    File(profileImagePath)
+                } else {
+                    File(requireContext().filesDir, profileImagePath)
+                }
+
+                if (imageFile.exists()) {
+                    Picasso.get()
+                        .load(imageFile)
+                        .placeholder(R.drawable.profile_circle)
+                        .error(R.drawable.profile_circle)
+                        .transform(CircleTransform())
+                        .into(imageView)
+                    Log.d(TAG, "loadProfileImage: Successfully loaded local file")
+                } else {
+                    // Try as URL or resource if file doesn't exist
+                    Picasso.get()
+                        .load(profileImagePath)
+                        .placeholder(R.drawable.profile_circle)
+                        .error(R.drawable.profile_circle)
+                        .transform(CircleTransform())
+                        .into(imageView)
+                    Log.d(TAG, "loadProfileImage: Attempting to load as URL/resource")
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error loading profile image", e)
+                imageView.setImageResource(R.drawable.profile_circle)
             }
         } else {
-            // Set default profile picture if no image path
+            Log.d(TAG, "loadProfileImage: No profile image path, using default")
             imageView.setImageResource(R.drawable.profile_circle)
         }
     }
