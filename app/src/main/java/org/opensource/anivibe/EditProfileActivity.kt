@@ -52,6 +52,10 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var profilePrefs: SharedPreferences
     private lateinit var detailsPrefs: SharedPreferences
 
+
+
+    private var profileImagePath: String? = null
+    private var profileImageChanged = false
     private var currentPhotoUri: Uri? = null
     private lateinit var progressDialog: ProgressDialog
 
@@ -68,6 +72,9 @@ class EditProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
+
+
+        profileImagePath = profilePrefs.getString("profile_image", null)
 
         // 1) initialize your SharedPreferences
         userPrefs    = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
@@ -122,11 +129,10 @@ class EditProfileActivity : AppCompatActivity() {
             val newUsername = nameInput.text.toString().trim()
             val bio = bioInput.text.toString().trim()
 
-            // Only update posts if username has changed
-            if (oldUsername != newUsername) {
-                // Update all posts with the new username
-                PostRepository.updateUsername(this, oldUsername, newUsername)
-            }
+            // Get the current profile image path
+            val profileImagePath = profilePrefs.getString("profile_image", null)
+
+            PostRepository.updateUserInfo(this, oldUsername, newUsername, profileImagePath)
 
             userPrefs.edit().apply {
                 putString("username", newUsername)
@@ -154,6 +160,7 @@ class EditProfileActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
+    // Update the loadImageFromUri method
     private fun loadImageFromUri(uri: Uri) {
         contentResolver.openInputStream(uri)?.use { stream ->
             val bmp = BitmapFactory.decodeStream(stream)
@@ -165,8 +172,10 @@ class EditProfileActivity : AppCompatActivity() {
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, out)
             }
             profilePrefs.edit().putString("profile_image", filename).apply()
+            profileImagePath = filename  // Update our tracking variable
         }
     }
+
 
     private fun showPasswordChangeDialog() {
         val dlg = layoutInflater.inflate(R.layout.dialog_update_password, null)

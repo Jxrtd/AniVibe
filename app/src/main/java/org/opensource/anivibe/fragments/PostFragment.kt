@@ -3,6 +3,7 @@ package org.opensource.anivibe.fragments
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.Toast
@@ -17,6 +18,7 @@ import org.opensource.anivibe.helper.ItemAdapter
 import org.opensource.anivibe.repository.PostRepository
 
 class PostFragment : Fragment(R.layout.anivibe_landingpagefragment) {
+    private val TAG = "PostFragment"
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ItemAdapter
@@ -64,12 +66,27 @@ class PostFragment : Fragment(R.layout.anivibe_landingpagefragment) {
             onCommentClickListener = { position ->
                 if (position in 0 until posts.size) {
                     val post = posts[position]
-                    val commentsFragment = post.id?.let { CommentFragment.newInstance(it, post.profileImagePath) }
+                    Log.d(TAG, "Opening comments for post at position $position")
+                    Log.d(TAG, "Post details: id=${post.id}, username=${post.username}, desc=${post.description.take(20)}...")
+
+                    // Update to pass username and description to CommentFragment
+                    val commentsFragment = post.id?.let {
+                        CommentFragment.newInstance(
+                            postId = it,
+                            profileImagePath = post.profileImagePath,
+                            username = post.username,
+                            description = post.description
+                        )
+                    }
+
                     if (commentsFragment != null) {
+                        Log.d(TAG, "Replacing fragment with CommentFragment")
                         parentFragmentManager.beginTransaction()
                             .replace(R.id.fragmentContainer1, commentsFragment)
                             .addToBackStack(null)
                             .commit()
+                    } else {
+                        Log.e(TAG, "Failed to create CommentFragment - null postId?")
                     }
                 }
             }
@@ -94,10 +111,19 @@ class PostFragment : Fragment(R.layout.anivibe_landingpagefragment) {
     private fun loadPosts() {
         try {
             val loadedPosts = PostRepository.getPosts(requireContext())
+            Log.d(TAG, "Loaded ${loadedPosts.size} posts")
+
             posts.clear()
             posts.addAll(loadedPosts)
             adapter.notifyDataSetChanged()
+
+            // Log some details about the posts
+            for (i in posts.indices) {
+                val post = posts[i]
+                Log.d(TAG, "Post $i: id=${post.id}, username=${post.username}, desc=${post.description.take(20)}...")
+            }
         } catch (e: Exception) {
+            Log.e(TAG, "Error loading posts", e)
             e.printStackTrace()
             Toast.makeText(requireContext(), "Error loading posts", Toast.LENGTH_SHORT).show()
         }

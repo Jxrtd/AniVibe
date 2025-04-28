@@ -7,19 +7,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="#1A1A1D">
 
-        <!-- Section Header: Education -->
+        <!-- Section Header -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Education"
-            android:textSize="20sp"
+            android:text="Personal Details"
+            android:textSize="22sp"
             android:textColor="#FFFFFF"
-            android:paddingBottom="5dp"
-            android:paddingLeft="10dp"/>
+            android:textStyle="bold"
+            android:paddingBottom="10dp"
+            android:paddingLeft="8dp" />
 
-        <!-- Education Detail -->
+        <!-- Education -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,8 +29,8 @@
             android:padding="10dp">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="32dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/education_icon" />
 
             <TextView
@@ -41,18 +43,7 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
-        <!-- Section Header: Hometown -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Hometown"
-            android:textSize="20sp"
-            android:textColor="#FFFFFF"
-            android:paddingTop="10dp"
-            android:paddingBottom="5dp"
-            android:paddingLeft="10dp" />
-
-        <!-- Hometown Detail -->
+        <!-- Hometown -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,7 +51,7 @@
             android:padding="10dp">
 
             <ImageView
-                android:layout_width="30dp"
+                android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/home_icon" />
 
@@ -74,18 +65,7 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
-        <!-- Section Header: Current Location -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Current Location"
-            android:textSize="20sp"
-            android:textColor="#FFFFFF"
-            android:paddingTop="10dp"
-            android:paddingBottom="5dp"
-            android:paddingLeft="10dp" />
-
-        <!-- Current Location Detail -->
+        <!-- Current Location -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,7 +73,7 @@
             android:padding="10dp">
 
             <ImageView
-                android:layout_width="30dp"
+                android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/home_icon" />
 
@@ -106,6 +86,7 @@
                 android:textColor="#D3D3D3"
                 android:textSize="18sp" />
         </LinearLayout>
+
 
     </LinearLayout>
 </ScrollView>

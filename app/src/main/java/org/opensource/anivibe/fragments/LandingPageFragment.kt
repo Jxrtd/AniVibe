@@ -39,16 +39,20 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
             itemList,
             onDeleteClickListener = { position -> deletePost(position) },
             onLikeClickListener = { position ->
-                itemList[position].isLiked = !itemList[position].isLiked
-                PostRepository.toggleLike(itemList[position].id)
-                itemAdapter.notifyItemChanged(position)
+                if (position in itemList.indices) {
+                    itemList[position].isLiked = !itemList[position].isLiked
+                    PostRepository.toggleLike(itemList[position].id ?: "")
+                    itemAdapter.notifyItemChanged(position)
+                }
             },
             onCommentClickListener = { position ->
                 if (position in itemList.indices) {
                     val post = itemList[position]
                     val commentsFragment = CommentFragment.newInstance(
                         postId = post.id ?: "",
-                        profileImagePath = post.profileImagePath
+                        profileImagePath = post.profileImagePath,
+                        username = post.username,
+                        description = post.description
                     )
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.fragmentContainer1, commentsFragment)
