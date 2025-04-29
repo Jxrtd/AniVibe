@@ -12,12 +12,18 @@ import org.opensource.anivibe.R
 import org.opensource.anivibe.ToPostActivity
 import org.opensource.anivibe.data.Item
 import org.opensource.anivibe.helper.ItemAdapter
-import org.opensource.anivibe.repository.PostRepository
+import org.opensource.anivibe.PostRepository
+import org.opensource.anivibe.UserRepository
+import org.opensource.anivibe.helper.ProfileImageUtils.loadProfileImage
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemAdapter: ItemAdapter
+    private lateinit var emptyState: View
     private val itemList = mutableListOf<Item>()
 
     private val postActivityLauncher = registerForActivityResult(
@@ -32,6 +38,7 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView = view.findViewById(R.id.recyclerView)
+        emptyState = view.findViewById(R.id.emptyState)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         itemAdapter = ItemAdapter(
@@ -52,13 +59,17 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
                         postId = post.id ?: "",
                         profileImagePath = post.profileImagePath,
                         username = post.username,
-                        description = post.description
+                        description = post.description,
+                        timestamp = post.timestamp // 🔥 Pass timestamp here!
                     )
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.fragmentContainer1, commentsFragment)
                         .addToBackStack(null)
                         .commit()
                 }
+            },
+            timestampFormatter = { timestamp ->
+                formatTimestamp(timestamp)
             }
 
         )
@@ -72,10 +83,16 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
         }
     }
 
+    private fun formatTimestamp(timestamp: Long): String {
+        return SimpleDateFormat("MMM d, h:mm a", Locale.getDefault()).format(Date(timestamp))
+    }
+
     override fun onResume() {
         super.onResume()
         refreshPosts()
     }
+
+
 
     private fun refreshPosts() {
         try {
@@ -83,10 +100,25 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
             itemList.clear()
             itemList.addAll(posts)
             itemAdapter.notifyDataSetChanged()
+
+            // Show empty state if no posts
+            if (itemList.isEmpty()) {
+                emptyState.visibility = View.VISIBLE
+                recyclerView.visibility = View.GONE
+            } else {
+                emptyState.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
+            }
+
+            // No need to manually load profile image here anymore
         } catch (e: Exception) {
             e.printStackTrace()
+            emptyState.visibility = View.VISIBLE
+            recyclerView.visibility = View.GONE
         }
     }
+
+
 
     private fun deletePost(position: Int) {
         if (position in itemList.indices) {
@@ -95,6 +127,12 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
                 PostRepository.deletePost(requireContext(), postId)
                 itemList.removeAt(position)
                 itemAdapter.notifyItemRemoved(position)
+
+                // Check if we need to show empty state after deletion
+                if (itemList.isEmpty()) {
+                    emptyState.visibility = View.VISIBLE
+                    recyclerView.visibility = View.GONE
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

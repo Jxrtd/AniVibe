@@ -63,7 +63,7 @@
         <activity android:name=".EditProfileActivity" />
 
         <activity android:name=".NavBar"
-            android:windowSoftInputMode="adjustResize|adjustPan"
+            android:windowSoftInputMode="adjustPan|adjustResize"
             android:exported="true">
         </activity>
 

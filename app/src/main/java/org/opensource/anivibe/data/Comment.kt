@@ -3,8 +3,13 @@ package org.opensource.anivibe.data
 
 data class Comment(
     var username: String,
-    var content: String,
-    var profileImagePath: String? = null,
-    // Add userId to link comment to user
-    var userId: String? = null
-)
+    val content: String,
+    var profileImagePath: String?,
+    val userId: String, // Should match the username
+    val timestamp: Long = System.currentTimeMillis()
+) {
+    init {
+        require(username.isNotBlank()) { "Username cannot be blank" }
+        require(userId.isNotBlank()) { "User ID cannot be blank" }
+    }
+}

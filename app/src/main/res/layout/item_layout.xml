@@ -47,13 +47,19 @@
                 android:textSize="15sp"
                 android:textStyle="bold"/>
 
-
+            <TextView
+                android:id="@+id/post_timestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray_light"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp"/>
         </LinearLayout>
 
         <ImageView
             android:id="@+id/btndelete"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginEnd="16dp"
             android:clipToOutline="true"
             android:scaleType="centerCrop"

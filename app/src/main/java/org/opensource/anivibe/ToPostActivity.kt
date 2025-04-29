@@ -5,10 +5,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import org.opensource.anivibe.data.Item
-import org.opensource.anivibe.repository.PostRepository
 import java.io.File
 import java.util.UUID
 

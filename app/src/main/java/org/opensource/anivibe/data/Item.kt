@@ -7,7 +7,8 @@ data class Item(
     var username: String = "",
     var description: String = "",
     var isLiked: Boolean = false,
-    val comments: MutableList<Comment> = mutableListOf()  // Use your own Comment class
+    val comments: MutableList<Comment> = mutableListOf(),  // Use your own Comment class
+    var timestamp: Long = System.currentTimeMillis()  // Added timestamp field
 ) {
     // Add a debug method to print item details
     fun logDetails(tag: String) {

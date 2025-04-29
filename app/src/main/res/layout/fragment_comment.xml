@@ -5,11 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1A1A1D"
-    android:fitsSystemWindows="true"> <!-- IMPORTANT -->
+    android:fitsSystemWindows="true">
 
     <!-- Post View at the top -->
-
-    <!-- Divider -->
     <include
         android:id="@+id/post_view"
         layout="@layout/item_layout"
@@ -21,6 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Divider -->
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
@@ -41,10 +40,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Comment input area -->
+    <!-- Comment input area - Now inside a container that will adjust for keyboard -->
     <LinearLayout
         android:id="@+id/comment_input_container"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#2A2A2D"
         android:orientation="horizontal"
@@ -55,7 +54,6 @@
 
         <EditText
             android:id="@+id/comment_input"
-            android:fontFamily="sans-serif-condensed"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -64,7 +62,8 @@
             android:textColorHint="#AAAAAA"
             android:background="@android:color/transparent"
             android:padding="8dp"
-            android:maxLines="3" /> <!-- GOOD PRACTICE -->
+            android:maxLines="3"
+            android:fontFamily="sans-serif-condensed" />
 
         <Button
             android:id="@+id/comment_send_button"

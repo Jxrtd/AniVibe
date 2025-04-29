@@ -20,5 +20,8 @@
     <color name="tabInactive">#330202</color>
     <color name="background_color">#FFF5F5F5</color>
     <color name="primary_color">#FF6200EE</color>
+    <color name="green">#4A804D</color>
+    <color name="gray_light">#B3FFFFFF</color>
+    <color name="light_gray">#33FFFFFF</color>
 
 </resources>

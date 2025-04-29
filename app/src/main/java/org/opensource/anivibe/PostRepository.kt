@@ -1,6 +1,7 @@
-package org.opensource.anivibe.repository
+package org.opensource.anivibe
 
 import android.content.Context
+import android.util.Log
 import org.opensource.anivibe.data.Comment
 import org.opensource.anivibe.data.Item
 import org.json.JSONArray
@@ -23,7 +24,6 @@ object PostRepository {
         return posts
     }
 
-
     fun deletePost(context: Context, postId: String) {
         val postToRemove = posts.find { it.id == postId }
         if (postToRemove != null) {
@@ -42,9 +42,10 @@ object PostRepository {
         }
     }
 
-    fun addComment(postId: String, comment: Comment) {
+    fun addComment(context: Context, postId: String, comment: Comment) {
         val post = posts.find { it.id == postId }
         post?.comments?.add(comment)
+        savePosts(context) // 💾 Make sure to save after adding comment
     }
 
     fun toggleLike(postId: String?) {
@@ -65,6 +66,7 @@ object PostRepository {
                 put("profileImagePath", item.profileImagePath)
                 put("description", item.description)
                 put("isLiked", item.isLiked)
+                put("timestamp", item.timestamp)
 
                 val commentsJson = JSONArray()
                 item.comments.forEach { comment ->
@@ -72,6 +74,8 @@ object PostRepository {
                         put("username", comment.username)
                         put("content", comment.content)
                         put("profileImagePath", comment.profileImagePath)
+                        put("userId", comment.userId)
+                        put("timestamp", comment.timestamp)
                     }
                     commentsJson.put(commentJson)
                 }
@@ -98,6 +102,7 @@ object PostRepository {
                 for (i in 0 until jsonArray.length()) {
                     val obj = jsonArray.getJSONObject(i)
 
+                    // Load comments with timestamp support
                     val comments = mutableListOf<Comment>()
                     val commentsArray = obj.optJSONArray("comments") ?: JSONArray()
                     for (j in 0 until commentsArray.length()) {
@@ -106,10 +111,15 @@ object PostRepository {
                             Comment(
                                 username = commentObj.getString("username"),
                                 content = commentObj.getString("content"),
-                                profileImagePath = commentObj.optString("profileImagePath", null)
+                                profileImagePath = commentObj.optString("profileImagePath", null),
+                                userId = commentObj.optString("userId", commentObj.getString("username")), // Fallback to username if userId not present
+                                timestamp = commentObj.optLong("timestamp", System.currentTimeMillis()) // Default to current time if missing
                             )
                         )
                     }
+
+                    // Sort comments by timestamp (newest first)
+                    val sortedComments = comments.sortedByDescending { it.timestamp }
 
                     posts.add(
                         Item(
@@ -118,14 +128,20 @@ object PostRepository {
                             username = obj.getString("username"),
                             description = obj.getString("description"),
                             isLiked = obj.getBoolean("isLiked"),
-                            comments = comments
+                            comments = sortedComments.toMutableList(),
+                            timestamp = obj.optLong("timestamp", System.currentTimeMillis()) // Add timestamp to post if needed
                         )
                     )
                 }
 
+                // Sort posts by timestamp (newest first)
+                posts.sortByDescending { it.timestamp }
+
             } catch (e: Exception) {
-                // Clear old incompatible data
+                Log.e("PostRepository", "Error loading posts", e)
+                // Clear corrupted data
                 prefs.edit().remove("postList").apply()
+                // Optionally restore default posts or handle error
             }
         }
     }

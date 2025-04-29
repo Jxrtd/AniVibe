@@ -16,10 +16,14 @@ import android.graphics.Paint
 import android.graphics.Shader
 import android.graphics.Typeface
 import android.util.Log
+import androidx.core.content.ContextCompat
 import org.opensource.anivibe.R
 import org.opensource.anivibe.UserRepository
 import org.opensource.anivibe.data.Comment
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 // Circle transformation for Picasso (unchanged)
 class CircleTransform : Transformation {
@@ -53,15 +57,16 @@ class CircleTransform : Transformation {
     }
 }
 
-class CommentAdapter(private val comments: List<Comment>) :
-    RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
-
-    private val TAG = "CommentAdapter"
+class CommentAdapter(
+    private val comments: List<Comment>,
+    private val currentUsername: String? = null
+) : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
 
     class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val username: TextView = view.findViewById(R.id.comment_username)
         val content: TextView = view.findViewById(R.id.comment_content)
         val profilePic: ImageView = view.findViewById(R.id.comment_profile_pic)
+        val timestamp: TextView? = view.findViewById(R.id.comment_timestamp)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
@@ -74,39 +79,62 @@ class CommentAdapter(private val comments: List<Comment>) :
         val comment = comments[position]
         val context = holder.itemView.context
 
-        Log.d(TAG, "Binding comment at position $position, userId: ${comment.userId}, username: ${comment.username}")
-
-        // Always try to get the current username from UserRepository if userId is available
-        if (!comment.userId.isNullOrEmpty()) {
-            // Use UserRepository to get the current user's name
-            val userPrefs = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-            val currentUsername = userPrefs.getString("username", null)
-
-            // If the comment's userId matches the current user's saved username,
-            // update the display name to show the current username
-            if (comment.userId == currentUsername || comment.userId == comment.username) {
-                Log.d(TAG, "Updating username display from ${comment.username} to $currentUsername")
-                holder.username.text = currentUsername
-            } else {
-                // Otherwise use the stored username
-                holder.username.text = comment.username
-            }
+        // Display username - highlight if it's the current user's comment
+        holder.username.text = comment.username
+        if (currentUsername != null && comment.username == currentUsername) {
+            holder.username.setTextColor(ContextCompat.getColor(context, R.color.accentRed))
+            holder.username.setTypeface(null, Typeface.BOLD)
         } else {
-            // Fall back to the stored username if no userId is available
-            holder.username.text = comment.username
-            Log.d(TAG, "Using stored username: ${comment.username}")
+            holder.username.setTextColor(ContextCompat.getColor(context, R.color.white))
+            holder.username.setTypeface(null, Typeface.NORMAL)
         }
 
-        holder.username.setTypeface(holder.username.typeface, Typeface.BOLD)
+        // Comment content
         holder.content.text = comment.content
 
-        // Use ProfileImageUtils to load the profile image
-        if (!comment.profileImagePath.isNullOrBlank()) {
-            ProfileImageUtils.loadProfileImage(context, holder.profilePic, comment.profileImagePath)
-        } else {
-            // Set default profile picture
-            Log.d(TAG, "No profile image path, using default")
-            holder.profilePic.setImageResource(R.drawable.profile_circle)
+        // Timestamp if available
+        holder.timestamp?.text = comment.timestamp?.let {
+            SimpleDateFormat("MMM d, h:mm a", Locale.getDefault()).format(Date(it))
+        } ?: ""
+
+        // Load profile image with proper error handling
+        loadProfileImage(context, holder.profilePic, comment.profileImagePath)
+    }
+
+    private fun loadProfileImage(context: Context, imageView: ImageView, path: String?) {
+        try {
+            when {
+                path.isNullOrBlank() -> {
+                    imageView.setImageResource(R.drawable.profile_circle)
+                }
+                path.startsWith("http") -> {
+                    Picasso.get()
+                        .load(path)
+                        .placeholder(R.drawable.profile_circle)
+                        .error(R.drawable.profile_circle)
+                        .transform(CircleTransform())
+                        .into(imageView)
+                }
+                else -> {
+                    val imageFile = File(path)
+                    if (imageFile.exists()) {
+                        Picasso.get()
+                            .load(imageFile)
+                            .placeholder(R.drawable.profile_circle)
+                            .error(R.drawable.profile_circle)
+                            .transform(CircleTransform())
+                            .into(imageView)
+                    } else {
+                        // Try loading from internal storage if file not found
+                        UserRepository.getProfileImageSafely(context)?.let {
+                            imageView.setImageBitmap(it)
+                        } ?: imageView.setImageResource(R.drawable.profile_circle)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("CommentAdapter", "Error loading profile image", e)
+            imageView.setImageResource(R.drawable.profile_circle)
         }
     }
 
