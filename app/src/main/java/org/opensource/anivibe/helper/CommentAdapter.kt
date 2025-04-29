@@ -92,6 +92,13 @@ class CommentAdapter(
         val comment = comments[position]
         val context = holder.itemView.context
 
+        val isCurrentUserComment = currentUsername != null && comment.username == currentUsername
+        holder.deleteButton.visibility = if (isCurrentUserComment) View.VISIBLE else View.VISIBLE
+
+        holder.deleteButton.setOnClickListener {
+            deleteListener?.onCommentDeleted(position)
+        }
+
         // Display username - highlight if it's the current user's comment
         holder.username.text = comment.username
         if (currentUsername != null && comment.username == currentUsername) {
