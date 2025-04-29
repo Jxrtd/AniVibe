@@ -143,7 +143,13 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
 
     private fun setupRecyclerView() {
         val currentUsername = UserRepository.getCurrentUsername(requireContext())
-        adapter = CommentAdapter(comments, currentUsername)
+        adapter = CommentAdapter(comments, currentUsername, postId).apply {
+            setOnCommentDeleteListener(object : CommentAdapter.OnCommentDeleteListener {
+                override fun onCommentDeleted(position: Int) {
+                    deleteComment(position)
+                }
+            })
+        }
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -162,7 +168,15 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
             }
         }
     }
-
+    private fun deleteComment(position: Int) {
+        if (position in 0 until comments.size) {
+            val commentToDelete = comments[position]
+            comments.removeAt(position)
+            adapter.notifyItemRemoved(position)
+            PostRepository.deleteComment(requireContext(), postId, commentToDelete)
+            showSuccessSnackbar("Comment deleted")
+        }
+    }
     private fun setupCommentInput() {
         commentInput.addTextChangedListener {
             sendButton.isEnabled = !it.isNullOrBlank()
@@ -209,7 +223,7 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
                 }
 
                 val newComment = Comment(
-                    username = currentUsername,
+                    username = post.username,
                     content = commentText,
                     profileImagePath = currentUser.profileImagePath,
                     userId = currentUsername,

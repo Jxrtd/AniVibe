@@ -24,6 +24,7 @@ object PostRepository {
         return posts
     }
 
+
     fun deletePost(context: Context, postId: String) {
         val postToRemove = posts.find { it.id == postId }
         if (postToRemove != null) {
@@ -46,6 +47,12 @@ object PostRepository {
         val post = posts.find { it.id == postId }
         post?.comments?.add(comment)
         savePosts(context) // 💾 Make sure to save after adding comment
+    }
+
+    fun deleteComment(context: Context, postId: String, comment: Comment) {
+        val post = posts.find { it.id == postId }
+        post?.comments?.remove(comment)
+        savePosts(context)
     }
 
     fun toggleLike(postId: String?) {

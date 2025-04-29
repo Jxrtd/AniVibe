@@ -58,8 +58,9 @@ class CircleTransform : Transformation {
 }
 
 class CommentAdapter(
-    private val comments: List<Comment>,
-    private val currentUsername: String? = null
+    private val comments: MutableList<Comment>, // Changed to MutableList
+    private val currentUsername: String? = null,
+    private val postId: String? = null // Add postId parameter
 ) : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
 
     class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -67,6 +68,18 @@ class CommentAdapter(
         val content: TextView = view.findViewById(R.id.comment_content)
         val profilePic: ImageView = view.findViewById(R.id.comment_profile_pic)
         val timestamp: TextView? = view.findViewById(R.id.comment_timestamp)
+        val deleteButton: ImageView = view.findViewById(R.id.delete_button) // Add delete button
+    }
+
+    // Add click listener interface
+    interface OnCommentDeleteListener {
+        fun onCommentDeleted(position: Int)
+    }
+
+    private var deleteListener: OnCommentDeleteListener? = null
+
+    fun setOnCommentDeleteListener(listener: OnCommentDeleteListener) {
+        this.deleteListener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
@@ -99,6 +112,13 @@ class CommentAdapter(
 
         // Load profile image with proper error handling
         loadProfileImage(context, holder.profilePic, comment.profileImagePath)
+    }
+
+    fun removeComment(position: Int) {
+        if (position in 0 until comments.size) {
+            comments.removeAt(position)
+            notifyItemRemoved(position)
+        }
     }
 
     private fun loadProfileImage(context: Context, imageView: ImageView, path: String?) {
