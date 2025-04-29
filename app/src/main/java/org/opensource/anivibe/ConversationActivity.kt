@@ -1,5 +1,6 @@
 package org.opensource.anivibe
 
+import android.content.Context
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
@@ -9,8 +10,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.opensource.anivibe.adapters.ConversationAdapter
+import org.opensource.anivibe.data.ChatMessageManager
 import org.opensource.anivibe.data.ConversationMessage
+import java.util.Calendar
 
 class ConversationActivity : AppCompatActivity() {
 
@@ -21,6 +26,7 @@ class ConversationActivity : AppCompatActivity() {
     private lateinit var conversationAdapter: ConversationAdapter
     private val messagesList = mutableListOf<ConversationMessage>()
     private var keikoScriptStep = 0
+    private lateinit var chatMessageManager: ChatMessageManager
 
     private var fanName: String = ""
     private var fanPhotoResId: Int = 0
@@ -28,6 +34,9 @@ class ConversationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_conversation)
+
+        // Initialize chat message manager
+        chatMessageManager = ChatMessageManager(this)
 
         // Get data from intent
         fanName = intent.getStringExtra("FAN_NAME") ?: "Unknown"
@@ -50,27 +59,38 @@ class ConversationActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this).apply {
             stackFromEnd = true  // Messages stack from bottom
         }
+
+        // Load saved messages or start a new conversation
+        loadConversation()
+
         conversationAdapter = ConversationAdapter(this, messagesList, fanPhotoResId, fanName)
         recyclerView.adapter = conversationAdapter
 
-        // Add some initial greeting message from fan
-        addFanMessage(getInitialGreeting())
+        // If this is a new conversation, add initial greeting
+        if (messagesList.isEmpty()) {
+            // Add initial greeting message from fan
+            addFanMessage(getInitialGreeting())
+
+            // If Keiko, start the script
+            if (fanName == "Keiko") {
+                keikoScriptStep = 1
+                // ask after a short delay
+                recyclerView.postDelayed({
+                    addFanMessage("Have you watched Tokyo Ghoul?")
+                }, 1000)
+            }
+        } else {
+            // If Keiko conversation was in progress, restore script step
+            if (fanName == "Keiko") {
+                val savedScriptStep = getSharedPreferences("ConversationPrefs", Context.MODE_PRIVATE)
+                    .getInt("${fanName}_script_step", 0)
+                keikoScriptStep = savedScriptStep
+            }
+        }
 
         // Set up send button
         sendButton.setOnClickListener {
             sendMessage()
-        }
-
-        // 1) initial greeting
-        addFanMessage(getInitialGreeting())
-
-        // 2) if Keiko, start the script
-        if (fanName == "Keiko") {
-            keikoScriptStep = 1
-            // ask after a short delay
-            recyclerView.postDelayed({
-                addFanMessage("Have you watched Tokyo Ghoul?")
-            }, 1000)
         }
 
         // Set up keyboard send action
@@ -111,7 +131,7 @@ class ConversationActivity : AppCompatActivity() {
             1 -> { // Has she watched TG?
                 when {
                     msg.contains("yes")    -> {
-                        addFanMessage("Awesome! What did you think of Kaneki’s transformation?")
+                        addFanMessage("Awesome! What did you think of Kaneki's transformation?")
                         keikoScriptStep = 2
                     }
                     msg.contains("no")     -> {
@@ -124,13 +144,13 @@ class ConversationActivity : AppCompatActivity() {
                 }
             }
             2 -> { // User gave opinion
-                addFanMessage("I totally agree! Kaneki’s arc is one of the best. Who’s your favorite character?")
+                addFanMessage("I totally agree! Kaneki's arc is one of the best. Who's your favorite character?")
                 keikoScriptStep = 4
             }
             3 -> { // Offer synopsis
                 addFanMessage(
-                    "It’s about a college student turned half-ghoul after a tragic attack. " +
-                            "It’s dark but incredible. Will you give it a try?"
+                    "It's about a college student turned half-ghoul after a tragic attack. " +
+                            "It's dark but incredible. Will you give it a try?"
                 )
                 keikoScriptStep = 5
             }
@@ -140,7 +160,7 @@ class ConversationActivity : AppCompatActivity() {
                     addFanMessage("Nice — $msg is a great pick! We should chat more about them sometime.")
                     keikoScriptStep = 0
                 } else {
-                    addFanMessage("Who’s your favorite character?")
+                    addFanMessage("Who's your favorite character?")
                 }
             }
             5 -> { // Will you try it?
@@ -151,6 +171,11 @@ class ConversationActivity : AppCompatActivity() {
                 keikoScriptStep = 0
             }
         }
+
+        // Save script step for Keiko
+        getSharedPreferences("ConversationPrefs", Context.MODE_PRIVATE).edit()
+            .putInt("${fanName}_script_step", keikoScriptStep)
+            .apply()
     }
 
     private fun addUserMessage(message: String) {
@@ -162,17 +187,30 @@ class ConversationActivity : AppCompatActivity() {
         messagesList.add(userMessage)
         conversationAdapter.notifyItemInserted(messagesList.size - 1)
         scrollToBottom()
+
+        // Save the updated conversation
+        saveConversation()
+
+        // We don't update the last interaction time when the user sends a message
     }
 
     private fun addFanMessage(message: String) {
+        val currentTime = System.currentTimeMillis()
         val fanMessage = ConversationMessage(
             message = message,
             isFromUser = false,
-            timestamp = System.currentTimeMillis()
+            timestamp = currentTime
         )
         messagesList.add(fanMessage)
         conversationAdapter.notifyItemInserted(messagesList.size - 1)
         scrollToBottom()
+
+        // Save the updated conversation
+        saveConversation()
+
+        // Update last interaction time ONLY when fan sends a message
+        // This is what will be reflected in the chat list
+        chatMessageManager.saveLastInteractionTime(fanName)
     }
 
     private fun scrollToBottom() {
@@ -300,6 +338,37 @@ class ConversationActivity : AppCompatActivity() {
         // Simulate typing delay (optional)
         recyclerView.postDelayed({
             addFanMessage(response)
-        }, 1000)
+        }, 1000) // End of postDelayed
+    }
+
+    private fun saveConversation() {
+        val sharedPreferences = getSharedPreferences("ConversationPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val gson = Gson()
+        val json = gson.toJson(messagesList)
+        editor.putString("${fanName}_messages", json)
+        editor.apply()
+    }
+
+    private fun loadConversation() {
+        val sharedPreferences = getSharedPreferences("ConversationPrefs", Context.MODE_PRIVATE)
+        val json = sharedPreferences.getString("${fanName}_messages", null)
+        if (json != null) {
+            try {
+                val gson = Gson()
+                val type = object : TypeToken<List<ConversationMessage>>() {}.type
+                val savedMessages: List<ConversationMessage> = gson.fromJson(json, type)
+                messagesList.addAll(savedMessages)
+            } catch (e: Exception) {
+                // Handle error loading conversation
+                e.printStackTrace()
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Save conversation state when activity is paused
+        saveConversation()
     }
 }

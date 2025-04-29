@@ -8,7 +8,6 @@ import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import org.opensource.anivibe.databinding.NavbarBinding
-import org.opensource.anivibe.fragments.ChatFragment
 import org.opensource.anivibe.fragments.LandingPageFragment
 import org.opensource.anivibe.fragments.ProfileFragment
 import org.opensource.anivibe.fragments.SaveAnimeListFragment

@@ -297,7 +297,7 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
     private fun showErrorSnackbar(message: String) {
         view?.let {
             Snackbar.make(it, message, Snackbar.LENGTH_LONG)
-                .setBackgroundTint(requireContext().getColor(R.color.red))
+                .setBackgroundTint(requireContext().getColor(R.color.dark_red))
                 .show()
         }
     }
@@ -305,7 +305,7 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
     private fun showSuccessSnackbar(message: String) {
         view?.let {
             Snackbar.make(it, message, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(requireContext().getColor(R.color.green))
+                .setBackgroundTint(requireContext().getColor(R.color.accentRed))
                 .show()
         }
     }

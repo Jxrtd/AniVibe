@@ -50,7 +50,11 @@ class ChatAdapter(
         textViewTime.text = chatMessage.time
         imageViewPhoto.setImageResource(chatMessage.photo)
 
+        // Add click listener to the entire view
+        view.setOnClickListener {
+            onClickItem(chatMessage)
+        }
+
         return view
     }
-
 }

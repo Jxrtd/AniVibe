@@ -88,7 +88,27 @@ class ConversationAdapter(
     }
 
     private fun formatTime(timestamp: Long): String {
-        val dateFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
-        return dateFormat.format(Date(timestamp))
+        val now = System.currentTimeMillis()
+        val diff = now - timestamp
+        val days = diff / (24 * 60 * 60 * 1000)
+
+        return when {
+            days == 0L -> {
+                // Today: show time
+                SimpleDateFormat("h:mm a", Locale.getDefault()).format(Date(timestamp))
+            }
+            days == 1L -> {
+                // Yesterday
+                "Yesterday at " + SimpleDateFormat("h:mm a", Locale.getDefault()).format(Date(timestamp))
+            }
+            days < 7L -> {
+                // Within a week: show day name
+                SimpleDateFormat("EEE 'at' h:mm a", Locale.getDefault()).format(Date(timestamp))
+            }
+            else -> {
+                // More than a week: show date and time
+                SimpleDateFormat("MMM d 'at' h:mm a", Locale.getDefault()).format(Date(timestamp))
+            }
+        }
     }
 }
