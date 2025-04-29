@@ -21,6 +21,7 @@
 
             <ImageButton
                 android:id="@+id/backButton"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/arrow_left_icon"
@@ -78,6 +79,7 @@
             <!-- Name Section -->
             <TextView
                 android:id="@+id/label_name"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Name"
@@ -87,6 +89,7 @@
 
             <EditText
                 android:id="@+id/input_name"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter your name"
@@ -99,6 +102,7 @@
             <!-- Bio Section -->
             <TextView
                 android:id="@+id/label_bio"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Bio"
@@ -109,6 +113,7 @@
             <EditText
                 android:id="@+id/input_bio"
                 android:layout_width="match_parent"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_height="wrap_content"
                 android:hint="Enter your bio"
                 android:inputType="textMultiLine"
@@ -122,10 +127,11 @@
             <!-- Change Password Button -->
             <Button
                 android:id="@+id/changepassword"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Change Password"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:padding="10dp"
                 android:textColor="#c6c6c6"
@@ -135,6 +141,7 @@
             <!-- Education Section -->
             <TextView
                 android:id="@+id/label_education"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Education"
@@ -144,6 +151,7 @@
 
             <EditText
                 android:id="@+id/input_education"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter your education"
@@ -165,6 +173,7 @@
 
             <EditText
                 android:id="@+id/input_hometown"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter your hometown"
@@ -177,6 +186,7 @@
             <!-- Location Section -->
             <TextView
                 android:id="@+id/label_location"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Current Location"
@@ -186,6 +196,7 @@
 
             <EditText
                 android:id="@+id/input_location"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter your current location"
@@ -198,6 +209,7 @@
             <!-- Birthdate Section -->
             <TextView
                 android:id="@+id/label_birthdate"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Birthdate"
@@ -207,6 +219,7 @@
 
             <EditText
                 android:id="@+id/input_birthdate"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter your birthdate (MM/DD/YYYY)"

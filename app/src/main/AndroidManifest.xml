@@ -55,7 +55,7 @@
             android:name=".ToPostActivity"
             android:exported="true" />
         <activity
-            android:name=".Settings_HelpAndSupportAcitivity"
+            android:name=".SettingsHelpAndSupportAcitivity"
             android:exported="true"/>
         <activity
             android:name=".DevelopersPageActivity"

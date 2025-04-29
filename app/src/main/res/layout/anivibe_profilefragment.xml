@@ -113,10 +113,10 @@
                         android:id="@+id/mydetails"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="1dp"
                         android:layout_weight="1"
                         android:text="My Details"
-                        android:textColor="#D3D3D3"
-                        android:layout_marginRight="1dp"/>
+                        android:textColor="#D3D3D3" />
 
                     <Button
                         android:id="@+id/myanimestat"

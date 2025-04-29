@@ -122,6 +122,7 @@
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:text="LOGIN"
+        android:textStyle="bold"
         android:textSize="16sp"
         android:background="@drawable/rounded_button"
         android:textColor="#1D1616"

@@ -50,6 +50,7 @@
                 android:fontFamily="sans-serif-black"/>
 
             <TextView
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Android Developer"
@@ -58,13 +59,14 @@
                 android:layout_marginBottom="12dp"/>
 
             <TextView
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Experienced Android developer specializing in intuitive UI/UX design and efficient app performance."
-                android:textSize="14sp"
-                android:textColor="#EEEEEE"
+                android:layout_marginBottom="12dp"
                 android:paddingHorizontal="10dp"
-                android:layout_marginBottom="12dp"/>
+                android:text="Experienced Android developer specializing in intuitive UI/UX design and efficient app performance."
+                android:textColor="#EEEEEE"
+                android:textSize="14sp" />
 
 
         </LinearLayout>
@@ -96,6 +98,7 @@
                 android:fontFamily="sans-serif-black"/>
 
             <TextView
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Android Developer"
@@ -104,6 +107,7 @@
                 android:layout_marginBottom="12dp"/>
 
             <TextView
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Skilled in AI development, full-stack technologies, and building scalable applications."

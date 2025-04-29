@@ -62,12 +62,19 @@ object UserRepository {
     }
 
     // Get profile image
-    fun getProfileImage(context: Context): Bitmap? {
+    fun getProfileImageSafely(context: Context): Bitmap? {
         val profilePrefs = context.getSharedPreferences(PROFILE_PREFS, Context.MODE_PRIVATE)
         val imagePath = profilePrefs.getString("profile_image", null) ?: return null
 
         return try {
-            context.openFileInput(imagePath).use { fis ->
+            // Extract just the filename if it contains path separators
+            val filename = if (imagePath.contains("/")) {
+                imagePath.substring(imagePath.lastIndexOf("/") + 1)
+            } else {
+                imagePath
+            }
+
+            context.openFileInput(filename).use { fis ->
                 BitmapFactory.decodeStream(fis)
             }
         } catch (e: Exception) {
@@ -76,11 +83,12 @@ object UserRepository {
         }
     }
 
-    // Save profile image
+    // Replace saveProfileImage with this improved version
     fun saveProfileImage(context: Context, bitmap: Bitmap) {
         val filename = "profile_${System.currentTimeMillis()}.png"
 
         try {
+            // Make sure we're only using the filename without any path
             context.openFileOutput(filename, Context.MODE_PRIVATE).use { out ->
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
             }

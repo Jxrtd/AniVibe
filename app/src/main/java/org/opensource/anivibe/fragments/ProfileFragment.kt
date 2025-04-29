@@ -117,10 +117,30 @@ class ProfileFragment : Fragment(R.layout.anivibe_profilefragment) {
         val imgView = requireView().findViewById<CircleImageView>(R.id.main_profile_image)
         val picPrefs = requireContext()
             .getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
-        picPrefs.getString("profile_image", null)?.let { fn ->
-            requireContext().openFileInput(fn).use { fis ->
-                imgView.setImageBitmap(BitmapFactory.decodeStream(fis))
+
+        try {
+            picPrefs.getString("profile_image", null)?.let { filename ->
+                // Extract just the filename without any path
+                val actualFilename = if (filename.contains("/")) {
+                    filename.substring(filename.lastIndexOf("/") + 1)
+                } else {
+                    filename
+                }
+
+                try {
+                    requireContext().openFileInput(actualFilename).use { fis ->
+                        imgView.setImageBitmap(BitmapFactory.decodeStream(fis))
+                    }
+                } catch (e: Exception) {
+                    android.util.Log.e("ProfileFragment", "Error loading profile image", e)
+                    // Set default image on error
+                    imgView.setImageResource(R.drawable.profile_circle)
+                }
             }
+        } catch (e: Exception) {
+            android.util.Log.e("ProfileFragment", "Error in loadProfileInfo", e)
+            // Set default image
+            imgView.setImageResource(R.drawable.profile_circle)
         }
     }
 }

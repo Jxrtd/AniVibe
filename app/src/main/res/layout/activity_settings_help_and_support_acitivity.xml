@@ -15,30 +15,45 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Enhanced back button with ripple effect -->
-        <ImageButton
-            android:id="@+id/devbackbutton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/arrow_left_icon"
-            android:scaleType="fitCenter"
-            android:layout_gravity="left"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_marginBottom="8dp"
-            app:tint="#FFFFFF" />
-
-        <!-- Enhanced title text -->
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Help and Support"
-            android:textSize="25sp"
-            android:textColor="#FFFFFF"
-            android:textAlignment="center"
-            android:padding="15dp"
-            android:textStyle="bold"
-            android:letterSpacing="0.02"
-            android:fontFamily="sans-serif-medium"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp">
+
+            <!-- 1) Arrow at left -->
+            <ImageButton
+                android:id="@+id/devbackbutton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/arrow_left_icon"
+                android:scaleType="fitCenter"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/white" />
+
+            <!-- 2) Title stretches to fill remaining space -->
+            <TextView
+                android:id="@+id/title"
+                android:fontFamily="sans-serif-condensed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Help and Support"
+                android:textSize="25sp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:gravity="center"/>
+
+            <!-- 3) Invisible spacer same width as arrow -->
+            <View
+                android:layout_width="30dp"
+                android:layout_height="0dp"/>
+        </LinearLayout>
+
+
+
+
 
         <!-- Enhanced ListView with divider and padding -->
         <ListView

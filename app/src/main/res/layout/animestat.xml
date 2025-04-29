@@ -12,6 +12,7 @@
 
         <!-- Section Header -->
         <TextView
+            android:fontFamily="sans-serif-condensed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Anime Preferences"
@@ -35,6 +36,7 @@
 
             <TextView
                 android:id="@+id/favoriteAnimeTextView"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="10dp"
@@ -57,6 +59,7 @@
 
             <TextView
                 android:id="@+id/favoriteGenreTextView"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="10dp"
@@ -79,6 +82,7 @@
 
             <TextView
                 android:id="@+id/favoriteCharacterTextView"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="10dp"
@@ -95,16 +99,19 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:paddingBottom="8dp"
-            android:paddingLeft="8dp" >
+            android:paddingLeft="8dp"
+            android:paddingTop="5dp">
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@android:drawable/ic_menu_recent_history" />
 
             <TextView
+                android:fontFamily="sans-serif-condensed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Top Anime Recommendations"
+                android:paddingStart="10dp"
                 android:textSize="18sp"
                 android:textColor="#FFFFFF"/>
         </LinearLayout>
@@ -131,10 +138,12 @@
                     android:nestedScrollingEnabled="false" />
 
                 <TextView
+                    android:fontFamily="sans-serif-condensed"
                     android:id="@+id/emptyRecommendationsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="No recommendations yet"
+                    android:paddingStart="20dp"
                     android:textColor="#D3D3D3"
                     android:textSize="18sp" />
             </LinearLayout>

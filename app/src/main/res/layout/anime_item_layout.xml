@@ -27,6 +27,7 @@
 
             <TextView
                 android:id="@+id/name"
+                android:fontFamily="sans-serif-condensed"
                 android:background="#90000000"
                 android:textSize="18sp"
                 tools:text="Naruto"
