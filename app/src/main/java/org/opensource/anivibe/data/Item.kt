@@ -3,7 +3,7 @@ package org.opensource.anivibe.data
 
 data class Item(
     val id: String? = null,
-    var profileImagePath: String? = null,    // Change to var to allow updates
+    var profileImagePath: String?,    // Change to var to allow updates
     var username: String = "",
     var description: String = "",
     var isLiked: Boolean = false,

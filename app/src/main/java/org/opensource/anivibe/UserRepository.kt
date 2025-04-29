@@ -95,6 +95,7 @@ object UserRepository {
         notifyProfileUpdated()
     }
 
+
     fun saveProfileImage(context: Context, bitmap: Bitmap) {
         val filename = "profile_${System.currentTimeMillis()}.png"
 
@@ -106,12 +107,18 @@ object UserRepository {
 
             // Update profile image path in user preferences
             val profilePrefs = context.getSharedPreferences(PROFILE_PREFS, Context.MODE_PRIVATE)
+            val username = getCurrentUsername(context)
+
+            // Store just the filename to preferences
             profilePrefs.edit().putString("profile_image", filename).apply()
 
             // Update current user's profile image path
             val user = getCurrentUser(context)
             user.profileImagePath = filename
             saveUser(context, user)
+
+            // Important: Update all posts with this user's new profile image path
+            PostRepository.updateProfileImage(context, username, filename)
 
             notifyProfileUpdated()
         } catch (e: Exception) {

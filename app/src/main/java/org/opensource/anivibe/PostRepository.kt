@@ -55,7 +55,14 @@ object PostRepository {
         }
     }
 
-    private fun savePosts(context: Context) {
+    // Modified function to accept a List<Item> parameter
+    fun savePosts(context: Context, updatedPosts: List<Item>? = null) {
+        // If updatedPosts is provided, replace the current posts list
+        if (updatedPosts != null) {
+            posts.clear()
+            posts.addAll(updatedPosts)
+        }
+
         val prefs = context.getSharedPreferences("Posts", Context.MODE_PRIVATE)
         val jsonArray = JSONArray()
 
@@ -205,12 +212,50 @@ object PostRepository {
         }
     }
 
+    fun updateProfileImage(context: Context, username: String, newProfileImagePath: String?) {
+        var updated = false
+
+        // Iterate through all posts and update profile image for matching username
+        posts.forEach { post ->
+            if (post.username == username) {
+                post.profileImagePath = newProfileImagePath
+                updated = true
+
+                android.util.Log.d("PostRepository", "Updated profile image for post by $username")
+            }
+
+            // Also update profile image in comments by this user
+            post.comments.forEach { comment ->
+                if (comment.username == username) {
+                    comment.profileImagePath = newProfileImagePath
+                    updated = true
+
+                    android.util.Log.d("PostRepository", "Updated profile image for comment by $username")
+                }
+            }
+        }
+
+        // Save changes if any updates were made
+        if (updated) {
+            savePosts(context)
+            android.util.Log.d("PostRepository", "Saved profile image updates")
+        }
+    }
+
     fun updateUsername(context: Context, oldUsername: String, newUsername: String) {
         var updated = false
         posts.forEach { item ->
             if (item.username == oldUsername) {
                 item.username = newUsername
                 updated = true
+            }
+
+            // Also update username in comments
+            item.comments.forEach { comment ->
+                if (comment.username == oldUsername) {
+                    comment.username = newUsername
+                    updated = true
+                }
             }
         }
 

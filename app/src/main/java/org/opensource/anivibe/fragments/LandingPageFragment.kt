@@ -90,9 +90,19 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
     override fun onResume() {
         super.onResume()
         refreshPosts()
+
+        UserRepository.addProfileUpdateListener {
+            refreshPosts()
+        }
     }
 
-
+    override fun onPause() {
+        super.onPause()
+        // Remove the listener when the fragment is not visible to prevent memory leaks
+        UserRepository.removeProfileUpdateListener {
+            refreshPosts()
+        }
+    }
 
     private fun refreshPosts() {
         try {

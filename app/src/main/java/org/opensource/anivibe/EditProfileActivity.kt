@@ -158,12 +158,30 @@ class EditProfileActivity : AppCompatActivity() {
             val bmp = BitmapFactory.decodeStream(stream)
             profileImageView.setImageBitmap(bmp)
 
-            // save the new picture
-            val filename = "profile_${System.currentTimeMillis()}.png"
-            openFileOutput(filename, Context.MODE_PRIVATE).use { out ->
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, out)
+            try {
+                // Save the new picture
+                val filename = "profile_${System.currentTimeMillis()}.png"
+                openFileOutput(filename, Context.MODE_PRIVATE).use { out ->
+                    bmp.compress(Bitmap.CompressFormat.PNG, 100, out)
+                }
+
+                // Update preferences
+                profilePrefs.edit().putString("profile_image", filename).apply()
+
+                // Get current username
+                val username = userPrefs.getString("username", "") ?: ""
+
+                // Update profile image path in all posts by this user
+                if (username.isNotEmpty()) {
+                    PostRepository.updateProfileImage(this, username, filename)
+
+                    // Show a toast message to confirm the profile was updated
+                    Toast.makeText(this, "Profile picture updated", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this, "Failed to update profile picture", Toast.LENGTH_SHORT).show()
             }
-            profilePrefs.edit().putString("profile_image", filename).apply()
         }
     }
 

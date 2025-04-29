@@ -1,8 +1,6 @@
 package org.opensource.anivibe.helper
 
-import android.content.ContentValues.TAG
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import org.opensource.anivibe.R
+import org.opensource.anivibe.UserRepository
 import org.opensource.anivibe.data.Item
 import java.io.File
 
@@ -23,7 +22,7 @@ class ItemAdapter(
     private val onDeleteClickListener: (Int) -> Unit,
     private val onLikeClickListener: (Int) -> Unit,
     private val onCommentClickListener: (Int) -> Unit,
-    private val timestampFormatter: (Long) -> String // 🔥 Added timestampFormatter here
+    private val timestampFormatter: (Long) -> String
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -45,42 +44,54 @@ class ItemAdapter(
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = itemList[position]
 
-        // Load profile image
+        // Load profile image using ProfileImageUtils
         ProfileImageUtils.loadProfileImage(context, holder.profile, item.profileImagePath)
 
         holder.description.text = item.description
         holder.username.text = item.username
-        holder.timestamp.text = timestampFormatter(item.timestamp) // 🔥 Use timestampFormatter
+        holder.timestamp.text = timestampFormatter(item.timestamp)
 
-        // Set click listeners
-        holder.deleteButton.setOnClickListener { onDeleteClickListener(position) }
+        // Update like button appearance
+        updateLikeButton(holder.likeButton, item.isLiked)
+
+        // Delete post
+        holder.deleteButton.setOnClickListener {
+            onDeleteClickListener(position)
+        }
+
+        // Toggle like state
         holder.likeButton.setOnClickListener {
+            onLikeClickListener(position)
             item.isLiked = !item.isLiked
             updateLikeButton(holder.likeButton, item.isLiked)
-            onLikeClickListener(position)
         }
-        holder.commentButton.setOnClickListener { onCommentClickListener(position) }
 
-        // Update like button visual
-        updateLikeButton(holder.likeButton, item.isLiked)
+        // Open comments
+        holder.commentButton.setOnClickListener {
+            onCommentClickListener(position)
+        }
+
+
+        // Load profile image with proper error handling
+        loadProfileImage(context, holder.profile, item.profileImagePath)
     }
 
-    private fun loadProfileImage(imageView: ImageView, profileImagePath: String?) {
+    private fun loadProfileImage(context: Context, imageView: ImageView, path: String?) {
         try {
             when {
-                profileImagePath.isNullOrBlank() -> {
+                path.isNullOrBlank() -> {
                     imageView.setImageResource(R.drawable.profile_circle)
                 }
-                profileImagePath.startsWith("http") -> {
+                path.startsWith("http") -> {
                     Picasso.get()
-                        .load(profileImagePath)
+                        .load(path)
                         .placeholder(R.drawable.profile_circle)
                         .error(R.drawable.profile_circle)
                         .transform(CircleTransform())
                         .into(imageView)
                 }
                 else -> {
-                    val imageFile = File(profileImagePath)
+                    val imageFile = File(path)
                     if (imageFile.exists()) {
                         Picasso.get()
                             .load(imageFile)
@@ -89,26 +100,28 @@ class ItemAdapter(
                             .transform(CircleTransform())
                             .into(imageView)
                     } else {
-                        imageView.setImageResource(R.drawable.profile_circle)
+                        // Try loading from internal storage if file not found
+                        UserRepository.getProfileImageSafely(context)?.let {
+                            imageView.setImageBitmap(it)
+                        } ?: imageView.setImageResource(R.drawable.profile_circle)
                     }
                 }
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Error loading profile image", e)
+            Log.e("CommentAdapter", "Error loading profile image", e)
             imageView.setImageResource(R.drawable.profile_circle)
         }
     }
 
     private fun updateLikeButton(button: ImageButton, isLiked: Boolean) {
         if (isLiked) {
-            button.setImageResource(R.drawable.ic_heart_filled)
+            button.setImageResource(R.drawable.ic_heart_filled) // ❤️ filled heart
             button.setColorFilter(ContextCompat.getColor(context, R.color.red))
         } else {
-            button.setImageResource(R.drawable.ic_heart_outline)
+            button.setImageResource(R.drawable.ic_heart_outline) // 🤍 outlined heart
             button.setColorFilter(ContextCompat.getColor(context, R.color.white))
         }
     }
-
 
     override fun getItemCount(): Int = itemList.size
 
@@ -117,11 +130,5 @@ class ItemAdapter(
             itemList.removeAt(position)
             notifyItemRemoved(position)
         }
-    }
-
-    fun updateItems(newItems: List<Item>) {
-        itemList.clear()
-        itemList.addAll(newItems)
-        notifyDataSetChanged()
     }
 }
