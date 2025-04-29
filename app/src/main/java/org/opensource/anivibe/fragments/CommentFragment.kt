@@ -209,7 +209,7 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
                 }
 
                 val newComment = Comment(
-                    username = post.username,
+                    username = currentUsername,
                     content = commentText,
                     profileImagePath = currentUser.profileImagePath,
                     userId = currentUsername,

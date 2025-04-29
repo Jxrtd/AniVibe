@@ -115,11 +115,6 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun performLogout() {
-        // Clear saved user data
-        val userPrefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-        val profilePrefs = getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
-        userPrefs.edit().clear().apply()
-        profilePrefs.edit().clear().apply()
 
         // Navigate to LoginActivity
         val intent = Intent(this, LoginActivity::class.java)
