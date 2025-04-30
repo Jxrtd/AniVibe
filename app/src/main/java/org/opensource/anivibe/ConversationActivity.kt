@@ -1,6 +1,7 @@
 package org.opensource.anivibe
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.opensource.anivibe.adapters.ConversationAdapter
+import org.opensource.anivibe.data.ChatListManager
+import org.opensource.anivibe.data.ChatMessage
 import org.opensource.anivibe.data.ChatMessageManager
 import org.opensource.anivibe.data.ConversationMessage
 import java.util.Calendar
@@ -27,6 +30,7 @@ class ConversationActivity : AppCompatActivity() {
     private val messagesList = mutableListOf<ConversationMessage>()
     private var keikoScriptStep = 0
     private lateinit var chatMessageManager: ChatMessageManager
+    private lateinit var chatListManager: ChatListManager
 
     private var fanName: String = ""
     private var fanPhotoResId: Int = 0
@@ -36,6 +40,7 @@ class ConversationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_conversation)
 
         chatMessageManager = ChatMessageManager(this)
+        chatListManager = ChatListManager(this)
 
         fanName = intent.getStringExtra("FAN_NAME") ?: "Unknown"
         fanPhotoResId = intent.getIntExtra("FAN_PHOTO", R.drawable.chat_bubble_user)
@@ -60,7 +65,8 @@ class ConversationActivity : AppCompatActivity() {
         recyclerView.adapter = conversationAdapter
 
         if (messagesList.isEmpty()) {
-            addFanMessage(getInitialGreeting())
+            val initialTimestamp = chatMessageManager.getLastInteractionTime(fanName)
+            addInitialFanMessage(getInitialGreeting(), initialTimestamp)
 
             if (fanName == "Keiko") {
                 keikoScriptStep = 1
@@ -105,6 +111,10 @@ class ConversationActivity : AppCompatActivity() {
             } else {
                 generateFanResponse(messageText)
             }
+
+            val intent = Intent("ACTION_UPDATE_CHAT_ORDER")
+            intent.putExtra("FAN_NAME", fanName)
+            sendBroadcast(intent)
         }
     }
 
@@ -166,6 +176,18 @@ class ConversationActivity : AppCompatActivity() {
             timestamp = System.currentTimeMillis()
         )
         messagesList.add(userMessage)
+        conversationAdapter.notifyItemInserted(messagesList.size - 1)
+        scrollToBottom()
+        saveConversation()
+    }
+
+    private fun addInitialFanMessage(message: String, timestamp: Long) {
+        val fanMessage = ConversationMessage(
+            message = message,
+            isFromUser = false,
+            timestamp = timestamp
+        )
+        messagesList.add(fanMessage)
         conversationAdapter.notifyItemInserted(messagesList.size - 1)
         scrollToBottom()
         saveConversation()
