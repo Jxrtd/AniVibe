@@ -57,8 +57,7 @@ class CircleTransform : Transformation {
 
 class CommentAdapter(
     private val comments: MutableList<Comment>,
-    private val currentUsername: String? = null,
-    private val postId: String? = null
+    private val currentUsername: String? = null
 ) : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
 
     class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -114,13 +113,6 @@ class CommentAdapter(
         loadProfileImage(context, holder.profilePic, comment.profileImagePath)
     }
 
-    fun removeComment(position: Int) {
-        if (position in 0 until comments.size) {
-            comments.removeAt(position)
-            notifyItemRemoved(position)
-        }
-    }
-
     private fun loadProfileImage(context: Context, imageView: ImageView, path: String?) {
         try {
             when {
@@ -145,7 +137,6 @@ class CommentAdapter(
                             .transform(CircleTransform())
                             .into(imageView)
                     } else {
-                        // Try loading from internal storage if file not found
                         UserRepository.getProfileImageSafely(context)?.let {
                             imageView.setImageBitmap(it)
                         } ?: imageView.setImageResource(R.drawable.profile_circle)

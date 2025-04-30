@@ -11,7 +11,6 @@ class SplashActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_layout)
 
-        // Using Handler with Looper.getMainLooper() is the recommended approach
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)

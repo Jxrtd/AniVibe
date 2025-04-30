@@ -29,13 +29,11 @@ class SaveAnimeListFragment : Fragment(R.layout.saveanime_list) {
             binding.savebtn.setTypeface(null, Typeface.BOLD)
         }
 
-        // Function to reset all button styles to NORMAL
         fun resetButtonStyles() {
             binding.savebtn.setTypeface(null, Typeface.NORMAL)
             binding.animebtn.setTypeface(null, Typeface.NORMAL)
         }
 
-        // Click listeners
         binding.savebtn.setOnClickListener {
             resetButtonStyles()
             binding.savebtn.setTypeface(null, Typeface.BOLD)

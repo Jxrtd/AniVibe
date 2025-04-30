@@ -39,9 +39,7 @@ class AnimeListFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[SharedAnimeViewModel::class.java]
 
-        animeAdapter = AnimeAdapter(requireContext(), emptyList())
-        binding.animeRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-        binding.animeRecyclerView.adapter = animeAdapter
+        setupRecyclerView()
 
         viewModel.savedAnimeList.observe(viewLifecycleOwner) { savedList ->
             animeAdapter.setSavedList(savedList)
@@ -51,9 +49,18 @@ class AnimeListFragment : Fragment() {
         loadTopAnime()
     }
 
+    private fun setupRecyclerView() {
+        animeAdapter = AnimeAdapter(requireContext(), emptyList())
+        binding.animeRecyclerView.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            adapter = animeAdapter
+            setHasFixedSize(true)
+        }
+    }
+
     private fun setupButtons() {
         binding.btnSearch.setOnClickListener {
-            val query = binding.searchInputEditText.text.toString().trim()
+            val query = binding.searchEditText.text.toString().trim()
             if (query.isNotEmpty()) {
                 searchAnime(query)
             } else {
@@ -68,30 +75,41 @@ class AnimeListFragment : Fragment() {
                 if (response.isSuccessful && response.body() != null) {
                     val topList = response.body()!!.data
                     animeAdapter.updateList(topList)
+                } else {
+                    handleApiError("Failed to load top anime")
                 }
             }
 
             override fun onFailure(call: Call<TopAnime>, t: Throwable) {
-                Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_LONG).show()
+                handleApiError("Error: ${t.message}")
             }
         })
     }
 
     private fun searchAnime(query: String) {
+        // Show loading indicator if you have one
         AnimeService.create().getSearchAnime(query).enqueue(object : Callback<SearchedAnime> {
             override fun onResponse(call: Call<SearchedAnime>, response: Response<SearchedAnime>) {
                 if (response.isSuccessful && response.body() != null) {
                     val searchList = response.body()!!.data
-                    animeAdapter.updateList(searchList)
+                    if (searchList.isEmpty()) {
+                        Toast.makeText(requireContext(), "No anime found for: $query", Toast.LENGTH_SHORT).show()
+                    } else {
+                        animeAdapter.updateList(searchList)
+                    }
                 } else {
-                    Toast.makeText(requireContext(), "No anime found!", Toast.LENGTH_SHORT).show()
+                    handleApiError("Search failed")
                 }
             }
 
             override fun onFailure(call: Call<SearchedAnime>, t: Throwable) {
-                Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_LONG).show()
+                handleApiError("Error: ${t.message}")
             }
         })
+    }
+
+    private fun handleApiError(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
     override fun onDestroyView() {

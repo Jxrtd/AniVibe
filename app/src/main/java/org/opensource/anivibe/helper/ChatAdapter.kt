@@ -12,18 +12,8 @@ import org.opensource.anivibe.data.ChatMessage
 class ChatAdapter(
     val context: Context,
     val listOfChatMessage: List<ChatMessage>,
-    val onClickMore: (chatMessage: ChatMessage) -> Unit = {},
-    val onClickItem: (chatMessage: ChatMessage) -> Unit = {},
-    val onLongPress: (position: Int) -> Unit = {}
+    val onClickItem: (chatMessage: ChatMessage) -> Unit = {}
 ) : BaseAdapter() {
-
-    constructor(context: Context, listOfChatMessage: List<ChatMessage>) : this(
-        context,
-        listOfChatMessage,
-        onClickMore = {},
-        onClickItem = {},
-        onLongPress = {}
-    )
 
     override fun getCount(): Int = listOfChatMessage.size
 

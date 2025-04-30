@@ -39,11 +39,10 @@ class ChatFragment : Fragment() {
 
         adapter = ChatAdapter(
             requireContext(),
-            chatMessages,
-            onClickItem = { chatMessage ->
-                openConversation(chatMessage)
-            }
-        )
+            chatMessages
+        ) { chatMessage ->
+            openConversation(chatMessage)
+        }
         chatListView.adapter = adapter
 
         chatListView.setOnItemClickListener { _, _, position, _ ->

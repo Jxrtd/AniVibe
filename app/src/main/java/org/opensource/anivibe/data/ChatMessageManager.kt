@@ -6,10 +6,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.Calendar
 
-/**
- * Manager class for chat message operations including saving/loading messages
- * and tracking last interaction times.
- */
 class ChatMessageManager(private val context: Context) {
 
     private val sharedPrefs: SharedPreferences = context.getSharedPreferences(
@@ -21,55 +17,38 @@ class ChatMessageManager(private val context: Context) {
     )
 
 
-    //Save the last interaction time for a specific chat
     fun saveLastInteractionTime(fanName: String) {
         val editor = sharedPrefs.edit()
         editor.putLong("${fanName}_last_time", System.currentTimeMillis())
         editor.apply()
     }
 
-    /**
-     * Get the last interaction time for a specific chat
-     * @return timestamp of last interaction or 0 if never interacted
-     */
     fun getLastInteractionTime(fanName: String): Long {
-        // First, check if we have any chat messages in conversation data
         val json = conversationPrefs.getString("${fanName}_messages", null)
         if (json != null) {
             try {
-                // Parse the conversation to find the most recent message
                 val gson = Gson()
                 val type = object : TypeToken<List<ConversationMessage>>() {}.type
                 val messages: List<ConversationMessage> = gson.fromJson(json, type)
 
                 if (messages.isNotEmpty()) {
-                    // Return the timestamp of the most recent message
                     return messages.maxByOrNull { it.timestamp }?.timestamp ?: 0
                 }
             } catch (e: Exception) {
-                // If there's an error parsing, fall back to saved time
             }
         }
 
-        // If no valid conversation data, check saved interaction time
         val savedTime = sharedPrefs.getLong("${fanName}_last_time", 0)
         if (savedTime > 0) {
             return savedTime
         }
 
-        // If no saved time or conversation data, use the hardcoded initial timestamp
         return getHardcodedTimestampForFan(fanName)
     }
 
-    /**
-     * Returns a hardcoded timestamp for each fan's first message
-     * This matches the logic in ConversationActivity
-     * Ordered from most recent to oldest
-     */
     private fun getHardcodedTimestampForFan(fanName: String): Long {
         val calendar = Calendar.getInstance()
 
-        // Set specific times for each character
         when (fanName) {
             "Keiko" -> {
                 calendar.add(Calendar.HOUR_OF_DAY, -1)
@@ -104,12 +83,10 @@ class ChatMessageManager(private val context: Context) {
                 calendar.add(Calendar.MINUTE, 15)
             }
             else -> {
-                // Default: Current time
             }
         }
 
 
-        // Clear seconds and milliseconds for cleaner timestamps
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
 
@@ -117,7 +94,6 @@ class ChatMessageManager(private val context: Context) {
     }
 
 
-    // Update all chat messages in the ChatFragment to show accurate times
     fun updateChatListWithAccurateTimes(chatMessages: List<ChatMessage>) {
         for (chatMessage in chatMessages) {
             val lastTime = getLastInteractionTime(chatMessage.name)
@@ -125,10 +101,6 @@ class ChatMessageManager(private val context: Context) {
         }
     }
 
-    /**
-     * Format a timestamp into a human-readable relative time that matches
-     * the format used in the conversation list
-     */
     private fun formatTimeForChatList(timestamp: Long): String {
         val now = System.currentTimeMillis()
 
@@ -165,13 +137,4 @@ class ChatMessageManager(private val context: Context) {
         }
     }
 
-    /**
-     * Delete all chat data for a specific fan
-     */
-    fun deleteChatData(fanName: String) {
-        val editor = sharedPrefs.edit()
-        editor.remove("${fanName}_last_time")
-        conversationPrefs.edit().remove("${fanName}_messages").apply()
-        editor.apply()
-    }
 }

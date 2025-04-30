@@ -17,14 +17,6 @@ class HelpDetailFragment : DialogFragment() {
         private const val ARG_TITLE = "title"
         private const val ARG_CONTENT = "content"
 
-        fun newInstance(title: String, content: String): HelpDetailFragment {
-            val fragment = HelpDetailFragment()
-            val args = Bundle()
-            args.putString(ARG_TITLE, title)
-            args.putString(ARG_CONTENT, content)
-            fragment.arguments = args
-            return fragment
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

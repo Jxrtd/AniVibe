@@ -20,10 +20,6 @@ class AnimeAdapter(
     private var animeList: List<Result>
 ) : RecyclerView.Adapter<AnimeAdapter.CustomViewHolder>() {
 
-    private val viewModel by lazy {
-        ViewModelProvider(parentActivity as AppCompatActivity)[SharedAnimeViewModel::class.java]
-    }
-
     private var savedList: List<Result> = emptyList()
 
     fun setSavedList(list: List<Result>) {

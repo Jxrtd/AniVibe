@@ -5,8 +5,6 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-
-// Manager class for handling chat list ordering and message preview
 class ChatListManager(private val context: Context) {
 
     private val chatMessageManager = ChatMessageManager(context)
@@ -17,13 +15,10 @@ class ChatListManager(private val context: Context) {
         "ConversationPrefs", Context.MODE_PRIVATE
     )
 
-
-     // Sorts chat list items based on last interaction time
     fun sortChatListByRecent(chatMessages: MutableList<ChatMessage>) {
         chatMessages.sortByDescending { chatMessageManager.getLastInteractionTime(it.name) }
     }
 
-    // Updates the message preview text for all chat items
     fun updateMessagePreviews(chatMessages: List<ChatMessage>) {
         for (chatMessage in chatMessages) {
             val lastMessage = getLastMessageFromCharacter(chatMessage.name)
@@ -36,8 +31,6 @@ class ChatListManager(private val context: Context) {
             }
         }
     }
-
-    //Retrieves the last message sent by a character
 
     private fun getLastMessageFromCharacter(fanName: String): String {
         val json = conversationPrefs.getString("${fanName}_messages", null)
@@ -55,8 +48,6 @@ class ChatListManager(private val context: Context) {
         }
         return ""
     }
-
-    //Updates both the order and message preview for a chat list
 
     fun updateChatList(chatMessages: MutableList<ChatMessage>) {
         sortChatListByRecent(chatMessages)

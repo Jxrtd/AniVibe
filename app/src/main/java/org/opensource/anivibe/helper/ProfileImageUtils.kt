@@ -9,7 +9,6 @@ import org.opensource.anivibe.R
 import java.io.File
 
 object ProfileImageUtils {
-    private const val TAG = "ProfileImageUtils"
 
     fun getFilenameFromPath(path: String?): String? {
         if (path == null) return null
@@ -51,7 +50,6 @@ object ProfileImageUtils {
                 return
             }
 
-            // Finally try direct loading (might be a URL or resource)
             Picasso.get()
                 .load(profileImagePath)
                 .placeholder(R.drawable.profile_circle)
@@ -64,31 +62,4 @@ object ProfileImageUtils {
         }
     }
 
-    fun loadProfileImageBitmap(context: Context, profileImagePath: String?): Bitmap? {
-        if (profileImagePath.isNullOrBlank()) return null
-
-        try {
-            // Get just the filename
-            val filename = getFilenameFromPath(profileImagePath)
-
-            return context.openFileInput(filename).use { fis ->
-                BitmapFactory.decodeStream(fis)
-            }
-        } catch (e: Exception) {
-            return null
-        }
-    }
-
-    fun saveProfileImage(context: Context, bitmap: Bitmap): String {
-        val filename = "profile_${System.currentTimeMillis()}.png"
-
-        try {
-            context.openFileOutput(filename, Context.MODE_PRIVATE).use { out ->
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
-            }
-            return filename
-        } catch (e: Exception) {
-            throw e
-        }
-    }
 }

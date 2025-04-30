@@ -42,10 +42,6 @@ class SharedAnimeViewModel(application: Application) : AndroidViewModel(applicat
         return savedAnimeList.value?.any { it.malId == malId } ?: false
     }
 
-    fun getSavedList(): List<Result> {
-        return _savedAnimeList.value ?: emptyList()
-    }
-
     private fun saveSavedAnimeList(context: Context) {
         val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()

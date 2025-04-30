@@ -109,7 +109,6 @@ class SettingsHelpAndSupportAcitivity : Activity() {
             )
         )
 
-        // Create custom adapter for the help topics
         class HelpTopicAdapter(
             private val context: Activity,
             private val topics: List<HelpTopic>
@@ -166,6 +165,7 @@ class SettingsHelpAndSupportAcitivity : Activity() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
         finish()

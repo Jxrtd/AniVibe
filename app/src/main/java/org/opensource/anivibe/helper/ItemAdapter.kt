@@ -115,10 +115,4 @@ class ItemAdapter(
 
     override fun getItemCount(): Int = itemList.size
 
-    fun removeItem(position: Int) {
-        if (position in itemList.indices) {
-            itemList.removeAt(position)
-            notifyItemRemoved(position)
-        }
-    }
 }

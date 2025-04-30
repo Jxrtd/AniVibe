@@ -20,12 +20,6 @@ class SaveAdapter(
     private var animeList: List<Result>
 ) : RecyclerView.Adapter<SaveAdapter.AnimeViewHolder>() {
 
-    private val viewModel by lazy {
-        (context as AppCompatActivity).let {
-            ViewModelProvider(it)[SharedAnimeViewModel::class.java]
-        }
-    }
-
     inner class AnimeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView = view.findViewById(R.id.name)
         val image: ImageView = view.findViewById(R.id.image)

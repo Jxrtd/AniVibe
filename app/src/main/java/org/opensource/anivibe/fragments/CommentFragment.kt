@@ -107,7 +107,7 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
             val currentUser = UserRepository.getCurrentUser(requireContext())
             ProfileImageUtils.loadProfileImage(requireContext(), imageView, currentUser.profileImagePath)
         }
-        adapter.notifyDataSetChanged() // Refresh comments with updated profile images
+        adapter.notifyDataSetChanged()
     }
 
     private fun initializeViews(view: View) {
@@ -143,7 +143,7 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
 
     private fun setupRecyclerView() {
         val currentUsername = UserRepository.getCurrentUsername(requireContext())
-        adapter = CommentAdapter(comments, currentUsername, postId).apply {
+        adapter = CommentAdapter(comments, currentUsername).apply {
             setOnCommentDeleteListener(object : CommentAdapter.OnCommentDeleteListener {
                 override fun onCommentDeleted(position: Int) {
                     deleteComment(position)
