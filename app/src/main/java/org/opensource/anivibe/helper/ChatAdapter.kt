@@ -11,7 +11,7 @@ import org.opensource.anivibe.data.ChatMessage
 
 class ChatAdapter(
     val context: Context,
-    val listOfChatMessage: List<ChatMessage>,
+    private val listOfChatMessage: List<ChatMessage>,
     val onClickItem: (chatMessage: ChatMessage) -> Unit = {}
 ) : BaseAdapter() {
 

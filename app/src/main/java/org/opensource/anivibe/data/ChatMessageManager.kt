@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.Calendar
 
-class ChatMessageManager(private val context: Context) {
+class ChatMessageManager(context: Context) {
 
     private val sharedPrefs: SharedPreferences = context.getSharedPreferences(
         "ChatMessagePrefs", Context.MODE_PRIVATE

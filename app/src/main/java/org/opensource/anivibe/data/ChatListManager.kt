@@ -15,11 +15,11 @@ class ChatListManager(private val context: Context) {
         "ConversationPrefs", Context.MODE_PRIVATE
     )
 
-    fun sortChatListByRecent(chatMessages: MutableList<ChatMessage>) {
+    private fun sortChatListByRecent(chatMessages: MutableList<ChatMessage>) {
         chatMessages.sortByDescending { chatMessageManager.getLastInteractionTime(it.name) }
     }
 
-    fun updateMessagePreviews(chatMessages: List<ChatMessage>) {
+    private fun updateMessagePreviews(chatMessages: List<ChatMessage>) {
         for (chatMessage in chatMessages) {
             val lastMessage = getLastMessageFromCharacter(chatMessage.name)
             if (lastMessage.isNotEmpty()) {
