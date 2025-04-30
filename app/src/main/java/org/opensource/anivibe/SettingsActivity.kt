@@ -109,12 +109,6 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         btnLogout.setOnClickListener {
-            val userPrefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-            userPrefs.edit().clear().apply()
-
-            getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE).edit().clear().apply()
-            getSharedPreferences("ProfileDetails", Context.MODE_PRIVATE).edit().clear().apply()
-
             Toast.makeText(this, "Successfully logged out", Toast.LENGTH_SHORT).show()
 
             val intent = Intent(this, LoginActivity::class.java)

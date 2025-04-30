@@ -30,6 +30,7 @@ class LoginActivity : Activity() {
         storedUsername = sharedPreferences.getString("username", null)
         storedPassword = sharedPreferences.getString("password", null)
 
+
         intent?.let {
             registeredUsername = it.getStringExtra("username") ?: ""
             registeredPassword = it.getStringExtra("password") ?: ""

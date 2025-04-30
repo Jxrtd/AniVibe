@@ -34,6 +34,7 @@ class RegisterActivity : Activity() {
             sharedPreferences.edit().apply {
                 putString("username", username)
                 putString("password", password)
+                putString("email", email)
                 apply()
             }
 

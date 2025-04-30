@@ -117,6 +117,11 @@ class EditProfileActivity : AppCompatActivity() {
                 apply()
             }
 
+            profilePrefs.edit().apply {
+                putString("username", newUsername) // keep synced
+                apply()
+            }
+
             detailsPrefs.edit().apply {
                 putString("education", educationInput.text.toString())
                 putString("hometown", hometownInput.text.toString())
@@ -128,6 +133,7 @@ class EditProfileActivity : AppCompatActivity() {
             Toast.makeText(this, "Profile updated", Toast.LENGTH_SHORT).show()
             finish()
         }
+
 
         progressDialog = ProgressDialog(this).apply {
             setCanceledOnTouchOutside(false)
@@ -218,18 +224,9 @@ class EditProfileActivity : AppCompatActivity() {
                     }
                 }
 
-                val storedPassword = userPrefs.getString("password", "") ?: ""
-
-                if (storedPassword == oldPass) {
-                    try {
-                        userPrefs.edit().putString("password", newPass).apply()
-                        Toast.makeText(this, "Password changed successfully", Toast.LENGTH_SHORT).show()
-                        dialog.dismiss()
-                    } catch (e: Exception) {
-                        errorTv.text = "Failed to save password: ${e.message}"
-                        errorTv.visibility = View.VISIBLE
-                        e.printStackTrace()
-                    }
+                if (UserRepository.changePassword(this, oldPass, newPass)) {
+                    Toast.makeText(this, "Password changed successfully", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
                 } else {
                     errorTv.text = "Incorrect old password"
                     errorTv.visibility = View.VISIBLE
