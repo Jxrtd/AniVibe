@@ -5,7 +5,7 @@ data class Comment(
     var username: String,
     val content: String,
     var profileImagePath: String?,
-    val userId: String, // Should match the username
+    val userId: String,
     val timestamp: Long = System.currentTimeMillis()
 ) {
     init {

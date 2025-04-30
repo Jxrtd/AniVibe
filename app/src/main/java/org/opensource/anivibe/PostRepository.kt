@@ -33,7 +33,6 @@ object PostRepository {
         }
     }
 
-    // Keep the old method for backward compatibility (or remove it)
     @Deprecated("Use deletePost with postId instead")
     fun deletePostByPosition(context: Context, position: String) {
         val positionInt = position.toIntOrNull()
@@ -46,7 +45,7 @@ object PostRepository {
     fun addComment(context: Context, postId: String, comment: Comment) {
         val post = posts.find { it.id == postId }
         post?.comments?.add(comment)
-        savePosts(context) // 💾 Make sure to save after adding comment
+        savePosts(context)
     }
 
     fun deleteComment(context: Context, postId: String, comment: Comment) {
@@ -62,9 +61,7 @@ object PostRepository {
         }
     }
 
-    // Modified function to accept a List<Item> parameter
     fun savePosts(context: Context, updatedPosts: List<Item>? = null) {
-        // If updatedPosts is provided, replace the current posts list
         if (updatedPosts != null) {
             posts.clear()
             posts.addAll(updatedPosts)
@@ -116,7 +113,6 @@ object PostRepository {
                 for (i in 0 until jsonArray.length()) {
                     val obj = jsonArray.getJSONObject(i)
 
-                    // Load comments with timestamp support
                     val comments = mutableListOf<Comment>()
                     val commentsArray = obj.optJSONArray("comments") ?: JSONArray()
                     for (j in 0 until commentsArray.length()) {
@@ -132,7 +128,6 @@ object PostRepository {
                         )
                     }
 
-                    // Sort comments by timestamp (newest first)
                     val sortedComments = comments.sortedByDescending { it.timestamp }
 
                     posts.add(
@@ -143,19 +138,14 @@ object PostRepository {
                             description = obj.getString("description"),
                             isLiked = obj.getBoolean("isLiked"),
                             comments = sortedComments.toMutableList(),
-                            timestamp = obj.optLong("timestamp", System.currentTimeMillis()) // Add timestamp to post if needed
+                            timestamp = obj.optLong("timestamp", System.currentTimeMillis())
                         )
                     )
                 }
-
-                // Sort posts by timestamp (newest first)
                 posts.sortByDescending { it.timestamp }
 
             } catch (e: Exception) {
-                Log.e("PostRepository", "Error loading posts", e)
-                // Clear corrupted data
                 prefs.edit().remove("postList").apply()
-                // Optionally restore default posts or handle error
             }
         }
     }
@@ -163,58 +153,30 @@ object PostRepository {
     fun updateUserInfo(context: Context, oldUsername: String, newUsername: String, newProfileImagePath: String?) {
         var updated = false
 
-        android.util.Log.d("PostRepository", "Updating user info: $oldUsername -> $newUsername")
-        android.util.Log.d("PostRepository", "New profile image path: $newProfileImagePath")
-        android.util.Log.d("PostRepository", "Total posts before update: ${posts.size}")
-
         posts.forEach { item ->
-            // Check if this post belongs to the user being updated
             if (item.username == oldUsername) {
-                android.util.Log.d("PostRepository", "Found post by user: ${item.id}")
-                android.util.Log.d("PostRepository", "  Old username: ${item.username}")
-                android.util.Log.d("PostRepository", "  Old profile image: ${item.profileImagePath}")
-
-                // Update username
                 item.username = newUsername
 
-                // Update profile image path if provided
                 if (newProfileImagePath != null) {
                     item.profileImagePath = newProfileImagePath
                 }
-
-                android.util.Log.d("PostRepository", "  Updated username: ${item.username}")
-                android.util.Log.d("PostRepository", "  Updated profile image: ${item.profileImagePath}")
-
                 updated = true
+
             }
 
-            // Also update usernames and profile images in comments
             item.comments.forEachIndexed { index, comment ->
                 if (comment.username == oldUsername) {
-                    android.util.Log.d("PostRepository", "Found comment by user in post ${item.id}, comment #$index")
-                    android.util.Log.d("PostRepository", "  Old username: ${comment.username}")
-                    android.util.Log.d("PostRepository", "  Old profile image: ${comment.profileImagePath}")
-
-                    // Update username in comment
                     comment.username = newUsername
 
-                    // Update profile image in comment
                     if (newProfileImagePath != null) {
                         comment.profileImagePath = newProfileImagePath
                     }
-
-                    android.util.Log.d("PostRepository", "  Updated username: ${comment.username}")
-                    android.util.Log.d("PostRepository", "  Updated profile image: ${comment.profileImagePath}")
-
                     updated = true
                 }
             }
         }
 
-        android.util.Log.d("PostRepository", "Changes made: $updated")
-
         if (updated) {
-            android.util.Log.d("PostRepository", "Saving updated posts to SharedPreferences")
             savePosts(context)
         }
     }
@@ -222,30 +184,22 @@ object PostRepository {
     fun updateProfileImage(context: Context, username: String, newProfileImagePath: String?) {
         var updated = false
 
-        // Iterate through all posts and update profile image for matching username
         posts.forEach { post ->
             if (post.username == username) {
                 post.profileImagePath = newProfileImagePath
                 updated = true
-
-                android.util.Log.d("PostRepository", "Updated profile image for post by $username")
             }
 
-            // Also update profile image in comments by this user
             post.comments.forEach { comment ->
                 if (comment.username == username) {
                     comment.profileImagePath = newProfileImagePath
                     updated = true
-
-                    android.util.Log.d("PostRepository", "Updated profile image for comment by $username")
                 }
             }
         }
 
-        // Save changes if any updates were made
         if (updated) {
             savePosts(context)
-            android.util.Log.d("PostRepository", "Saved profile image updates")
         }
     }
 
@@ -257,7 +211,6 @@ object PostRepository {
                 updated = true
             }
 
-            // Also update username in comments
             item.comments.forEach { comment ->
                 if (comment.username == oldUsername) {
                     comment.username = newUsername

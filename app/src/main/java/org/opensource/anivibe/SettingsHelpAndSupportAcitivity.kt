@@ -20,14 +20,12 @@ class SettingsHelpAndSupportAcitivity : Activity() {
 
         val lvHelpAndSupport = findViewById<ListView>(R.id.lvHelpAndSupport)
 
-        // Define data models for help topics
         data class HelpTopic(
             val title: String,
             val content: String,
-            val iconResId: Int = R.drawable.ic_help // Default icon
+            val iconResId: Int = R.drawable.ic_help
         )
 
-        // Create a list of help topics with their content
         val helpTopics = listOf(
             HelpTopic(
                 "Frequently Asked Questions",
@@ -133,51 +131,41 @@ class SettingsHelpAndSupportAcitivity : Activity() {
             }
         }
 
-        // Use our custom adapter
         val adapter = HelpTopicAdapter(this, helpTopics)
         lvHelpAndSupport.adapter = adapter
 
-        // Set click listener for list items
         lvHelpAndSupport.setOnItemClickListener { _, _, position, _ ->
             val selectedTopic = helpTopics[position]
 
-            // Create custom dialog
             val dialogBuilder = AlertDialog.Builder(this)
             val dialogView = layoutInflater.inflate(R.layout.dialog_help_content, null)
             dialogBuilder.setView(dialogView)
 
-            // Get dialog elements
             val titleTextView = dialogView.findViewById<TextView>(R.id.dialog_title)
             val contentTextView = dialogView.findViewById<TextView>(R.id.dialog_content)
             val closeButton = dialogView.findViewById<android.widget.Button>(R.id.dialog_close_button)
 
-            // Set content
             titleTextView.text = selectedTopic.title
             contentTextView.text = selectedTopic.content
 
-            // Create and show dialog
             val alertDialog = dialogBuilder.create()
             alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-            // Set close button click listener
             closeButton.setOnClickListener {
                 alertDialog.dismiss()
             }
 
-            // Show dialog with animation
             alertDialog.show()
             alertDialog.window?.attributes?.windowAnimations = R.anim.slide_up
         }
 
         val back: ImageButton = findViewById(R.id.devbackbutton)
         back.setOnClickListener {
-            Log.d("CSIT 284", "Back button clicked")
-            finish()  // Just finish this activity to return to SettingsActivity
+            finish()
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
     }
 
-    // Also override the system back button
     override fun onBackPressed() {
         super.onBackPressed()
         finish()

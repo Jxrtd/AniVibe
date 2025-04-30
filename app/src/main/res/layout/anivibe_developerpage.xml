@@ -1,124 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1A1A1D"
-    android:padding="24dp">
+    android:orientation="vertical">
 
-
+    <!-- Updated header layout to match Edit Profile -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
 
         <ImageButton
             android:id="@+id/devbackbutton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_width="25dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="25dp"
             android:src="@drawable/arrow_left_icon"
             android:scaleType="fitCenter"
-            android:layout_gravity="left"
-            android:background="#1A1A1D"/>
+            android:background="#1D1616"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:padding="16dp"
-            android:background="#1D1616"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp"
-            android:paddingBottom="24dp"
-            android:elevation="4dp">
+            android:layout_weight="1"
+            android:text="Developer's Page"
+            android:fontFamily="sans-serif-condensed"
+            android:textAlignment="center"
+            android:textSize="23sp"
+            android:textColor="#d3d3d3"
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
 
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/boy"
-                android:scaleType="centerCrop"
-                android:layout_marginBottom="12dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Jexter A. Alido"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:textColor="#FEF9E1"
-                android:fontFamily="sans-serif-black"/>
-
-            <TextView
-                android:fontFamily="sans-serif-condensed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Android Developer"
-                android:textSize="16sp"
-                android:textColor="#E5D0AC"
-                android:layout_marginBottom="12dp"/>
-
-            <TextView
-                android:fontFamily="sans-serif-condensed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:paddingHorizontal="10dp"
-                android:text="Experienced Android developer specializing in intuitive UI/UX design and efficient app performance."
-                android:textColor="#EEEEEE"
-                android:textSize="14sp" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:padding="16dp"
-            android:background="#1D1616"
-            android:elevation="4dp"
-            android:paddingBottom="24dp">
-
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/user"
-                android:scaleType="centerCrop"
-                android:layout_marginBottom="12dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Amiel Joshua S. Peñaflor"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:textColor="#FEF9E1"
-                android:fontFamily="sans-serif-black"/>
-
-            <TextView
-                android:fontFamily="sans-serif-condensed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Android Developer"
-                android:textSize="16sp"
-                android:textColor="#E5D0AC"
-                android:layout_marginBottom="12dp"/>
-
-            <TextView
-                android:fontFamily="sans-serif-condensed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Skilled in AI development, full-stack technologies, and building scalable applications."
-                android:textSize="14sp"
-                android:textColor="#EEEEEE"
-                android:paddingHorizontal="10dp"
-                android:layout_marginBottom="12dp"/>
-
-
-        </LinearLayout>
+        <View
+            android:layout_width="40dp"
+            android:layout_height="40dp"></View>
 
     </LinearLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="16dp"
+                android:background="#232326"
+                android:layout_marginBottom="20dp"
+                android:elevation="4dp">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/boy"
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="12dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jexter A. Alido"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="#d3d3d3"
+                    android:fontFamily="sans-serif-condensed"/>
+
+                <TextView
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Android Developer"
+                    android:textSize="18sp"
+                    android:textColor="#c6c6c6"
+                    android:layout_marginBottom="12dp"/>
+
+                <TextView
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="Experienced Android developer specializing in intuitive UI/UX design and efficient app performance."
+                    android:textColor="#c6c6c6"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="16dp"
+                android:background="#232326"
+                android:elevation="4dp">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/user"
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="12dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Amiel Joshua S. Peñaflor"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="#d3d3d3"
+                    android:fontFamily="sans-serif-condensed"/>
+
+                <TextView
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Android Developer"
+                    android:textSize="18sp"
+                    android:textColor="#c6c6c6"
+                    android:layout_marginBottom="12dp"/>
+
+                <TextView
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Skilled in AI development, full-stack technologies, and building scalable applications."
+                    android:textSize="16sp"
+                    android:textColor="#c6c6c6"
+                    android:paddingHorizontal="10dp"
+                    android:layout_marginBottom="12dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

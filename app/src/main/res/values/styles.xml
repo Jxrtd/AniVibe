@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme. -->
-    <style name="Theme.Anivibe" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- primary brand colors -->
-        <!--        <item name="colorPrimary">@color/ed2f2f</item>-->
-        <!--        <item name="colorPrimaryVariant">@color/ed2f2f</item>-->
-        <!--        <item name="colorOnPrimary">@color/white</item>-->
-        <!-- your other theming items -->
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here with direct color values -->
+        <item name="colorPrimary">@color/accentRed</item>       <!-- Changed to accentRed -->
+        <item name="colorPrimaryDark">@color/dark_red</item>    <!-- Darker Red -->
+        <item name="colorAccent">@color/light_red</item>        <!-- Light Red Accent -->
     </style>
 
     <!-- Add this to your styles.xml -->
@@ -22,5 +21,35 @@
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_up</item>
         <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
+
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Remove default background -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+
+        <!-- Remove title bar -->
+        <item name="android:windowNoTitle">true</item>
+
+        <!-- Set dialog width to match parent -->
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+
+        <!-- Set dialog animations -->
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+
+        <!-- Button style -->
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButtonStyle</item>
+
+        <!-- Remove padding around dialog content -->
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <!-- Dialog Button Style -->
+    <style name="DialogButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:background">@drawable/button_background</item>
     </style>
 </resources>

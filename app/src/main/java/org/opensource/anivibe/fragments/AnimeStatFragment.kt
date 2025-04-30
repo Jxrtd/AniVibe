@@ -24,17 +24,14 @@ class AnimeStatFragment : Fragment(R.layout.animestat) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize TextViews
         favoriteAnimeTextView = view.findViewById(R.id.favoriteAnimeTextView)
         favoriteGenreTextView = view.findViewById(R.id.favoriteGenreTextView)
         favoriteCharacterTextView = view.findViewById(R.id.favoriteCharacterTextView)
         recommendationsRecyclerView = view.findViewById(R.id.recommendationsRecyclerView)
         emptyRecommendationsText = view.findViewById(R.id.emptyRecommendationsText)
 
-        // Setup RecyclerView
         recommendationsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Load anime preferences
         loadAnimePreferences()
     }
 
@@ -50,7 +47,6 @@ class AnimeStatFragment : Fragment(R.layout.animestat) {
         val favoriteGenre = prefs.getString("favoriteGenre", "No favorite genre set")
         val favoriteCharacter = prefs.getString("favoriteCharacter", "No favorite character set")
 
-        // Get recommendations using JSONArray instead of Gson
         val recommendationsJson = prefs.getString("recommendations", "[]")
         val recommendations = parseRecommendations(recommendationsJson)
 
@@ -58,7 +54,6 @@ class AnimeStatFragment : Fragment(R.layout.animestat) {
         favoriteGenreTextView.text = favoriteGenre
         favoriteCharacterTextView.text = favoriteCharacter
 
-        // Show or hide recommendations based on list content
         if (recommendations.isNotEmpty()) {
             recommendationsRecyclerView.adapter = RecommendationAdapter(recommendations)
             recommendationsRecyclerView.visibility = View.VISIBLE

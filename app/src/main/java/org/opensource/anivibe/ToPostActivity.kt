@@ -31,16 +31,13 @@ class ToPostActivity : Activity() {
                 return@setOnClickListener
             }
 
-            // Get user information
             val userPrefs = getSharedPreferences("UserPrefs", MODE_PRIVATE)
             val username = userPrefs.getString("username", "@user") ?: "@user"
 
-            // Get profile image path
             val profilePrefs = getSharedPreferences("ProfilePrefs", MODE_PRIVATE)
             val filename = profilePrefs.getString("profile_image", null)
             val imagePath = filename?.let { File(filesDir, it).absolutePath }
 
-            // Create new post
             val newItem = Item(
                 id = UUID.randomUUID().toString(),
                 profileImagePath = imagePath,
@@ -48,10 +45,8 @@ class ToPostActivity : Activity() {
                 description = content
             )
 
-            // Add to repository
             PostRepository.addPost(applicationContext, newItem)
 
-            // Return success to calling activity/fragment
             setResult(RESULT_OK)
             finish()
         }

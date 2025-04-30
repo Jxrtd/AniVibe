@@ -27,5 +27,5 @@ class RecommendationAdapter(private val recommendations: List<String>) :
         holder.nameTextView.text = recommendation
     }
 
-    override fun getItemCount() = recommendations.size.coerceAtMost(3) // Limit to 3 items
+    override fun getItemCount() = recommendations.size.coerceAtMost(3)
 }

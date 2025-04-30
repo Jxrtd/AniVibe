@@ -94,19 +94,15 @@ class ConversationAdapter(
 
         return when {
             days == 0L -> {
-                // Today: show time
                 SimpleDateFormat("h:mm a", Locale.getDefault()).format(Date(timestamp))
             }
             days == 1L -> {
-                // Yesterday
                 "Yesterday at " + SimpleDateFormat("h:mm a", Locale.getDefault()).format(Date(timestamp))
             }
             days < 7L -> {
-                // Within a week: show day name
                 SimpleDateFormat("EEE 'at' h:mm a", Locale.getDefault()).format(Date(timestamp))
             }
             else -> {
-                // More than a week: show date and time
                 SimpleDateFormat("MMM d 'at' h:mm a", Locale.getDefault()).format(Date(timestamp))
             }
         }

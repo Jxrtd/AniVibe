@@ -1,7 +1,6 @@
 package org.opensource.anivibe.helper
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,35 +43,28 @@ class ItemAdapter(
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = itemList[position]
 
-        // Load profile image using ProfileImageUtils
         ProfileImageUtils.loadProfileImage(context, holder.profile, item.profileImagePath)
 
         holder.description.text = item.description
         holder.username.text = item.username
         holder.timestamp.text = timestampFormatter(item.timestamp)
 
-        // Update like button appearance
         updateLikeButton(holder.likeButton, item.isLiked)
 
-        // Delete post
         holder.deleteButton.setOnClickListener {
             onDeleteClickListener(position)
         }
 
-        // Toggle like state
         holder.likeButton.setOnClickListener {
             onLikeClickListener(position)
             item.isLiked = !item.isLiked
             updateLikeButton(holder.likeButton, item.isLiked)
         }
 
-        // Open comments
         holder.commentButton.setOnClickListener {
             onCommentClickListener(position)
         }
 
-
-        // Load profile image with proper error handling
         loadProfileImage(context, holder.profile, item.profileImagePath)
     }
 
@@ -100,7 +92,6 @@ class ItemAdapter(
                             .transform(CircleTransform())
                             .into(imageView)
                     } else {
-                        // Try loading from internal storage if file not found
                         UserRepository.getProfileImageSafely(context)?.let {
                             imageView.setImageBitmap(it)
                         } ?: imageView.setImageResource(R.drawable.profile_circle)
@@ -108,17 +99,16 @@ class ItemAdapter(
                 }
             }
         } catch (e: Exception) {
-            Log.e("CommentAdapter", "Error loading profile image", e)
             imageView.setImageResource(R.drawable.profile_circle)
         }
     }
 
     private fun updateLikeButton(button: ImageButton, isLiked: Boolean) {
         if (isLiked) {
-            button.setImageResource(R.drawable.ic_heart_filled) // ❤️ filled heart
+            button.setImageResource(R.drawable.ic_heart_filled)
             button.setColorFilter(ContextCompat.getColor(context, R.color.red))
         } else {
-            button.setImageResource(R.drawable.ic_heart_outline) // 🤍 outlined heart
+            button.setImageResource(R.drawable.ic_heart_outline)
             button.setColorFilter(ContextCompat.getColor(context, R.color.white))
         }
     }

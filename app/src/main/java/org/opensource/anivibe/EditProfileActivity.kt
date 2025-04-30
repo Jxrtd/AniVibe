@@ -12,8 +12,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.provider.MediaStore
-import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -23,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import android.view.View
 import com.google.android.material.button.MaterialButton
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.File
@@ -31,8 +30,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class EditProfileActivity : AppCompatActivity() {
-
-    // Views
     private lateinit var profileImageView: CircleImageView
     private lateinit var profilePicBtn: MaterialButton
     private lateinit var nameInput: EditText
@@ -46,7 +43,6 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var saveButton: Button
     private lateinit var backButton: ImageButton
 
-    // SharedPreferences
     private lateinit var userPrefs: SharedPreferences
     private lateinit var profilePrefs: SharedPreferences
     private lateinit var detailsPrefs: SharedPreferences
@@ -54,7 +50,6 @@ class EditProfileActivity : AppCompatActivity() {
     private var currentPhotoUri: Uri? = null
     private lateinit var progressDialog: ProgressDialog
 
-    // Camera / Gallery launchers
     private val takePictureLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { ok ->
             if (ok && currentPhotoUri != null) loadImageFromUri(currentPhotoUri!!)
@@ -68,12 +63,10 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
 
-        // 1) initialize your SharedPreferences
         userPrefs    = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
         profilePrefs = getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
         detailsPrefs = getSharedPreferences("ProfileDetails", Context.MODE_PRIVATE)
 
-        // 2) bind your views
         profileImageView = findViewById(R.id.setting_profile_image)
         profilePicBtn    = findViewById(R.id.profilepic)
         nameInput        = findViewById(R.id.input_name)
@@ -87,43 +80,34 @@ class EditProfileActivity : AppCompatActivity() {
         birthdateInput   = findViewById(R.id.input_birthdate)
         saveButton       = findViewById(R.id.button_save)
 
-        // Handle back button click
         backButton.setOnClickListener {
             finish()
         }
 
-        // 3) preload existing values into the UI
-        // — profile picture
         profilePrefs.getString("profile_image", null)?.let { fn ->
             openFileInput(fn).use { fis ->
                 profileImageView.setImageBitmap(BitmapFactory.decodeStream(fis))
             }
         }
 
-        // — populate input fields with current values
         nameInput.setText(userPrefs.getString("username", ""))
         bioInput.setText(userPrefs.getString("bio", ""))
 
-        // — "My Details" fields
         educationInput.setText(detailsPrefs.getString("education", ""))
         hometownInput.setText(detailsPrefs.getString("hometown", ""))
         locationInput.setText(detailsPrefs.getString("location", ""))
         birthdateInput.setText(detailsPrefs.getString("birthdate", ""))
 
-        // 4) wire up click listeners
         profilePicBtn.setOnClickListener    { onChangePicture() }
         profileImageView.setOnClickListener { onChangePicture() }
         changePassBtn.setOnClickListener    { showPasswordChangeDialog() }
 
-        // In EditProfileActivity.kt, modify the saveButton.setOnClickListener block
         saveButton.setOnClickListener {
             val oldUsername = userPrefs.getString("username", "") ?: ""
             val newUsername = nameInput.text.toString().trim()
             val bio = bioInput.text.toString().trim()
 
-            // Only update posts if username has changed
             if (oldUsername != newUsername) {
-                // Update all posts with the new username
                 PostRepository.updateUsername(this, oldUsername, newUsername)
             }
 
@@ -149,7 +133,6 @@ class EditProfileActivity : AppCompatActivity() {
             setCanceledOnTouchOutside(false)
         }
 
-        // Hide default action bar since we're using custom navigation
         supportActionBar?.hide()
     }
 
@@ -159,23 +142,18 @@ class EditProfileActivity : AppCompatActivity() {
             profileImageView.setImageBitmap(bmp)
 
             try {
-                // Save the new picture
                 val filename = "profile_${System.currentTimeMillis()}.png"
                 openFileOutput(filename, Context.MODE_PRIVATE).use { out ->
                     bmp.compress(Bitmap.CompressFormat.PNG, 100, out)
                 }
 
-                // Update preferences
                 profilePrefs.edit().putString("profile_image", filename).apply()
 
-                // Get current username
                 val username = userPrefs.getString("username", "") ?: ""
 
-                // Update profile image path in all posts by this user
                 if (username.isNotEmpty()) {
                     PostRepository.updateProfileImage(this, username, filename)
 
-                    // Show a toast message to confirm the profile was updated
                     Toast.makeText(this, "Profile picture updated", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
@@ -186,39 +164,95 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun showPasswordChangeDialog() {
-        val dlg = layoutInflater.inflate(R.layout.dialog_update_password, null)
-        val oldEt = dlg.findViewById<EditText>(R.id.etOldPassword)
-        val newEt = dlg.findViewById<EditText>(R.id.etNewPassword)
-        AlertDialog.Builder(this)
-            .setTitle("Change Password")
-            .setView(dlg)
-            .setPositiveButton("Change") { _, _ ->
+        val dialogView = layoutInflater.inflate(R.layout.dialog_update_password, null)
+        val oldEt = dialogView.findViewById<EditText>(R.id.etOldPassword)
+        val newEt = dialogView.findViewById<EditText>(R.id.etNewPassword)
+        val confirmEt = dialogView.findViewById<EditText>(R.id.etConfirmPassword)
+        val errorTv = dialogView.findViewById<TextView>(R.id.tvPasswordError)
+        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
+        val btnChange = dialogView.findViewById<Button>(R.id.btnChange)
+
+        val dialog = AlertDialog.Builder(this, R.style.CustomAlertDialog)
+            .setView(dialogView)
+            .create()
+
+        dialog.setCanceledOnTouchOutside(false)
+
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        btnChange.setOnClickListener {
+            try {
+                errorTv.visibility = View.GONE
+
                 val oldPass = oldEt.text.toString()
                 val newPass = newEt.text.toString()
-                val passPrefs = getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
-                if (passPrefs.getString("password","") == oldPass) {
-                    passPrefs.edit().putString("password", newPass).apply()
-                    Toast.makeText(this, "Password changed", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Incorrect old password", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
+                val confirmPass = confirmEt.text.toString()
 
+                when {
+                    oldPass.isEmpty() -> {
+                        errorTv.text = "Please enter your old password"
+                        errorTv.visibility = View.VISIBLE
+                        return@setOnClickListener
+                    }
+                    newPass.isEmpty() -> {
+                        errorTv.text = "Please enter a new password"
+                        errorTv.visibility = View.VISIBLE
+                        return@setOnClickListener
+                    }
+                    newPass.length < 6 -> {
+                        errorTv.text = "New password must be at least 6 characters"
+                        errorTv.visibility = View.VISIBLE
+                        return@setOnClickListener
+                    }
+                    newPass != confirmPass -> {
+                        errorTv.text = "New passwords don't match"
+                        errorTv.visibility = View.VISIBLE
+                        return@setOnClickListener
+                    }
+                    newPass == oldPass -> {
+                        errorTv.text = "New password must be different from old password"
+                        errorTv.visibility = View.VISIBLE
+                        return@setOnClickListener
+                    }
+                }
+
+                val storedPassword = userPrefs.getString("password", "") ?: ""
+
+                if (storedPassword == oldPass) {
+                    try {
+                        userPrefs.edit().putString("password", newPass).apply()
+                        Toast.makeText(this, "Password changed successfully", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    } catch (e: Exception) {
+                        errorTv.text = "Failed to save password: ${e.message}"
+                        errorTv.visibility = View.VISIBLE
+                        e.printStackTrace()
+                    }
+                } else {
+                    errorTv.text = "Incorrect old password"
+                    errorTv.visibility = View.VISIBLE
+                }
+            } catch (e: Exception) {
+                errorTv.text = "An error occurred: ${e.message}"
+                errorTv.visibility = View.VISIBLE
+                e.printStackTrace()
+            }
+        }
+
+        dialog.show()
+    }
     companion object {
         private const val REQUEST_PERM_CODE = 123
     }
 
     private fun onChangePicture() {
-        // if we don't have camera / storage permission yet, request it
         if (!hasPermissions()) {
             requestPermissions(requiredPermissions, REQUEST_PERM_CODE)
             return
         }
 
-        // otherwise show a simple chooser
         AlertDialog.Builder(this)
             .setTitle("Choose Image Source")
             .setItems(arrayOf("Camera", "Gallery")) { _, which ->
@@ -244,7 +278,6 @@ class EditProfileActivity : AppCompatActivity() {
         )
 
     private fun launchCamera() {
-        // create a temp file for the camera to write into
         val file = createImageFile() ?: return
         currentPhotoUri = FileProvider.getUriForFile(
             this,
@@ -262,7 +295,6 @@ class EditProfileActivity : AppCompatActivity() {
         return File.createTempFile("JPEG_${timestamp}_", ".jpg", storageDir)
     }
 
-    // handle the permission dialog result
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -273,7 +305,6 @@ class EditProfileActivity : AppCompatActivity() {
             grantResults.isNotEmpty() &&
             grantResults.all { it == PackageManager.PERMISSION_GRANTED }
         ) {
-            // user just granted camera/storage → try again
             onChangePicture()
         }
     }

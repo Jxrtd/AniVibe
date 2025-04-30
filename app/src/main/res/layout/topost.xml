@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:text="Post"
             android:textColor="@android:color/white"
-            android:backgroundTint="@color/blue"/>
+            android:backgroundTint="@color/primary_color"/>
     </LinearLayout>
 
 

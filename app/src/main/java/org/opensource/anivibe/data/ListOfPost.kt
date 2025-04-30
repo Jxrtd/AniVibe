@@ -10,5 +10,5 @@ data class ListOfPost(
     var username: String = "",
     var post: String = "",
     var photo: Int = R.drawable.boy,
-    var timestamp: Long = System.currentTimeMillis()  // Added timestamp field
+    var timestamp: Long = System.currentTimeMillis()
 )

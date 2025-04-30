@@ -2,18 +2,14 @@ package org.opensource.anivibe
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import org.json.JSONArray
-import org.json.JSONException
 
 class EditAnimeStatActivity : AppCompatActivity() {
-
-    // Views
     private lateinit var favoriteAnimeInput: EditText
     private lateinit var favoriteGenreInput: EditText
     private lateinit var favoriteCharacterInput: EditText
@@ -27,7 +23,6 @@ class EditAnimeStatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_anime_stat)
 
-        // Bind views
         favoriteAnimeInput = findViewById(R.id.input_favorite_anime)
         favoriteGenreInput = findViewById(R.id.input_favorite_genre)
         favoriteCharacterInput = findViewById(R.id.input_favorite_character)
@@ -37,38 +32,31 @@ class EditAnimeStatActivity : AppCompatActivity() {
         saveButton = findViewById(R.id.button_save)
         backButton = findViewById(R.id.backButton)
 
-        // Handle back button click
         backButton.setOnClickListener {
             finish()
         }
 
-        // Load existing preferences
         loadAnimePreferences()
 
-        // Set up save button
         saveButton.setOnClickListener {
             saveAnimePreferences()
             Toast.makeText(this, "Anime stats updated", Toast.LENGTH_SHORT).show()
             finish()
         }
 
-        // Hide default action bar since we're using custom navigation
         supportActionBar?.hide()
     }
 
     private fun loadAnimePreferences() {
         val prefs = getSharedPreferences("AnimePreferences", Context.MODE_PRIVATE)
 
-        // Load saved values
         favoriteAnimeInput.setText(prefs.getString("favoriteAnime", ""))
         favoriteGenreInput.setText(prefs.getString("favoriteGenre", ""))
         favoriteCharacterInput.setText(prefs.getString("favoriteCharacter", ""))
 
-        // Load recommendations from JSON using standard JSONArray
         val recommendationsJson = prefs.getString("recommendations", "[]")
         val recommendations = parseRecommendations(recommendationsJson)
 
-        // Set recommendation inputs based on available data
         if (recommendations.isNotEmpty() && recommendations.size >= 1) {
             recommendation1Input.setText(recommendations[0])
         }
@@ -89,8 +77,7 @@ class EditAnimeStatActivity : AppCompatActivity() {
             for (i in 0 until jsonArray.length()) {
                 recommendations.add(jsonArray.getString(i))
             }
-        } catch (e: Exception) {
-            Log.e("EditAnimeStatActivity", "Error parsing recommendations: ${e.message}")
+        } catch (_: Exception) {
         }
 
         return recommendations
@@ -99,19 +86,16 @@ class EditAnimeStatActivity : AppCompatActivity() {
     private fun saveAnimePreferences() {
         val prefs = getSharedPreferences("AnimePreferences", Context.MODE_PRIVATE)
 
-        // Create a list of non-empty recommendations
         val recommendations = mutableListOf<String>()
         recommendation1Input.text.toString().trim().let { if (it.isNotEmpty()) recommendations.add(it) }
         recommendation2Input.text.toString().trim().let { if (it.isNotEmpty()) recommendations.add(it) }
         recommendation3Input.text.toString().trim().let { if (it.isNotEmpty()) recommendations.add(it) }
 
-        // Convert recommendations to JSON using JSONArray
         val jsonArray = JSONArray()
         for (recommendation in recommendations) {
             jsonArray.put(recommendation)
         }
 
-        // Save values
         prefs.edit().apply {
             putString("favoriteAnime", favoriteAnimeInput.text.toString().trim())
             putString("favoriteGenre", favoriteGenreInput.text.toString().trim())

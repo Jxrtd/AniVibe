@@ -1,7 +1,6 @@
 package org.opensource.anivibe.fragments
 
 import android.content.Context
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -19,31 +18,24 @@ class ProfileFragment : Fragment(R.layout.anivibe_profilefragment) {
 
     private lateinit var btnMyDetails: Button
     private lateinit var btnMyAnimeStats: Button
-    // Removed btnEditProfile declaration
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         btnMyDetails    = view.findViewById(R.id.mydetails)
         btnMyAnimeStats = view.findViewById(R.id.myanimestat)
-        // Removed btnEditProfile binding
         val container   = view.findViewById<FrameLayout>(R.id.fragmentContainer2)
 
         checkNotNull(container) { "fragmentContainer2 missing!" }
-        // Removed btnEditProfile check
 
-        // 1) Default state: MyDetails active
         setActiveTab(btnMyDetails)
         setInactiveTab(btnMyAnimeStats)
 
-        // 2) Load the first child fragment only once
         if (savedInstanceState == null) {
             childFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer2, MyDetailsFragment())
                 .commit()
         }
-
-        // Removed btnEditProfile click listener
 
         btnMyDetails.setOnClickListener {
             replaceChild(MyDetailsFragment(), btnMyDetails, btnMyAnimeStats)
@@ -85,7 +77,6 @@ class ProfileFragment : Fragment(R.layout.anivibe_profilefragment) {
 
     private fun setupBackPressHandler() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            // if you ever want to pop your child back stack:
             if (childFragmentManager.backStackEntryCount > 0) {
                 childFragmentManager.popBackStackImmediate()
             } else {
@@ -104,23 +95,19 @@ class ProfileFragment : Fragment(R.layout.anivibe_profilefragment) {
         val prefs = requireContext()
             .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
 
-        // Username
         val name = prefs.getString("username", "Your Name")!!
         requireView().findViewById<TextView>(R.id.profile_name_textview).text = name
 
-        // Bio
         val bio = prefs.getString("bio", "")
         requireView().findViewById<TextView>(R.id.profile_bio_textview).text =
             if (bio.isNullOrBlank()) "No bio yet" else bio
 
-        // Profile pic
         val imgView = requireView().findViewById<CircleImageView>(R.id.main_profile_image)
         val picPrefs = requireContext()
             .getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE)
 
         try {
             picPrefs.getString("profile_image", null)?.let { filename ->
-                // Extract just the filename without any path
                 val actualFilename = if (filename.contains("/")) {
                     filename.substring(filename.lastIndexOf("/") + 1)
                 } else {
@@ -133,13 +120,11 @@ class ProfileFragment : Fragment(R.layout.anivibe_profilefragment) {
                     }
                 } catch (e: Exception) {
                     android.util.Log.e("ProfileFragment", "Error loading profile image", e)
-                    // Set default image on error
                     imgView.setImageResource(R.drawable.profile_circle)
                 }
             }
         } catch (e: Exception) {
             android.util.Log.e("ProfileFragment", "Error in loadProfileInfo", e)
-            // Set default image
             imgView.setImageResource(R.drawable.profile_circle)
         }
     }

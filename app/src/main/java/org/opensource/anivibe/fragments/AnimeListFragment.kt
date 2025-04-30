@@ -1,7 +1,6 @@
 package org.opensource.anivibe.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,9 +22,7 @@ class AnimeListFragment : Fragment() {
     private var _binding: FragmentAnimeListBinding? = null
     private val binding get() = _binding!!
 
-    // ViewModel for saved anime state
     private lateinit var viewModel: SharedAnimeViewModel
-    // Adapter with dynamic data
     private lateinit var animeAdapter: AnimeAdapter
 
     override fun onCreateView(
@@ -40,15 +37,12 @@ class AnimeListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize ViewModel
         viewModel = ViewModelProvider(requireActivity())[SharedAnimeViewModel::class.java]
 
-        // Setup RecyclerView and Adapter
         animeAdapter = AnimeAdapter(requireContext(), emptyList())
         binding.animeRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.animeRecyclerView.adapter = animeAdapter
 
-        // Observe saved anime list and update adapter
         viewModel.savedAnimeList.observe(viewLifecycleOwner) { savedList ->
             animeAdapter.setSavedList(savedList)
         }
@@ -73,12 +67,6 @@ class AnimeListFragment : Fragment() {
             override fun onResponse(call: Call<TopAnime>, response: Response<TopAnime>) {
                 if (response.isSuccessful && response.body() != null) {
                     val topList = response.body()!!.data
-
-                    // Add this debug log
-                    for (anime in topList.take(3)) {
-                        Log.d("APIResponse", "Anime: ${anime.title}, Image URL: ${anime.imageUrl?.jpg?.imagesUrl}")
-                    }
-
                     animeAdapter.updateList(topList)
                 }
             }

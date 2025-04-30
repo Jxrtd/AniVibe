@@ -33,24 +33,19 @@ class ChatFragment : Fragment() {
         chatMessageManager = ChatMessageManager(requireContext())
         chatListManager = ChatListManager(requireContext())
 
-        // Initialize the chat list with your fan characters
         initializeChatList()
 
-        // Sort and update the messages based on recency
         chatListManager.updateChatList(chatMessages)
 
-        // Create and set adapter
         adapter = ChatAdapter(
             requireContext(),
             chatMessages,
             onClickItem = { chatMessage ->
-                // Handle chat item click - open conversation
                 openConversation(chatMessage)
             }
         )
         chatListView.adapter = adapter
 
-        // Set item click listener on the ListView directly as a backup
         chatListView.setOnItemClickListener { _, _, position, _ ->
             val selectedChatMessage = chatMessages[position]
             openConversation(selectedChatMessage)
@@ -59,13 +54,11 @@ class ChatFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // Update the chat list whenever the fragment resumes (e.g., after returning from a conversation)
         chatListManager.updateChatList(chatMessages)
         adapter.notifyDataSetChanged()
     }
 
     private fun initializeChatList() {
-        // Add your fan characters
         chatMessages.add(ChatMessage("Keiko", "", "", R.drawable.pfp_keiko))
         chatMessages.add(ChatMessage("Hiroshi", "", "", R.drawable.pfp_hiroshi))
         chatMessages.add(ChatMessage("Takuya", "", "", R.drawable.pfp_takuya))

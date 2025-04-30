@@ -30,13 +30,9 @@ class SaveListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize ViewModel
         viewModel = ViewModelProvider(requireActivity())[SharedAnimeViewModel::class.java]
 
-        // Setup RecyclerView
         setupRecyclerView()
-
-        // Observe saved anime list
         observeSavedAnimeList()
     }
 

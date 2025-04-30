@@ -42,8 +42,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/searchInputEditText"
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:background="@color/white"
+                    android:layout_height="45dp"
+                    android:background="@drawable/search_background"
                     android:inputType="text"
                     android:maxLines="1"
                     android:textColor="@color/black"
@@ -53,7 +53,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSearch"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
+                android:layout_height="50dp"
                 android:text="Search"
                 android:layout_marginEnd="0dp"
                 android:backgroundTint="@color/accentRed"

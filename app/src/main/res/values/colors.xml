@@ -1,27 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="red">#E42F2F</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="blue">#3F51B5</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="fragment1">#A36161</color>
-    <color name="fragment2">#605E5E</color>
+    <!-- Main brand colors -->
+    <color name="accentRed">#b80000</color>
     <color name="light_red">#FF4444</color>
     <color name="dark_red">#550303</color>
-    <color name="liked">#FF0000</color> <!-- Red color for liked -->
-    <color name="unliked">#FFFFFF</color> <!-- White color for unliked -->
-    <color name="gray">#8e8e8e</color>
-    <color name="accentRed">#9A0707</color>
+    <color name="red">#ff0000</color>
     <color name="tabInactive">#330202</color>
-    <color name="background_color">#FFF5F5F5</color>
-    <color name="primary_color">#FF6200EE</color>
+    <color name="liked">#FF0000</color>
+
+    <!-- Standard colors -->
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="softWhite">#F5F5F5</color>
+    <color name="darkNavy">#1A1A2E</color>
+
+    <!-- Secondary colors -->
+    <color name="blue">#3F51B5</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
     <color name="green">#4A804D</color>
+
+    <!-- Gray shades -->
+    <color name="gray">#8e8e8e</color>
     <color name="gray_light">#B3FFFFFF</color>
     <color name="light_gray">#33FFFFFF</color>
 
+    <!-- Fragment colors -->
+    <color name="fragment1">#A36161</color>
+    <color name="fragment2">#605E5E</color>
+
+    <!-- Legacy colors - keeping for compatibility -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="background_color">#FFF5F5F5</color>
+    <color name="primary_color">#b80000</color> <!-- Changed to match accentRed -->
+    <color name="unliked">#FFFFFF</color>
 </resources>

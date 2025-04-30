@@ -14,7 +14,6 @@ import org.opensource.anivibe.data.Item
 import org.opensource.anivibe.helper.ItemAdapter
 import org.opensource.anivibe.PostRepository
 import org.opensource.anivibe.UserRepository
-import org.opensource.anivibe.helper.ProfileImageUtils.loadProfileImage
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -98,7 +97,6 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
 
     override fun onPause() {
         super.onPause()
-        // Remove the listener when the fragment is not visible to prevent memory leaks
         UserRepository.removeProfileUpdateListener {
             refreshPosts()
         }
@@ -111,7 +109,6 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
             itemList.addAll(posts)
             itemAdapter.notifyDataSetChanged()
 
-            // Show empty state if no posts
             if (itemList.isEmpty()) {
                 emptyState.visibility = View.VISIBLE
                 recyclerView.visibility = View.GONE
@@ -120,7 +117,6 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
                 recyclerView.visibility = View.VISIBLE
             }
 
-            // No need to manually load profile image here anymore
         } catch (e: Exception) {
             e.printStackTrace()
             emptyState.visibility = View.VISIBLE
@@ -138,7 +134,6 @@ class LandingPageFragment : Fragment(R.layout.anivibe_landingpagefragment) {
                 itemList.removeAt(position)
                 itemAdapter.notifyItemRemoved(position)
 
-                // Check if we need to show empty state after deletion
                 if (itemList.isEmpty()) {
                     emptyState.visibility = View.VISIBLE
                     recyclerView.visibility = View.GONE

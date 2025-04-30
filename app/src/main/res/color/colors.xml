@@ -3,5 +3,5 @@
     <color android:name="darkNavy" tools:ignore="ExtraText">#1A1A2E</color>
     <color android:name="accentRed">#E94560</color>
     <color android:name="softWhite">#F5F5F5</color>
-    <color android:name="colorPrimary">#E94560</color>
+    <color android:name="colorPrimary">#ee0000</color>
 </selector>

@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import de.hdodenhof.circleimageview.CircleImageView
@@ -101,17 +102,48 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun showLogoutConfirmation() {
-        val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setTitle("Logout")
-        dialogBuilder.setMessage("Are you sure you want to logout?")
-        dialogBuilder.setPositiveButton("Logout") { _: DialogInterface, _: Int ->
-            performLogout()
-        }
-        dialogBuilder.setNegativeButton("Cancel") { dialog: DialogInterface, _: Int ->
+        val dialogView = layoutInflater.inflate(R.layout.dialog_logout, null)
+
+        // Find views
+        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
+        val btnLogout = dialogView.findViewById<Button>(R.id.btnLogout)
+
+        // Create custom dialog
+        val dialog = AlertDialog.Builder(this, R.style.CustomAlertDialog)
+            .setView(dialogView)
+            .create()
+
+        // Set the dialog to be non-cancelable
+        dialog.setCanceledOnTouchOutside(false)
+
+        // Set click listeners for buttons
+        btnCancel.setOnClickListener {
             dialog.dismiss()
         }
-        val alertDialog = dialogBuilder.create()
-        alertDialog.show()
+
+        btnLogout.setOnClickListener {
+            // Clear user preferences to "log out"
+            val userPrefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+            userPrefs.edit().clear().apply()
+
+            // Optional: Clear other preferences as well
+            getSharedPreferences("ProfilePrefs", Context.MODE_PRIVATE).edit().clear().apply()
+            getSharedPreferences("ProfileDetails", Context.MODE_PRIVATE).edit().clear().apply()
+
+            // Show toast message
+            Toast.makeText(this, "Successfully logged out", Toast.LENGTH_SHORT).show()
+
+            // Navigate back to LoginActivity
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+
+            // Close this activity
+            finish()
+        }
+
+        // Show the dialog
+        dialog.show()
     }
 
     private fun performLogout() {

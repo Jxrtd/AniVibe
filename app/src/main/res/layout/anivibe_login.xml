@@ -10,16 +10,17 @@
     tools:context=".LoginActivity">
 
     <!-- Logo with subtle shadow -->
+
+    <!-- Login Title -->
     <ImageView
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:scaleType="centerCrop"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/image1"
+        android:background="@drawable/circle_background"
         android:elevation="8dp"
-        android:background="@drawable/circle_background"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/image1" />
 
-    <!-- Login Title -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -4,10 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 /**
  * Manager class for chat message operations including saving/loading messages
@@ -23,9 +20,8 @@ class ChatMessageManager(private val context: Context) {
         "ConversationPrefs", Context.MODE_PRIVATE
     )
 
-    /**
-     * Save the last interaction time for a specific chat
-     */
+
+    //Save the last interaction time for a specific chat
     fun saveLastInteractionTime(fanName: String) {
         val editor = sharedPrefs.edit()
         editor.putLong("${fanName}_last_time", System.currentTimeMillis())
@@ -76,42 +72,34 @@ class ChatMessageManager(private val context: Context) {
         // Set specific times for each character
         when (fanName) {
             "Keiko" -> {
-                // ~1 hour ago (most recent), minus 5 min for variety
                 calendar.add(Calendar.HOUR_OF_DAY, -1)
                 calendar.add(Calendar.MINUTE, -5)
             }
             "Hiroshi" -> {
-                // ~2 hours ago, plus 3 min
                 calendar.add(Calendar.HOUR_OF_DAY, -2)
                 calendar.add(Calendar.MINUTE, 3)
             }
             "Takuya" -> {
-                // ~3 hours ago, minus 10 min
                 calendar.add(Calendar.HOUR_OF_DAY, -3)
                 calendar.add(Calendar.MINUTE, -10)
             }
             "Sofia" -> {
-                // ~4 hours ago, plus 7 min
                 calendar.add(Calendar.HOUR_OF_DAY, -4)
                 calendar.add(Calendar.MINUTE, 7)
             }
             "Akira" -> {
-                // ~5 hours ago, minus 2 min
                 calendar.add(Calendar.HOUR_OF_DAY, -5)
                 calendar.add(Calendar.MINUTE, -2)
             }
             "Makoto" -> {
-                // ~6 hours ago, plus 12 min
                 calendar.add(Calendar.HOUR_OF_DAY, -6)
                 calendar.add(Calendar.MINUTE, 12)
             }
             "Rin" -> {
-                // ~7 hours ago, minus 8 min
                 calendar.add(Calendar.HOUR_OF_DAY, -7)
                 calendar.add(Calendar.MINUTE, -8)
             }
             "Jun" -> {
-                // ~8 hours ago (oldest), plus 15 min
                 calendar.add(Calendar.HOUR_OF_DAY, -8)
                 calendar.add(Calendar.MINUTE, 15)
             }
@@ -128,9 +116,8 @@ class ChatMessageManager(private val context: Context) {
         return calendar.timeInMillis
     }
 
-    /**
-     * Update all chat messages in the ChatFragment to show accurate times
-     */
+
+    // Update all chat messages in the ChatFragment to show accurate times
     fun updateChatListWithAccurateTimes(chatMessages: List<ChatMessage>) {
         for (chatMessage in chatMessages) {
             val lastTime = getLastInteractionTime(chatMessage.name)
@@ -143,16 +130,13 @@ class ChatMessageManager(private val context: Context) {
      * the format used in the conversation list
      */
     private fun formatTimeForChatList(timestamp: Long): String {
-        // Current time in milliseconds
         val now = System.currentTimeMillis()
 
-        // Calculate the difference in days
         val diffInMillis = now - timestamp
         val diffInDays = (diffInMillis / (1000 * 60 * 60 * 24)).toInt()
 
         return when {
             diffInDays == 0 -> {
-                // Today: use hour:minute format
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = timestamp
                 val hour = calendar.get(Calendar.HOUR)
@@ -162,11 +146,9 @@ class ChatMessageManager(private val context: Context) {
                 "$hourDisplay:$minute $amPm"
             }
             diffInDays == 1 -> {
-                // Yesterday
                 "Yesterday"
             }
             diffInDays < 7 -> {
-                // Within a week: show day name
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = timestamp
                 val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
@@ -174,10 +156,9 @@ class ChatMessageManager(private val context: Context) {
                 days[dayOfWeek]
             }
             else -> {
-                // More than a week ago: show month/day
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = timestamp
-                val month = calendar.get(Calendar.MONTH) + 1  // Month is 0-based
+                val month = calendar.get(Calendar.MONTH) + 1
                 val day = calendar.get(Calendar.DAY_OF_MONTH)
                 "$month/$day"
             }
@@ -190,7 +171,6 @@ class ChatMessageManager(private val context: Context) {
     fun deleteChatData(fanName: String) {
         val editor = sharedPrefs.edit()
         editor.remove("${fanName}_last_time")
-        // Also remove conversation data if needed
         conversationPrefs.edit().remove("${fanName}_messages").apply()
         editor.apply()
     }

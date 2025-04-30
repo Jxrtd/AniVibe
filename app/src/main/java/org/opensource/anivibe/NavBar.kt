@@ -2,7 +2,6 @@ package org.opensource.anivibe
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
@@ -47,7 +46,6 @@ class NavBar : AppCompatActivity() {
 
 
         menubutton.setOnClickListener {
-            Log.d("CSIT 284", "Sign-Up Clicked")
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)

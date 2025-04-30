@@ -15,7 +15,6 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Shader
 import android.graphics.Typeface
-import android.util.Log
 import androidx.core.content.ContextCompat
 import org.opensource.anivibe.R
 import org.opensource.anivibe.UserRepository
@@ -25,7 +24,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-// Circle transformation for Picasso (unchanged)
 class CircleTransform : Transformation {
     override fun transform(source: Bitmap): Bitmap {
         val size = Math.min(source.width, source.height)
@@ -58,9 +56,9 @@ class CircleTransform : Transformation {
 }
 
 class CommentAdapter(
-    private val comments: MutableList<Comment>, // Changed to MutableList
+    private val comments: MutableList<Comment>,
     private val currentUsername: String? = null,
-    private val postId: String? = null // Add postId parameter
+    private val postId: String? = null
 ) : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
 
     class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -68,10 +66,9 @@ class CommentAdapter(
         val content: TextView = view.findViewById(R.id.comment_content)
         val profilePic: ImageView = view.findViewById(R.id.comment_profile_pic)
         val timestamp: TextView? = view.findViewById(R.id.comment_timestamp)
-        val deleteButton: ImageView = view.findViewById(R.id.delete_button) // Add delete button
+        val deleteButton: ImageView = view.findViewById(R.id.delete_button)
     }
 
-    // Add click listener interface
     interface OnCommentDeleteListener {
         fun onCommentDeleted(position: Int)
     }
@@ -99,7 +96,6 @@ class CommentAdapter(
             deleteListener?.onCommentDeleted(position)
         }
 
-        // Display username - highlight if it's the current user's comment
         holder.username.text = comment.username
         if (currentUsername != null && comment.username == currentUsername) {
             holder.username.setTextColor(ContextCompat.getColor(context, R.color.accentRed))
@@ -109,15 +105,12 @@ class CommentAdapter(
             holder.username.setTypeface(null, Typeface.NORMAL)
         }
 
-        // Comment content
         holder.content.text = comment.content
 
-        // Timestamp if available
         holder.timestamp?.text = comment.timestamp?.let {
             SimpleDateFormat("MMM d, h:mm a", Locale.getDefault()).format(Date(it))
         } ?: ""
 
-        // Load profile image with proper error handling
         loadProfileImage(context, holder.profilePic, comment.profileImagePath)
     }
 
@@ -160,7 +153,6 @@ class CommentAdapter(
                 }
             }
         } catch (e: Exception) {
-            Log.e("CommentAdapter", "Error loading profile image", e)
             imageView.setImageResource(R.drawable.profile_circle)
         }
     }

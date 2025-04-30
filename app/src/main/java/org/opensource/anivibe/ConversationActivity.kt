@@ -35,52 +35,40 @@ class ConversationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_conversation)
 
-        // Initialize chat message manager
         chatMessageManager = ChatMessageManager(this)
 
-        // Get data from intent
         fanName = intent.getStringExtra("FAN_NAME") ?: "Unknown"
         fanPhotoResId = intent.getIntExtra("FAN_PHOTO", R.drawable.chat_bubble_user)
 
-        // Initialize views
         recyclerView = findViewById(R.id.recyclerViewConversation)
         messageInput = findViewById(R.id.editTextMessage)
         sendButton = findViewById(R.id.buttonSend)
         fanNameTextView = findViewById(R.id.textViewCharacterName)
 
-        // Set profile image in header
         val profileImageHeader = findViewById<ImageView>(R.id.imageViewProfileHeader)
         profileImageHeader.setImageResource(fanPhotoResId)
 
-        // Set fan name in toolbar
         fanNameTextView.text = fanName
 
-        // Set up RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this).apply {
-            stackFromEnd = true  // Messages stack from bottom
+            stackFromEnd = true
         }
 
-        // Load saved messages or start a new conversation
         loadConversation()
 
         conversationAdapter = ConversationAdapter(this, messagesList, fanPhotoResId, fanName)
         recyclerView.adapter = conversationAdapter
 
-        // If this is a new conversation, add initial greeting
         if (messagesList.isEmpty()) {
-            // Add initial greeting message from fan
             addFanMessage(getInitialGreeting())
 
-            // If Keiko, start the script
             if (fanName == "Keiko") {
                 keikoScriptStep = 1
-                // ask after a short delay
                 recyclerView.postDelayed({
                     addFanMessage("Have you watched Tokyo Ghoul?")
                 }, 1000)
             }
         } else {
-            // If Keiko conversation was in progress, restore script step
             if (fanName == "Keiko") {
                 val savedScriptStep = getSharedPreferences("ConversationPrefs", Context.MODE_PRIVATE)
                     .getInt("${fanName}_script_step", 0)
@@ -88,12 +76,10 @@ class ConversationActivity : AppCompatActivity() {
             }
         }
 
-        // Set up send button
         sendButton.setOnClickListener {
             sendMessage()
         }
 
-        // Set up keyboard send action
         messageInput.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEND) {
                 sendMessage()
@@ -102,7 +88,6 @@ class ConversationActivity : AppCompatActivity() {
             false
         }
 
-        // Set up back button
         findViewById<ImageButton>(R.id.buttonBack).setOnClickListener {
             finish()
         }
@@ -111,13 +96,10 @@ class ConversationActivity : AppCompatActivity() {
     private fun sendMessage() {
         val messageText = messageInput.text.toString().trim()
         if (messageText.isNotEmpty()) {
-            // Add user message
             addUserMessage(messageText)
 
-            // Clear input field
             messageInput.text.clear()
 
-            // Generate character response
             if (fanName == "Keiko" && keikoScriptStep > 0) {
                 handleKeikoScript(messageText.lowercase())
             } else {
@@ -128,7 +110,7 @@ class ConversationActivity : AppCompatActivity() {
 
     private fun handleKeikoScript(msg: String) {
         when (keikoScriptStep) {
-            1 -> { // Has she watched TG?
+            1 -> {
                 when {
                     msg.contains("yes")    -> {
                         addFanMessage("Awesome! What did you think of Kaneki's transformation?")
@@ -143,18 +125,18 @@ class ConversationActivity : AppCompatActivity() {
                     }
                 }
             }
-            2 -> { // User gave opinion
+            2 -> {
                 addFanMessage("I totally agree! Kaneki's arc is one of the best. Who's your favorite character?")
                 keikoScriptStep = 4
             }
-            3 -> { // Offer synopsis
+            3 -> {
                 addFanMessage(
                     "It's about a college student turned half-ghoul after a tragic attack. " +
                             "It's dark but incredible. Will you give it a try?"
                 )
                 keikoScriptStep = 5
             }
-            4 -> { // Favorite character
+            4 -> {
                 if (msg.isNotBlank()) {
                     // echo back
                     addFanMessage("Nice — $msg is a great pick! We should chat more about them sometime.")
@@ -163,7 +145,7 @@ class ConversationActivity : AppCompatActivity() {
                     addFanMessage("Who's your favorite character?")
                 }
             }
-            5 -> { // Will you try it?
+            5 -> {
                 when {
                     msg.contains("yes") -> addFanMessage("Yay! Let me know what you think 😊")
                     else                -> addFanMessage("No worries — let me know if you change your mind!")
@@ -172,7 +154,6 @@ class ConversationActivity : AppCompatActivity() {
             }
         }
 
-        // Save script step for Keiko
         getSharedPreferences("ConversationPrefs", Context.MODE_PRIVATE).edit()
             .putInt("${fanName}_script_step", keikoScriptStep)
             .apply()
@@ -187,11 +168,7 @@ class ConversationActivity : AppCompatActivity() {
         messagesList.add(userMessage)
         conversationAdapter.notifyItemInserted(messagesList.size - 1)
         scrollToBottom()
-
-        // Save the updated conversation
         saveConversation()
-
-        // We don't update the last interaction time when the user sends a message
     }
 
     private fun addFanMessage(message: String) {
@@ -204,12 +181,7 @@ class ConversationActivity : AppCompatActivity() {
         messagesList.add(fanMessage)
         conversationAdapter.notifyItemInserted(messagesList.size - 1)
         scrollToBottom()
-
-        // Save the updated conversation
         saveConversation()
-
-        // Update last interaction time ONLY when fan sends a message
-        // This is what will be reflected in the chat list
         chatMessageManager.saveLastInteractionTime(fanName)
     }
 
@@ -232,7 +204,6 @@ class ConversationActivity : AppCompatActivity() {
     }
 
     private fun generateFanResponse(userMessage: String) {
-        // More realistic fan responses based on their favorite characters/shows
 
         val response = when {
             userMessage.contains("favorite character", ignoreCase = true) ||
@@ -320,7 +291,6 @@ class ConversationActivity : AppCompatActivity() {
                 }
 
             else -> {
-                // Default responses based on fan personality
                 when (fanName) {
                     "Keiko" -> "Have you read the Tokyo Ghoul manga? The anime adaptation missed so many important parts!"
                     "Hiroshi" -> "I've been thinking about the visual symbolism in Perfect Blue lately. Satoshi Kon was a genius."
@@ -335,10 +305,9 @@ class ConversationActivity : AppCompatActivity() {
             }
         }
 
-        // Simulate typing delay (optional)
         recyclerView.postDelayed({
             addFanMessage(response)
-        }, 1000) // End of postDelayed
+        }, 1000)
     }
 
     private fun saveConversation() {
@@ -360,7 +329,6 @@ class ConversationActivity : AppCompatActivity() {
                 val savedMessages: List<ConversationMessage> = gson.fromJson(json, type)
                 messagesList.addAll(savedMessages)
             } catch (e: Exception) {
-                // Handle error loading conversation
                 e.printStackTrace()
             }
         }
@@ -368,7 +336,6 @@ class ConversationActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        // Save conversation state when activity is paused
         saveConversation()
     }
 }

@@ -1,13 +1,11 @@
 package org.opensource.anivibe.fragments
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -19,7 +17,6 @@ import org.opensource.anivibe.data.Item
 import org.opensource.anivibe.helper.ItemAdapter
 import org.opensource.anivibe.UserRepository
 import org.opensource.anivibe.PostRepository
-import org.opensource.anivibe.helper.ProfileImageUtils
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -101,7 +98,7 @@ class PostFragment : Fragment(R.layout.anivibe_landingpagefragment) {
                 if (post.username == currentUsername) {
                     post.copy(profileImagePath = currentUser.profileImagePath)
                 } else {
-                    post // No update for other users
+                    post
                 }
             })
 
