@@ -33,12 +33,8 @@ class ChatFragment : Fragment() {
         chatMessageManager = ChatMessageManager(requireContext())
         chatListManager = ChatListManager(requireContext())
 
-        // Remove the invalid reference to conversationActivity
-        // conversationActivity
-
         initializeChatList()
 
-        // Update chat list with accurate times
         chatListManager.updateChatList(chatMessages)
 
         adapter = ChatAdapter(
@@ -62,39 +58,30 @@ class ChatFragment : Fragment() {
     }
 
     private fun initializeChatList() {
-        // Keiko
         val keikoGreeting = "Hey there! I was just reading some Tokyo Ghoul manga. What's up?"
         chatMessages.add(ChatMessage("Keiko", keikoGreeting, "", R.drawable.pfp_keiko))
 
-        // Hiroshi
         val hiroshiGreeting = "Good day! Just got back from an anime convention! How are you doing today?"
         chatMessages.add(ChatMessage("Hiroshi", hiroshiGreeting, "", R.drawable.pfp_hiroshi))
 
-        // Takuya
         val takuyaGreeting = "Hi... Been thinking about the deeper themes in anime lately..."
         chatMessages.add(ChatMessage("Takuya", takuyaGreeting, "", R.drawable.pfp_takuya))
 
-        // Sofia
         val sofiaGreeting = "Hey! Did you watch the latest episode? So good!"
         chatMessages.add(ChatMessage("Sofia", sofiaGreeting, "", R.drawable.pfp_sofia))
 
-        // Akira
         val akiraGreeting = "I'm 10 billion percent sure this is going to be an interesting conversation about anime!"
         chatMessages.add(ChatMessage("Akira", akiraGreeting, "", R.drawable.pfp_akira))
 
-        // Makoto
         val makotoGreeting = "Hey! I'm practicing my Naruto run for the next convention! What's up?"
         chatMessages.add(ChatMessage("Makoto", makotoGreeting, "", R.drawable.pfp_makoto))
 
-        // Rin
         val rinGreeting = "Just finished rewatching my favorite anime series."
         chatMessages.add(ChatMessage("Rin", rinGreeting, "", R.drawable.pfp_rin))
 
-        // Jun
         val junGreeting = "Hey there! Want to talk about the new seasonal anime?"
         chatMessages.add(ChatMessage("Jun", junGreeting, "", R.drawable.pfp_jun))
 
-        // Update the times for all messages
         chatMessageManager.updateChatListWithAccurateTimes(chatMessages)
     }
 

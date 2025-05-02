@@ -150,37 +150,6 @@ object PostRepository {
         }
     }
 
-    fun updateUserInfo(context: Context, oldUsername: String, newUsername: String, newProfileImagePath: String?) {
-        var updated = false
-
-        posts.forEach { item ->
-            if (item.username == oldUsername) {
-                item.username = newUsername
-
-                if (newProfileImagePath != null) {
-                    item.profileImagePath = newProfileImagePath
-                }
-                updated = true
-
-            }
-
-            item.comments.forEachIndexed { index, comment ->
-                if (comment.username == oldUsername) {
-                    comment.username = newUsername
-
-                    if (newProfileImagePath != null) {
-                        comment.profileImagePath = newProfileImagePath
-                    }
-                    updated = true
-                }
-            }
-        }
-
-        if (updated) {
-            savePosts(context)
-        }
-    }
-
     fun updateProfileImage(context: Context, username: String, newProfileImagePath: String?) {
         var updated = false
 

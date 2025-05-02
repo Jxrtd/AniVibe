@@ -13,12 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import org.opensource.anivibe.adapters.ConversationAdapter
+import org.opensource.anivibe.helper.ConversationAdapter
 import org.opensource.anivibe.data.ChatListManager
-import org.opensource.anivibe.data.ChatMessage
 import org.opensource.anivibe.data.ChatMessageManager
 import org.opensource.anivibe.data.ConversationMessage
-import java.util.Calendar
 
 class ConversationActivity : AppCompatActivity() {
 

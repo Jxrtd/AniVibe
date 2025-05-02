@@ -106,7 +106,7 @@ class CommentAdapter(
 
         holder.content.text = comment.content
 
-        holder.timestamp?.text = comment.timestamp?.let {
+        holder.timestamp?.text = comment.timestamp.let {
             SimpleDateFormat("MMM d, h:mm a", Locale.getDefault()).format(Date(it))
         } ?: ""
 

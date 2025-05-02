@@ -40,7 +40,6 @@ object UserRepository {
         with(userPrefs.edit()) {
             putString("username", user.username)
             putString("email", user.email)
-            // Do NOT forget to save password if applicable
             apply()
         }
 
@@ -65,12 +64,6 @@ object UserRepository {
             getCurrentUser(context).username.takeIf { it.isNotBlank() }
                 ?: generateDefaultUsername(context)
         }
-    }
-
-    fun verifyPassword(context: Context, password: String): Boolean {
-        val userPrefs = context.getSharedPreferences(USER_PREFS, Context.MODE_PRIVATE)
-        val storedPassword = userPrefs.getString("password", "") ?: ""
-        return storedPassword == password
     }
 
     fun changePassword(context: Context, oldPassword: String, newPassword: String): Boolean {

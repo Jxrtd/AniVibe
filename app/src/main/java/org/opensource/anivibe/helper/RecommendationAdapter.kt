@@ -1,4 +1,4 @@
-package org.opensource.anivibe.adapters
+package org.opensource.anivibe.helper
 
 import android.view.LayoutInflater
 import android.view.View

@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.opensource.anivibe.R
-import org.opensource.anivibe.adapters.RecommendationAdapter
+import org.opensource.anivibe.helper.RecommendationAdapter
 import org.json.JSONArray
 import java.util.ArrayList
 

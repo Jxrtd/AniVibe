@@ -1,8 +1,6 @@
 package org.opensource.anivibe.anime
 
-import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +11,6 @@ import com.squareup.picasso.Picasso
 import org.opensource.anivibe.R
 import org.opensource.anivibe.data.SharedAnimeViewModel
 import org.opensource.anivibe.databinding.BottomSheetAnimeDetailsBinding
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
-import androidx.core.content.ContextCompat
 
 class AnimeDetailsBottomSheet : BottomSheetDialogFragment {
     private var _binding: BottomSheetAnimeDetailsBinding? = null
@@ -35,10 +30,8 @@ class AnimeDetailsBottomSheet : BottomSheetDialogFragment {
         }
     }
 
-    // Default constructor
     constructor() : super()
 
-    // Constructor that sets up arguments
     constructor(anime: Result) : super() {
         arguments = Bundle().apply {
             putParcelable(ARG_ANIME, anime)
@@ -48,12 +41,10 @@ class AnimeDetailsBottomSheet : BottomSheetDialogFragment {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Handle compatibility with Android 13+ (Tiramisu)
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
             anime = arguments?.getParcelable(ARG_ANIME, Result::class.java)
                 ?: throw IllegalStateException("AnimeDetailsBottomSheet: Missing anime argument")
         } else {
-            // For older Android versions
             @Suppress("DEPRECATION")
             anime = arguments?.getParcelable(ARG_ANIME)
                 ?: throw IllegalStateException("AnimeDetailsBottomSheet: Missing anime argument")
@@ -72,13 +63,10 @@ class AnimeDetailsBottomSheet : BottomSheetDialogFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize ViewModel
         viewModel = ViewModelProvider(requireActivity())[SharedAnimeViewModel::class.java]
 
-        // Display anime details
         displayAnimeDetails()
 
-        // Set up the save/remove button
         setupActionButton()
     }
 
@@ -102,29 +90,22 @@ class AnimeDetailsBottomSheet : BottomSheetDialogFragment {
     }
 
     private fun setupActionButton() {
-        // Check if THIS anime is saved
         val isSaved = viewModel.isAnimeSaved(anime.malId)
-
-        // Log for debugging
-        Log.d("AnimeDetailsBottomSheet", "Checking anime: ${anime.title} with ID: ${anime.malId} - Is saved: $isSaved")
 
         with(binding.btnSaveAnime) {
             setTextColor(resources.getColor(android.R.color.white, null))
             setOnClickListener {
                 viewModel.removeAnime(anime, requireContext())
                 Toast.makeText(requireContext(), "${anime.title} removed from your list", Toast.LENGTH_SHORT).show()
-                // refresh UI
                 setupActionButton()
             }
             if (isSaved) {
-                // --- REMOVE STATE ---
                 text = "Remove from list"
             } else {
                 text = "Save to list"
                 setOnClickListener {
                     viewModel.addAnime(anime, requireContext())
                     Toast.makeText(requireContext(), "${anime.title} saved to your list", Toast.LENGTH_SHORT).show()
-                    // refresh UI
                     setupActionButton()
                 }
             }

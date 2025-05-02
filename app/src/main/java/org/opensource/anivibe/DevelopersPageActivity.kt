@@ -15,6 +15,7 @@ class DevelopersPageActivity : Activity() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
         finish()

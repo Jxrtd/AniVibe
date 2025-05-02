@@ -235,43 +235,8 @@ class CommentFragment : Fragment(R.layout.fragment_comment) {
                 recyclerView.smoothScrollToPosition(comments.size - 1)
                 commentInput.text.clear()
 
-                // 💾 Pass context to save
                 PostRepository.addComment(requireContext(), postId, newComment)
             }
-        }
-    }
-
-    private fun loadProfileImage(imageView: ImageView, profileImagePath: String?) {
-        try {
-            when {
-                profileImagePath.isNullOrBlank() -> {
-                    imageView.setImageResource(R.drawable.profile_circle)
-                }
-                profileImagePath.startsWith("http") -> {
-                    Picasso.get()
-                        .load(profileImagePath)
-                        .placeholder(R.drawable.profile_circle)
-                        .error(R.drawable.profile_circle)
-                        .transform(CircleTransform())
-                        .into(imageView)
-                }
-                else -> {
-                    val imageFile = File(profileImagePath)
-                    if (imageFile.exists()) {
-                        Picasso.get()
-                            .load(imageFile)
-                            .placeholder(R.drawable.profile_circle)
-                            .error(R.drawable.profile_circle)
-                            .transform(CircleTransform())
-                            .into(imageView)
-                    } else {
-                        imageView.setImageResource(R.drawable.profile_circle)
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Error loading profile image", e)
-            imageView.setImageResource(R.drawable.profile_circle)
         }
     }
 
